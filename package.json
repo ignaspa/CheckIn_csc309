@@ -1,0 +1,19 @@
+{
+  "name": "checkin",
+  "version": "1.0.0",
+  "description": "A Checkin MERN Stack Application to help connect students at University",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csc309-fall-2019/team30.git"
+  },
+  "author": "Abdullah Amin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csc309-fall-2019/team30/issues"
+  },
+  "homepage": "https://github.com/csc309-fall-2019/team30#readme"
+}
