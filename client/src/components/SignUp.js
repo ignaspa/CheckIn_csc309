@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 
+const validFeedback = "Looks Good!";
 
 export default class SignUpComponent extends Component {
 
+    submitHandler = event => {
+        event.preventDefault();
+        event.target.className += " was-validated";
+    };
+
+    changeHandler = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
     render() { 
-        const firstName = 'First Name';
-        const lastName = 'Last Name';
-        const email = 'E-mail';
         const disclaimerEmail = "We'll never share your email with anyone else";
-        const username = "Username";
-        const password = "Password";
         const disclaimerPassword = 'Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.';
-        const button = "Submit";
         const style = {
             width: '400px'
           };
@@ -21,26 +25,36 @@ export default class SignUpComponent extends Component {
         <article className="card-body mx-auto" style={style}>
             <h4 className="card-title mt-3 text-center"> Create an account </h4>
 
-            <form className="needs-validation" novalidate>
+            <form className="needs-validation"
+                onSubmit={this.submitHandler}
+                noValidate>
+                    
                 <div className="form-row">
                     <div className="col">
-                        <TextEntry label = {firstName}/>
+                        <TextEntry label = {"First Name"}
+                        changeHandler = {this.changeHandler}
+                        feedback = "Please enter your first name!"/>
                     </div>
 
                     <div className="col">
-                        <TextEntry label = {lastName} />
+                        <TextEntry label = {"Last Name"}
+                         feedback = "Please enter your last name!" />
                     </div>
                 </div>
    
-                <EmailEntry label = {email} />
+                <EmailEntry label = {"E-mail"} 
+                disclaimer = {disclaimerEmail}
+                feedback = "Don't forget your e-mail"/>
 
-                <Username label = {username}
-                disclaimer = {disclaimerEmail} />
+                <Username label = {"Username"}
+                disclaimer = {disclaimerEmail} 
+                feedback = "Please pick a username!"/>
 
-                <Password label = {password}
-                disclaimer = {disclaimerPassword} />
+                <Password label = {"Password"}
+                disclaimer = {disclaimerPassword}
+                feedback = "Please choose a password!" />
 
-                <Button label = {button} />
+                <Button label = {"Submit"} />
 
             </form>
         </article>
@@ -55,7 +69,15 @@ function TextEntry(props) {
     return (
         <div className="form-group">
             <label for="inputText">{props.label}</label>
-            <input name="" class="form-control" id="inputText" placeholder={props.label} type="text" required />
+            <input name="" 
+            class="form-control" 
+            id="inputText" 
+            placeholder={props.label} 
+            type="text" 
+            onChange={props.changeHandler} 
+            required/>
+            <ValidFeedback feedback = {validFeedback}/>
+            <InvalidFeedback feedback = {props.feedback} />
         </div>
     );
 }
@@ -64,8 +86,10 @@ function EmailEntry(props) {
     return (
         <div className="form-group">
             <label for="inputEmail">{props.label}</label>
-            <input name="" className="form-control" placeholder={props.label} type="email" />
+            <input name="" className="form-control" placeholder={props.label} type="email" required/>
             <small id="emailHelp" className="form-text text-muted">{props.disclaimer}</small>
+            <ValidFeedback feedback = {validFeedback}/>
+            <InvalidFeedback feedback = {props.feedback} />
         </div>
     );
 }
@@ -78,22 +102,24 @@ function Username(props) {
                 <div className="input-group-prepend">
                     <span className="input-group-text">@</span>
                 </div>
-                <input name="" className="form-control" placeholder={props.label} type="text" />
+                <input name="" className="form-control" placeholder={props.label} type="text" required/>
             </div>
+            <ValidFeedback feedback = {validFeedback}/>
+            <InvalidFeedback feedback = {props.feedback} />
         </div>
     );
 }
 
 function Password(props) {
     return (
-        <div>
         <div class="form-group">
             <label for="inputEmail">{props.label}</label>
-            <input name="" className="form-control" placeholder={props.label} type="password"/>
-        </div>
+            <input name="" className="form-control" placeholder={props.label} type="password" required/>
             <small id="passwordHelpBlock" className="form-text text-muted">
                 {props.disclaimer}
             </small>
+            <ValidFeedback feedback = {validFeedback}/>
+            <InvalidFeedback feedback = {props.feedback} />
         </div>
     
         );
@@ -102,5 +128,23 @@ function Password(props) {
 function Button(props) {
     return (
         <button type="submit" className="btn btn-primary">{props.label}</button>
+    );
+}
+
+function ValidFeedback(props) {
+    return (
+        <div className="valid-feedback">
+        {props.feedback}
+        </div>
+    );
+
+}
+
+function InvalidFeedback(props) {
+    return (
+        <div className="invalid-feedback">
+          {props.feedback}
+        </div>
+ 
     );
 }
