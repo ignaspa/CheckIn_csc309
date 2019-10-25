@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { FormControl, FormGroup, Container } from 'react-bootstrap'
+
 
 const validFeedback = "Looks Good!";
 
@@ -21,7 +23,7 @@ export default class SignUpComponent extends Component {
           };
         
         return (
-        <div className="container">
+        <Container>
         <article className="card-body mx-auto" style={style}>
             <h4 className="card-title mt-3 text-center"> Create an account </h4>
 
@@ -44,7 +46,7 @@ export default class SignUpComponent extends Component {
    
                 <EmailEntry label = {"E-mail"} 
                 disclaimer = {disclaimerEmail}
-                feedback = "Don't forget your e-mail"/>
+                feedback = "Don't forget your e-mail!"/>
 
                 <Username label = {"Username"}
                 disclaimer = {disclaimerEmail} 
@@ -58,7 +60,7 @@ export default class SignUpComponent extends Component {
 
             </form>
         </article>
-        </div>
+        </Container>
 
         ); 
     }
@@ -67,10 +69,9 @@ export default class SignUpComponent extends Component {
 
 function TextEntry(props) {
     return (
-        <div className="form-group">
+        <FormGroup>
             <label for="inputText">{props.label}</label>
-            <input name="" 
-            class="form-control" 
+            <FormControl 
             id="inputText" 
             placeholder={props.label} 
             type="text" 
@@ -78,49 +79,54 @@ function TextEntry(props) {
             required/>
             <ValidFeedback feedback = {validFeedback}/>
             <InvalidFeedback feedback = {props.feedback} />
-        </div>
+        </FormGroup>
     );
 }
 
 function EmailEntry(props) {
     return (
-        <div className="form-group">
+        <FormGroup>
             <label for="inputEmail">{props.label}</label>
-            <input name="" className="form-control" placeholder={props.label} type="email" required/>
+            <FormControl placeholder={props.label} type="email" required/>
             <small id="emailHelp" className="form-text text-muted">{props.disclaimer}</small>
             <ValidFeedback feedback = {validFeedback}/>
             <InvalidFeedback feedback = {props.feedback} />
-        </div>
+        </FormGroup>
     );
 }
 
 function Username(props) {
     return (
-        <div className="form-group">
+        <FormGroup>
             <label for="Username">{props.label}</label>
             <div className="form-group input-group-prepend">
                 <div className="input-group-prepend">
                     <span className="input-group-text">@</span>
                 </div>
-                <input name="" className="form-control" placeholder={props.label} type="text" required/>
+                <input name="" 
+                className="form-control" 
+                placeholder={props.label} 
+                type="text" 
+                maxLength={30}
+                required/>
             </div>
             <ValidFeedback feedback = {validFeedback}/>
             <InvalidFeedback feedback = {props.feedback} />
-        </div>
+        </FormGroup>
     );
 }
 
 function Password(props) {
     return (
-        <div class="form-group">
+        <FormGroup>
             <label for="inputEmail">{props.label}</label>
-            <input name="" className="form-control" placeholder={props.label} type="password" required/>
+            <FormControl placeholder={props.label} type="password" required/>
             <small id="passwordHelpBlock" className="form-text text-muted">
                 {props.disclaimer}
             </small>
             <ValidFeedback feedback = {validFeedback}/>
             <InvalidFeedback feedback = {props.feedback} />
-        </div>
+        </FormGroup>
     
         );
 }
