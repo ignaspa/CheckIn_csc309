@@ -4,13 +4,13 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Home from "../components/Home";
 import SignUp from "../components/SignUp";
 import Navbar from "./Layout/Navbar";
+import LoginComponent from "../components/Login.js";
 
 class App extends React.Component {
   render() {
     return (
       <div>
         <Navbar />
-
         <Router>
           <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -19,22 +19,28 @@ class App extends React.Component {
                   <Link to={"/"} className="nav-link">
                     {" "}
                     Home{" "}
-                  </Link>
-                </li>
+                  </Link>{" "}
+                </li>{" "}
                 <li>
                   <Link to={"/signup"} className="nav-link">
-                    Sign Up
-                  </Link>
-                </li>
-              </ul>
-            </nav>
+                    Sign Up{" "}
+                  </Link>{" "}
+                </li>{" "}
+                <li>
+                  <Link to={"/login"} className="nav-link">
+                    Login{" "}
+                  </Link>{" "}
+                </li>{" "}
+              </ul>{" "}
+            </nav>{" "}
             <hr />
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/signup" component={SignUp} />
-            </Switch>
-          </div>
-        </Router>
+              <Route exact path="/" component={Home} />{" "}
+              <Route path="/signup" component={SignUp} />{" "}
+              <Route path="/login" component={LoginComponent} />{" "}
+            </Switch>{" "}
+          </div>{" "}
+        </Router>{" "}
       </div>
     );
   }
