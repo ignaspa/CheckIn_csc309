@@ -2,3 +2,12 @@
   background-color: #f5f9fc;
   min-height: calc(100vh - 50px);
 }
+.statistic-card {
+  box-shadow: 12px 15px 20px 0px rgba(46, 61, 73, 0.15);
+  border-radius: 40px;
+}
+
+#card-hover:hover {
+  opacity: 0.4;
+  transition: all 0.3s ease-out;
+}
