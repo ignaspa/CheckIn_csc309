@@ -1,0 +1,4 @@
+.admin-dashboard {
+  background-color: #f5f9fc;
+  min-height: calc(100vh - 50px);
+}
