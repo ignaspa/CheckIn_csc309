@@ -4,6 +4,7 @@ const validFeedback = "Looks Good!";
 
 export default class SignUpComponent extends Component {
   submitHandler = event => {
+    console.log('Submit Handled!')
     event.preventDefault();
     event.target.className += " was-validated";
   };
@@ -121,10 +122,11 @@ export function Username(props) {
           <span className="input-group-text">@</span>
         </div>
         <input
-          name=""
+          name="username"
           className="form-control"
           placeholder={props.label}
           type="text"
+          onChange={props.changeHandler}
           required
         />
       </div>
@@ -139,10 +141,11 @@ export function Password(props) {
     <div class="form-group">
       <label for="inputEmail">{props.label}</label>
       <input
-        name=""
+        name="password"
         className="form-control"
         placeholder={props.label}
         type="password"
+        onChange={props.changeHandler}
         required
       />
       <small id="passwordHelpBlock" className="form-text text-muted">
