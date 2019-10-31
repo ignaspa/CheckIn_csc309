@@ -12,7 +12,12 @@ export default class UserDashboard extends Component {
             <div className="container-fluid gedf-wrapper">
                 <div className="row">
                     <div className="col-3">
-                        <UserSide />
+                        <UserSide 
+                        name="Sonia"
+                        username="@SoniaZaldana"
+                        bio="I do things"
+                        picture={User1}
+                        />
                     </div>
 
                     <div className="col-9">
@@ -42,11 +47,11 @@ function UserSide(props) {
             <div className="card">
                 <div className="card-body">
                     <div>
-                        <img className="rounded-circle img-responsive" width="65" height="65" src={User1} alt="" />
+                        <img className="rounded-circle img-responsive" width="65" height="65" src={props.picture} alt="" />
                     </div>
-                    <div class="h5">@Sonia</div>
-                    <div class="h7 text-muted"> Sonia Zaldana</div>
-                    <div class="h7">I do things</div>
+                    <div class="h5">{props.username}</div>
+                    <div class="h7 text-muted"> {props.name}</div>
+                    <div class="h7">{props.bio}</div>
                 </div>
                 <ul className="list-group list-group-flush">
                 <li className="list-group-item align-items-center">
