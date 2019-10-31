@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import "../css/UserDashboard.css"
 import User1 from "../DummyPics/User1.jpg"
 import User2 from "../DummyPics/User2.jpg"
+import User3 from "../DummyPics/User3.jpg"
+import User4 from "../DummyPics/User4.jpg"
 
 export default class UserDashboard extends Component {
     render() {
@@ -15,9 +17,18 @@ export default class UserDashboard extends Component {
 
                     <div className="col-9">
                         <WriteCheckIn/>
-                        <CheckInUpdate/>
-                        <CheckInUpdate/>
-                        <CheckInUpdate/>
+                        <CheckInUpdate
+                        name="Marco"
+                        username="marco1234"
+                        picture={User2}/>
+                        <CheckInUpdate
+                        name="Abdullah"
+                        username="abdamin"
+                        picture={User3}/>
+                        <CheckInUpdate
+                        name="Ignas"
+                        username="iggy"
+                        picture={User4}/>
                     </div>
                 </div>
 
@@ -102,12 +113,12 @@ function CheckInUpdate(props) {
                 <div className="card-header">
                     <div className="d-flex align-items-center">
                         <div className="mr-2">
-                            <img className="rounded-circle" width="55" height="55" src={User2} alt="" />
+                            <img className="rounded-circle" width="55" height="55" src={props.picture} alt="" />
 
                         </div>
                         <div className="ml-2">
-                            <div className="h5 m-0">Marco</div>
-                            <div className="h7 text-muted">@MarcoAngelli</div>
+                            <div className="h5 m-0">{props.name}</div>
+                            <div className="h7 text-muted">{props.username}</div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +126,7 @@ function CheckInUpdate(props) {
             <div className="card-body">
                 <div className="text-muted h7 mb-2"> <i className="fa fa-clock-o"></i> 10 min ago</div>
                 <a className="card-link" href="#">
-                    <h5 className="card-title">Marco is studying in 3200!</h5>
+                    <h5 className="card-title">{props.name} is studying in 3200!</h5>
                 </a>
                 <p className="card-text">
                     Hey, i'm doing 309 come join.
@@ -123,7 +134,6 @@ function CheckInUpdate(props) {
                 <div className="card-footer">
                     <a href="#" className="card-link"><i className="fa fa-gittip"></i> Like</a>
                     <a href="#" className="card-link"><i className="fa fa-comment"></i> Comment</a>
-                    <a href="#" className="card-link"><i className="fa fa-mail-forward"></i> Share</a>
                 </div>
             </div>
             </div>
