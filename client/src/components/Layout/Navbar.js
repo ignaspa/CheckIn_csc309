@@ -17,9 +17,15 @@ export default class Navbar extends Component {
                 Sign Up
               </Link>
             </li>
+            <li>
+              <Link to={"/login"} className="nav-link text-white">
+                Login
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
     );
   }
 }
+
