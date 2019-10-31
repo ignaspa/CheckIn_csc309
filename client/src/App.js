@@ -6,6 +6,7 @@ import SignUp from "./components/SignUp";
 import Navbar from "./components/Layout/Navbar";
 import AdminDashboard from "./components/AdminComponents/AdminDashboard";
 import Login from "./components/Login"
+import UserDashboard from "./components/UserDashboard"
 
 class App extends React.Component {
   render() {
@@ -18,6 +19,7 @@ class App extends React.Component {
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/admin-dashboard" component={AdminDashboard} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/user-dashboard" component={UserDashboard} />
         </Switch>
       </BrowserRouter>
     );
