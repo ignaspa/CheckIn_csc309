@@ -6,7 +6,8 @@ import User2 from "./DashboardAssets/User2.jpg"
 import User3 from "./DashboardAssets/User3.jpg"
 import User4 from "./DashboardAssets/User4.jpg"
 
-const userData = [
+// As opposed to using this, with a backend we would get actual data.
+let userData = [
     {
         id: 0,
         isAdmin: false,
@@ -76,24 +77,33 @@ let checkins = [
 ]
 
 export default class CheckIns extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
-            <CheckInUpdates/>
+            <CheckInUpdates currentUser={this.props.newCheckIn}/>
         );
     }
 }
 
 function CheckInUpdates(props) {
     var rows = [];
+    let foundUser = findUser(props.currentUser.id, userData)
+
+    rows.push(<CheckInUpdate
+        key={foundUser.id}
+        name={foundUser.name}
+        username={foundUser.username}
+        picture={foundUser.picture}
+        location={props.currentUser.location}
+        action={props.currentUser.action}
+        message={props.currentUser.message}
+        />)
+
     for (var i = 0; i < checkins.length; i++) {
         // note: we add a key prop here to allow react to uniquely identify each
         // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
         let user = findUser(checkins[i].id, userData)
          rows.push(<CheckInUpdate 
+            key={user.id}
             name={user.name}
             username={user.username}
             picture={user.picture}
@@ -112,7 +122,7 @@ function CheckInUpdates(props) {
 
 function findUser(id, userData) {
     for (let i = 0; i < userData.length; i++) {
-        if (userData[i].id == id) {
+        if (userData[i].id === id) {
             return userData[i]
         }
     }
