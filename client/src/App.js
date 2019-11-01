@@ -6,7 +6,7 @@ import SignUp from "./components/SignUp";
 import Navbar from "./components/Layout/Navbar";
 import AdminDashboard from "./components/AdminComponents/AdminDashboard";
 import Login from "./components/Login"
-import UserDashboard from "./components/UserDashboard"
+import UserDashboard from "./components/DashboardComponents/UserDashboard"
 
 class App extends React.Component {
   render() {
