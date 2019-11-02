@@ -5,6 +5,7 @@ import Home from "../components/Home";
 import SignUp from "../components/SignUp";
 import Navbar from "./Layout/Navbar";
 import LoginComponent from "../components/Login.js";
+import Profile from "../components/Profile.js"
 
 class App extends React.Component {
   render() {
@@ -31,6 +32,11 @@ class App extends React.Component {
                     Login{" "}
                   </Link>{" "}
                 </li>{" "}
+                <li>
+                  <Link to={"/profile"} className="nav-link">
+                    Profile{" "}
+                  </Link>{" "}
+                </li>{" "}
               </ul>{" "}
             </nav>{" "}
             <hr />
@@ -38,6 +44,7 @@ class App extends React.Component {
               <Route exact path="/" component={Home} />{" "}
               <Route path="/signup" component={SignUp} />{" "}
               <Route path="/login" component={LoginComponent} />{" "}
+              <Route path="/profile" component={Profile} />{" "}
             </Switch>{" "}
           </div>{" "}
         </Router>{" "}
