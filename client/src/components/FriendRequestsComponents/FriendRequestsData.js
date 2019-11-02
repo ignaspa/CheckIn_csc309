@@ -134,31 +134,36 @@ function findGivenUser(currentUserId, userData, size) {
 
 
 export default class AllFriendRequests extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            friendRequests: friend_requests,
+            allUsers: ALL_USERS
+        }
+    }
+
     render() {
         return(
             <div>
                 <FriendRequests
                 currentUser={ALL_USERS[0]}
+                parentState={this.state}
                 />
             </div>
-
         );
     }
 }
 
+
 function FriendRequests(props) {
     var rows = [];
 
-    console.log("CURRENT USER")
-    console.log(props.currentUser)
-
-    for (var i = 0; i < friend_requests.length; i++) {
+    for (var i = 0; i < props.parentState.friendRequests.length; i++) {
         // note: we add a key prop here to allow react to uniquely identify each
         // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        let user = findGivenUser(friend_requests[i].id, ALL_USERS, ALL_USERS.length)
-        console.log(user)
+        let user = findGivenUser(props.parentState.allUsers[i].id, props.parentState.allUsers, props.parentState.friendRequests.length)
 
-        let mutualFriends = findNumberOfCommonFriends(props.currentUser.id, friend_requests[i].id)
+        let mutualFriends = findNumberOfCommonFriends(props.currentUser.id, props.parentState.allUsers[i].id)
         if (i % 3 === 0) {
             rows.push(<div className="row"/>)
         }  
@@ -166,10 +171,12 @@ function FriendRequests(props) {
              <div className="col">
          <FriendRequest 
             key={user.id}
+            id={user.id}
             name={user.name}
             username={user.username}
             picture={user.picture}
             mutualFriends = {mutualFriends}
+            parentState={props.parentState}
             />
              </div>
             );
@@ -182,6 +189,23 @@ function FriendRequests(props) {
 }
 
 function FriendRequest(props) {
+
+    function arrayRemove(arr, value) {
+        return arr.filter(function(ele){
+            return ele.id !== value;
+        });
+     
+     }
+
+    function handleAcceptRequest(e) {
+        e.preventDefault();
+        console.log("ACCEPT REQUEST WAS CLICKED")
+        console.log(props.parentState.friendRequests)
+
+        let result = arrayRemove(props.parentState.friendRequests, props.id);
+        props.parentState.friendRequests = result;
+        console.log(props.parentState.friendRequests)
+    }
     return (
         <div className="request">
             <div className="card">
@@ -190,7 +214,7 @@ function FriendRequest(props) {
                     <h4>{props.name}</h4>
                     <h6 className="text-muted"> @{props.username}</h6>
                     <p><a href="#">{props.mutualFriends} mutual friends</a></p>
-                    <button className="btn btn-primary">Accept Request</button>
+                    <button className="btn btn-primary" onClick={handleAcceptRequest}>Accept Request</button>
                 </div>
             </div>
         </div>  
