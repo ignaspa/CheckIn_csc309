@@ -20,3 +20,12 @@
 .App-link {
   color: #09d3ac;
 }
+
+.profile-pic{
+  height: 200px;
+}
+
+.checkin-title{
+  font-weight: 500;
+  font-size: 125%;
+}
