@@ -86,10 +86,41 @@ let oldCheckins = [
         message: "309 is tough. help :("
     },
 
+
 ]
-const id = 1;
+const id = 1; // ID of the user whose profile is being seen
+const user_id = 1; // ID of the user viewing the profile
 
 export default class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            edit_mode: false,
+        }
+        this.onModeChange = this.onModeChange.bind(this)
+    }
+    onModeChange() {
+        console.log(this.state)
+        this.setState((state, props) => {
+            return {edit_mode: !this.state.edit_mode}
+        })
+    }
+    handleInputChange(event) {
+        const user_index = userData.findIndex(function (u) {
+            return u.id === id;
+        })
+        
+        let newName = userData[user_index].name;
+        let newBio = userData[user_index].bio;
+        
+        if (event.target.name == "bio") {
+            newBio = event.target.value;
+        } else if (event.target.name == "name") {
+            newName = event.target.value;
+        }
+        userData[user_index].name = newName;
+        userData[user_index].bio = newBio;
+    }
 
     render() {
         const user = userData.find(function (u) {
@@ -101,12 +132,22 @@ export default class Profile extends Component {
         const style = {
             width: "40rem",
         }
+        let profile_header = <ProfileHeader
+            user={user}
+            cardStyle={style}
+            modeChange={this.onModeChange}
+        />;
+        if (this.state.edit_mode) {
+            profile_header = <EditProfileHeader
+                user={user}
+                cardStyle={style}
+                modeChange={this.onModeChange}
+                handleInputChange={this.handleInputChange}
+            />
+        }
         return (
             <div>
-                <ProfileHeader
-                    user={user}
-                    cardStyle={style}
-                />
+                {profile_header}
                 <CurrentLocation
                     cardStyle={style}
                 />
@@ -120,18 +161,66 @@ export default class Profile extends Component {
 
 function ProfileHeader(props) {
     return (
-        <div className="container mx-auto border-0" style={props.cardStyle}>
-            <div className="row">
-                <div className="col-sm">
+        <table className="table mx-auto" style={props.cardStyle}>
+            <tbody>
+            <tr>
+                <th>
                     <img className="profile-pic rounded-circle border m-3 text-center" src={cat} />
-                </div>
-                <div className="col-sm">
-                    <h3 className="card-title mt-3"> {props.user.name} </h3>
-                    <div><strong>{props.user.friends.length}</strong> friends</div>
-                    <div>{props.user.bio}</div>
-                </div>
-            </div>
-        </div>
+
+                </th>
+                <th>
+                    <div className="col-sm">
+                        <h3 className="card-title mt-3"> {props.user.name} </h3>
+                        <div><strong>{props.user.friends.length}</strong> friends</div>
+                        <div>{props.user.bio}</div>
+                    </div>
+                </th>
+                <th>
+                    <button className="btn rounded btn-primary mt-3" onClick={props.modeChange}>Edit Profile</button>
+                </th>
+            </tr>
+            </tbody>
+
+        </table>
+    );
+}
+
+function EditProfileHeader(props) {
+    
+    return (
+        <table class="table mx-auto" style={props.cardStyle}>
+
+            <tr>
+                <th>
+                    <img className="profile-pic rounded-circle border m-3 text-center" src={cat} />
+
+                </th>
+                <th>
+                    <div className="col-sm">
+                        <h3>
+                            <input className="display-name-input mt-3"
+                                name="name"
+                                defaultValue={props.user.name}
+                                onChange={props.handleInputChange}
+                            />
+                        </h3>
+
+                        <div><strong>{props.user.friends.length}</strong> friends</div>
+                        <div><input className="mt-3"
+                            name="bio"
+                            defaultValue={props.user.bio}
+                            onChange={props.handleInputChange}
+
+                        />
+                        </div>
+                    </div>
+                </th>
+                <th>
+                    <button className="btn rounded btn-primary mt-3" onClick={props.modeChange}>Done</button>
+                </th>
+            </tr>
+
+        </table>
     );
 }
 
@@ -146,7 +235,7 @@ function CurrentLocation(props) {
         <div className="card mx-auto border-0" style={props.cardStyle}>
             <h4 className="card-title"> Current Location </h4>
             <CheckIn
-                cardStyle={props.cardStyle}
+                cardStyle="active-card"
                 checkin={checkin}
             />
         </div>
@@ -159,16 +248,16 @@ function PastLocations(props) {
         return c.id == id;
     });
     console.log(user_oldCheckins)
-    var checkin_list = user_oldCheckins.map(function(c) {
-        return CheckIn({cardStyle: props.cardStyle, checkin: c})
+    var checkin_list = user_oldCheckins.map(function (c) {
+        return CheckIn({ cardStyle: "inactive-card", checkin: c })
     })
     return (
         <div className="card mx-auto border-0 mt-3" style={props.cardStyle}>
             <h4 className="card-title"> Past Locations </h4>
             {checkin_list}
         </div>
-        
-        
+
+
     );
 }
 
@@ -176,32 +265,33 @@ function timeSince(date) {
     const now = new Date();
     var seconds = Math.floor((now - date) / 1000);
     var interval = Math.floor(seconds / 31536000);
-  
+
     if (interval > 1) {
-      return interval + " years ago";
+        return interval + " years ago";
     }
     interval = Math.floor(seconds / 2592000);
     if (interval > 1) {
-      return interval + " months ago";
+        return interval + " months ago";
     }
     interval = Math.floor(seconds / 86400);
     if (interval > 1) {
-      return interval + " days ago";
+        return interval + " days ago";
     }
     interval = Math.floor(seconds / 3600);
     if (interval > 1) {
-      return interval + " hours ago";
+        return interval + " hours ago";
     }
     interval = Math.floor(seconds / 60);
     if (interval > 1) {
-      return interval + " minutes ago";
+        return interval + " minutes ago";
     }
     return Math.floor(seconds) + " seconds ago";
-  }
+}
 
 function CheckIn(props) {
+    const className = "card " + props.cardStyle;
     return (
-        <div className="card" style={props.cardStyle}>
+        <div className={className}>
             <div className="card-body">
                 <div><span className="checkin-title card-title">{props.checkin.location}</span> {timeSince(props.checkin.time)}</div>
                 <h6 className="card-subtitle mb-2 mt-1 text-muted">{props.checkin.action}</h6>
