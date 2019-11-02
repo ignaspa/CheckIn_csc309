@@ -43,7 +43,6 @@ let userData = [
         id: 3,
         isAdmin: false,
         name: 'Ignas',
-        current_location: 'Gerstein',
         friends: [0, 1, 2],
         friend_request: [],
         picture: User4,

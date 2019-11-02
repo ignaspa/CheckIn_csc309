@@ -6,7 +6,7 @@ import SignUp from "../components/SignUp";
 import Navbar from "./Layout/Navbar";
 import LoginComponent from "../components/Login.js";
 import UserDashboard from "../components/DashboardComponents/UserDashboard"
-import FriendRequests from "../components/FriendRequests"
+import FriendRequestsSection from "./FriendRequestsComponents/FriendRequests"
 
 class App extends React.Component {
   render() {
@@ -41,7 +41,7 @@ class App extends React.Component {
               <Route path="/signup" component={SignUp} />{" "}
               <Route path="/login" component={LoginComponent} />{" "}
               <Route path="/user-dashboard" component={UserDashboard}/> {" "}
-              <Route path="/friend-requests" component={FriendRequests} /> {" "}
+              <Route path="/friend-requests" component={FriendRequestsSection} /> {" "}
             </Switch>{" "}
           </div>{" "}
         </Router>{" "}

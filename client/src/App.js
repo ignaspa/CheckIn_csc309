@@ -7,6 +7,7 @@ import Navbar from "./components/Layout/Navbar";
 import AdminDashboard from "./components/AdminComponents/AdminDashboard";
 import Login from "./components/Login"
 import UserDashboard from "./components/DashboardComponents/UserDashboard"
+import FriendRequestsSection from "./components/FriendRequestsComponents/FriendRequests"
 
 class App extends React.Component {
   render() {
@@ -20,6 +21,7 @@ class App extends React.Component {
           <Route exact path="/admin-dashboard" component={AdminDashboard} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/user-dashboard" component={UserDashboard} />
+          <Route exact path="/friend-requests" component={FriendRequestsSection} />
         </Switch>
       </BrowserRouter>
     );

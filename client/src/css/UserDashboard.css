@@ -25,3 +25,8 @@ body {
 .dropdown-toggle::after {
     content: none;
 }
+
+.shadow {
+    box-shadow: 0px 0px 5px 0px;
+    padding-top: 10px;
+  }

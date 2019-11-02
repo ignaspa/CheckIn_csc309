@@ -7,6 +7,8 @@ export default class CheckInForm extends Component {
         return (
             <div>
             {/* Post */}
+            <div className="shadow">
+                
             <div className="card gedf-card">
                 <div className="card-body">
 
@@ -56,6 +58,8 @@ export default class CheckInForm extends Component {
                     </form>
                 </div>
             </div>
+        </div>
+
         </div>
         );
     }

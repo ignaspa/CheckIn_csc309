@@ -25,6 +25,8 @@ export default class UserNav extends Component {
     
     render() {
         return(
+            <div className="shadow">
+                
             <div className="card">
             <div className="card-body">
                 <div>
@@ -36,7 +38,11 @@ export default class UserNav extends Component {
             </div>
             <ul className="list-group list-group-flush">
             <li className="list-group-item align-items-center">
-                <a href="#AddFriends" role="button"> Add Friends </a>                
+                {/* <a href="#AddFriends" role="button"> Add Friends </a>                 */}
+                <Link to={"/add-friends"}>
+                    {" "}
+                    Add Friends{" "}
+                </Link>{" "}
             </li>
             <li className="list-group-item align-items-center">
                 {/* <a href="#FriendRequests" role="button"> Friend Requests</a> */}
@@ -46,9 +52,15 @@ export default class UserNav extends Component {
                 </Link>{" "}
             </li>
             <li className="list-group-item align-items-center">
-                <a href="#Settings" role="button"> Settings</a>
+                {/* <a href="#Settings" role="button"> Settings</a> */}
+                <Link to={"/settings"}>
+                    {" "}
+                    Settings{" "}
+                </Link>{" "}
             </li>
         </ul>
+        </div>
+
         </div>
         );
     }
