@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import "../../css/UserDashboard.css"
 
 export default class CheckInUpdate extends Component {
-    constructor(props) {
-        super(props)
-    }
+   
     render() {
         return (
             <div className="card gedf-card">
@@ -23,14 +21,14 @@ export default class CheckInUpdate extends Component {
 
             <div className="card-body">
                 <div className="text-muted h7 mb-2"> <i className="fa fa-clock-o"></i> {this.props.time}</div>
-                <a className="card-link" href="#">
+                {/* <a className="card-link"> */}
                     <h5 className="card-title">{this.props.name} is {this.props.action} in {this.props.location}</h5>
-                </a>
+                {/* </a> */}
                 <p className="card-text">
                     {this.props.customMessage}
                    </p>
                 <div className="card-footer">
-                    <a href="#" className="card-link"><i className="fa fa-gittip"></i> I'm coming!</a>
+                    <a href="#Coming" className="card-link"><i className="fa fa-gittip"></i> I'm coming!</a>
                 </div>
             </div>
             </div>

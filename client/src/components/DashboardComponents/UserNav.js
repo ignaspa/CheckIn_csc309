@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "../../css/UserDashboard.css"
 import User1 from "./DashboardAssets/User1.jpg"
+import { BrowserRouter as Link } from "react-router-dom";
+
 
 export default class UserNav extends Component {
 
@@ -34,13 +36,17 @@ export default class UserNav extends Component {
             </div>
             <ul className="list-group list-group-flush">
             <li className="list-group-item align-items-center">
-                <a href="#" role="button"> Add Friends </a>                
+                <a href="#AddFriends" role="button"> Add Friends </a>                
             </li>
             <li className="list-group-item align-items-center">
-                <a href="#" role="button"> Friend Requests</a>
+                {/* <a href="#FriendRequests" role="button"> Friend Requests</a> */}
+                <Link to={"/friend-requests"}>
+                    {" "}
+                    Friend Requests{" "}
+                </Link>{" "}
             </li>
             <li className="list-group-item align-items-center">
-                <a href="#" role="button"> Settings</a>
+                <a href="#Settings" role="button"> Settings</a>
             </li>
         </ul>
         </div>
