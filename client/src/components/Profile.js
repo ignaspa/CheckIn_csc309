@@ -134,17 +134,11 @@ export default class Profile extends Component {
 
     render() {
         const profile_id = this.state.profile_id
-        const user_id = this.state.user_id
         const user = userData.find(function (u) {
             return u.id === profile_id;
         });
-
-        const style = {
-            width: "40rem",
-        }
         let profile_header = <ProfileHeader
             user={user}
-            cardStyle={style}
             onModeChange={this.onModeChange}
             user_id={this.state.user_id}
             profile_id={profile_id}
@@ -152,7 +146,6 @@ export default class Profile extends Component {
         if (this.state.edit_mode) {
             profile_header = <EditProfileHeader
                 user={user}
-                cardStyle={style}
                 onModeChange={this.onModeChange}
                 handleInputChange={this.handleInputChange}
             />
@@ -161,11 +154,9 @@ export default class Profile extends Component {
             <div>
                 {profile_header}
                 <CurrentLocation
-                    cardStyle={style}
                     profile_id={profile_id}
                 />
                 <PastLocations
-                    cardStyle={style}
                     profile_id={profile_id}
                 />
             </div>
@@ -226,7 +217,7 @@ class ActionButton extends Component {
 function ProfileHeader(props) {
     
     return (
-        <table className="table mx-auto" style={props.cardStyle}>
+        <table className="profile-section table mx-auto">
             <tbody>
                 <tr>
                     <th>
@@ -257,7 +248,7 @@ function ProfileHeader(props) {
 function EditProfileHeader(props) {
 
     return (
-        <table class="table mx-auto" style={props.cardStyle}>
+        <table class="profile-section table mx-auto">
 
             <tr>
                 <th>
@@ -301,7 +292,7 @@ function CurrentLocation(props) {
         return null;
     }
     return (
-        <div className="card mx-auto border-0" style={props.cardStyle}>
+        <div className="profile-section card mx-auto border-0">
             <h4 className="card-title"> Current Location </h4>
             <CheckIn
                 cardStyle="active-card"
@@ -321,7 +312,7 @@ function PastLocations(props) {
         return CheckIn({ cardStyle: "inactive-card", checkin: c })
     })
     return (
-        <div className="card mx-auto border-0 mt-3" style={props.cardStyle}>
+        <div className="profile-section card mx-auto border-0 mt-3">
             <h4 className="card-title"> Past Locations </h4>
             {checkin_list}
         </div>
