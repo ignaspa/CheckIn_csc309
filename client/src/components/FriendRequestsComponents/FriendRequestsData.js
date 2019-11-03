@@ -243,7 +243,7 @@ class FriendRequest extends Component {
                     <img src={this.props.picture} className="rounded-circle" width="60" height="60" alt=""/>
                     <h4>{this.props.name}</h4>
                     <h6 className="text-muted"> @{this.props.username}</h6>
-                    <p><button className="btn btn-link">{this.props.mutualFriends} mutual friends</button></p>                    
+                    <p className="font-weight-bold">{this.props.mutualFriends} mutual friends</p>                    
                     <div className="row">
                         <div className="col text-right">
                             <button className="btn btn-primary" name="accept" id={this.props.id} onClick={this.props.handleRequest}>Accept Request</button>
