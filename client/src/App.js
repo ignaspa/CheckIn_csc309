@@ -6,8 +6,8 @@ import SignUp from "./components/SignUp";
 import Navbar from "./components/Layout/Navbar";
 import AdminDashboard from "./components/AdminComponents/AdminDashboard";
 import Login from "./components/Login"
-import Profile from "./components/Profile"
-import ProfileLinks from "./components/Profile-links"
+import Profile from "./components/ProfileComponents/Profile"
+import ProfileLinks from "./components/ProfileComponents/Profile-links"
 class App extends React.Component {
   render() {
     return (
