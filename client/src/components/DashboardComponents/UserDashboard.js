@@ -7,27 +7,28 @@ import CheckInUpdates from "./UserData"
 
 let checkins = [
     {
-        id: 1, 
-        action: "studying", 
-        location: "Gerstein", 
-        time: "10 min ago", 
+        id: 1,
+        action: "studying",
+        location: "Gerstein",
+        time: new Date("November 1, 2019 03:24:00"),
         message: "309 is tough. help :("
-    }, 
+    },
     {
-        id: 2, 
-        action: "eating", 
-        location: "Sidney Smith", 
-        time: "1 hour ago", 
+        id: 2,
+        action: "eating",
+        location: "Sidney Smith",
+        time: new Date("October 2, 2019 03:24:00"),
         message: "let's get a burrito bowl!"
-    }, 
+    },
     {
-        id: 3, 
-        action: "chilling", 
-        location: "CSSU", 
-        time: "1 day ago", 
+        id: 3,
+        action: "chilling",
+        location: "CSSU",
+        time: new Date("October 29, 2019 03:24:00"),
         message: "come play smash :)"
     }
 ]
+
 
 export default class UserDashboard extends Component {
 
