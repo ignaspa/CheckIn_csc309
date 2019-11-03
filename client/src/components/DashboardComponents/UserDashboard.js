@@ -46,7 +46,8 @@ export default class UserDashboard extends Component {
             id: 0, 
             action: state.action,
             location: state.location, 
-            message: state.message
+            message: state.message, 
+            time: state.time
         })
 
         this.setState({allCheckins: currentCheckins}, () => {

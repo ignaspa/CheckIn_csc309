@@ -15,13 +15,15 @@ export default class CheckInForm extends Component {
         let locationInput = this.refs.location.value
         let actionInput = this.refs.action.value 
         let messageInput = this.refs.message.value
+        let timeInput = new Date();
     
 
         let state = {
             id: idInput, 
             location: locationInput, 
             action: actionInput, 
-            message: messageInput
+            message: messageInput, 
+            time: timeInput
         }
 
         this.setState({ checkin: state }, () => {
