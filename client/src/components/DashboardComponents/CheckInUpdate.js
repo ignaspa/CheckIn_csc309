@@ -20,12 +20,13 @@ export default class CheckInUpdate extends Component {
                 </div>
 
             <div className="card-body">
+                {/* TODO: Add marco's time since function here  */}
                 <div className="text-muted h7 mb-2"> <i className="fa fa-clock-o"></i> {this.props.time}</div>
                 {/* <a className="card-link"> */}
                     <h5 className="card-title">{this.props.name} is {this.props.action} in {this.props.location}</h5>
                 {/* </a> */}
                 <p className="card-text">
-                    {this.props.customMessage}
+                    {this.props.message}
                    </p>
                 <div className="card-footer">
                     <a href="#Coming" className="card-link"><i className="fa fa-gittip"></i> I'm coming!</a>

@@ -51,82 +51,40 @@ let userData = [
     }
 ]
 
-let checkins = [
-    {
-        id: 1, 
-        action: "studying", 
-        location: "Gerstein", 
-        time: "10 min ago", 
-        message: "309 is tough. help :("
-    }, 
-    {
-        id: 2, 
-        action: "eating", 
-        location: "Sidney Smith", 
-        time: "1 hour ago", 
-        message: "let's get a burrito bowl!"
-    }, 
-    {
-        id: 3, 
-        action: "chilling", 
-        location: "CSSU", 
-        time: "1 day ago", 
-        message: "come play smash :)"
-    }
-]
-
-export default class CheckIns extends Component {
-    render() {
-        return (
-            <CheckInUpdates currentUser={this.props.newCheckIn}/>
-        );
-    }
-}
-
-function CheckInUpdates(props) {
-    var rows = [];
-    let foundUser = findUser(props.currentUser.id, userData)
-
-    rows.push(<CheckInUpdate
-        key={foundUser.id}
-        name={foundUser.name}
-        username={foundUser.username}
-        picture={foundUser.picture}
-        location={props.currentUser.location}
-        action={props.currentUser.action}
-        message={props.currentUser.message}
-        />)
-
-    for (var i = 0; i < checkins.length; i++) {
-        // note: we add a key prop here to allow react to uniquely identify each
-        // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        let user = findUser(checkins[i].id, userData)
-         rows.push(<CheckInUpdate 
-            key={user.id}
-            name={user.name}
-            username={user.username}
-            picture={user.picture}
-            location={checkins[i].location}
-            action={checkins[i].action}
-            message={checkins[i].message}
-            time = {checkins[i].time}
-            />);
-    }
-    return (
-        <div>
-        {rows}
-        </div>
-    );
-}
 
 function findUser(id, userData) {
-    for (let i = 0; i < userData.length; i++) {
-        if (userData[i].id === id) {
-            return userData[i]
+        for (let i = 0; i < userData.length; i++) {
+            if (userData[i].id === id) {
+                return userData[i]
+            }
         }
+    
     }
-}
 
- 
+export default class CheckInUpdates extends Component {
+    render() {
+        let rows = [];
+
+        let checkins = this.props.allCheckins
+        for (let i = 0; i < checkins.length; i++) {
+            let user = findUser(checkins[i].id, userData)
+             rows.push(<CheckInUpdate 
+                key={user.id}
+                name={user.name}
+                username={user.username}
+                picture={user.picture}
+                location={checkins[i].location}
+                action={checkins[i].action}
+                message={checkins[i].message}
+                time = {checkins[i].time}
+                />);
+        }
+    
+        return ( <div>
+            {rows}
+            </div>);
+    }
+    
+}  
 
 
