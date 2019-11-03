@@ -23,11 +23,6 @@ export default class Navbar extends Component {
                 Login
               </Link>
             </li>
-            <li>
-              <Link to={"/profile-links"} className="nav-link text-white">
-                Profile Links
-              </Link>
-            </li>
           </ul>
         </nav>
       </div>

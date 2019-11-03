@@ -40,20 +40,27 @@ export default class UserNav extends Component {
 
     editProfile = event => {
         console.log("edit profile clicked")
-        // set it to your path
-        // this.setState({redirect: '/friend-requests'})
+        this.setState({redirect: "/profile"})
     }
     
-    
     render() {
-
         if (this.state.redirect === "/friend-requests") {
             return (
-            <Redirect to="/friend-requests"/>
+            <Redirect to="/profile"/>
             );
-        }  
-
-        // add elses to check fo redirect
+        } else if (this.state.redirect === "profile") {
+            return (
+                <Redirect
+                        to={{
+                            pathname: '/profile',
+                            state: {
+                                user_id: 0,
+                                profile_id: 0,
+                        }
+                 }}/>
+            )
+        }   
+        // add else to check to check final redirect
 
         return(
            

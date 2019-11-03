@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import cat from "./cat.jpg";
-import cat2 from "./cat2.jpg";
-import cat3 from "./cat3.png";
-import cat4 from "./cat4.jpg";
+
+import User1 from "../DashboardComponents/DashboardAssets/User1.jpg"
+import User2 from "../DashboardComponents/DashboardAssets/User2.jpg"
+import User3 from "../DashboardComponents/DashboardAssets/User3.jpg"
+import User4 from "../DashboardComponents/DashboardAssets/User4.jpg"
 
 let userData = [
     {
@@ -11,7 +12,7 @@ let userData = [
         name: 'Sonia',
         friends: [1, 2, 3],
         friend_request: [5],
-        picture: cat2,
+        picture: User1,
         username: 'SoniaZaldana',
         bio: "I'm so tired",
     },
@@ -21,7 +22,7 @@ let userData = [
         name: 'Marco Angeli',
         friends: [0, 2, 3],
         friend_request: [],
-        picture: cat,
+        picture: User2,
         username: 'MarcoAngeli',
         bio: "henlo",
     },
@@ -31,7 +32,7 @@ let userData = [
         name: 'Abdullah',
         friends: [0, 1, 3],
         friend_request: [],
-        picture: cat3,
+        picture: User3,
         username: 'abdamin',
         bio: "web developer",
     },
@@ -43,7 +44,7 @@ let userData = [
         current_location: 'Gerstein',
         friends: [0, 1, 2],
         friend_request: [],
-        picture: cat4,
+        picture: User4,
         username: 'iggy',
         bio: "i love my dog carmelo",
     }
@@ -51,7 +52,7 @@ let userData = [
 
 let checkins = [
     {
-        id: 1,
+        id: 0,
         action: "studying",
         location: "Gerstein",
         time: new Date("November 1, 2019 03:24:00"),
@@ -75,14 +76,14 @@ let checkins = [
 
 let oldCheckins = [
     {
-        id: 1,
+        id: 0,
         action: "studying",
         location: "Robarts",
         time: new Date("October 29, 2019 03:24:00"),
         message: "309 is tough. help :("
     },
     {
-        id: 1,
+        id: 0,
         action: "studying",
         location: "Grahams",
         time: new Date("October 28, 2019 03:24:00"),

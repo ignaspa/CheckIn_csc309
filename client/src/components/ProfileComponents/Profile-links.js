@@ -11,8 +11,8 @@ export default class ProfileLinks extends Component {
                         to={{
                             pathname: '/profile',
                             state: {
-                                user_id: 1,
-                                profile_id: 1,
+                                user_id: 0,
+                                profile_id: 0,
                             }
 
                         }}>
