@@ -88,7 +88,7 @@ let oldCheckins = [
 
 
 ]
-const id = 0; // ID of the user whose profile is being seen
+const id = 1; // ID of the user whose profile is being seen
 const user_id = 1; // ID of the user viewing the profile
 
 export default class Profile extends Component {
@@ -161,34 +161,32 @@ class ActionButton extends Component {
     constructor(props) {
         super(props);
         // Index of the user viewing the profile
-        const user_index = userData.findIndex(function (u) {
+        this.user_index = userData.findIndex(function (u) {
             return u.id === user_id;
         })
-        this.state = {isFriend: userData[user_index].friends.includes(id)}
+        this.state = {isFriend: userData[this.user_index].friends.includes(id)}
     }
 
     removeFriend(event) {
-        console.log(userData[user_index].friends)
-        const index_to_remove = userData[user_index].friends.indexOf(id)
+        console.log(userData[this.user_index].friends)
+        const index_to_remove = userData[this.user_index].friends.indexOf(id)
         if (index_to_remove > -1) {
-            userData[user_index].friends.splice(index_to_remove, 1);
+            userData[this.user_index].friends.splice(index_to_remove, 1);
         }
-        console.log(userData[user_index].friends)
+        console.log(userData[this.user_index].friends)
     }
 
     addFriend(event) {
-        console.log(userData[user_index].friends)
+        console.log(userData[this.user_index].friends)
 
     }
-
-
 
     render() {
         let label = "Remove Friend";
         if (!this.state.isFriend) {
             label = "Add Friend"
         }
-        return <button className={button_class} onClick={removeFriend}>{label}</button>;
+        return <button className={"btn rounded btn-primary mt-3"} onClick={this.removeFriend}>{label}</button>;
 
     }
 }
