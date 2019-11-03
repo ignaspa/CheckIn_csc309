@@ -48,7 +48,7 @@ export default class UserNav extends Component {
             return (
             <Redirect to="/profile"/>
             );
-        } else if (this.state.redirect === "profile") {
+        } else if (this.state.redirect === "/profile") {
             return (
                 <Redirect
                         to={{

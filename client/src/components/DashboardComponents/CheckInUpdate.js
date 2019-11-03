@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "../../css/UserDashboard.css"
+import { Redirect } from "react-router";
+
 
 function timeSince(date) {
     const now = new Date();
@@ -29,8 +31,34 @@ function timeSince(date) {
 }
 
 export default class CheckInUpdate extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            redirect: ""
+        }
+    }
+
+    seeProfile = event => {
+        console.log("see profile clicked")
+        this.setState({redirect: "/profile"})
+    }
    
     render() {
+
+        if (this.state.redirect == "/profile") {
+            return(
+                <Redirect
+                        to={{
+                            pathname: '/profile',
+                            state: {
+                                user_id: 0,
+                                profile_id: this.props.key,
+                        }
+                 }}/>
+            );
+        }
+
         return (
             <div className="card gedf-card">
                 <div className="card-header">
@@ -40,7 +68,8 @@ export default class CheckInUpdate extends Component {
 
                         </div>
                         <div className="ml-2">
-                            <div className="h5 m-0">{this.props.name}</div>
+                            <button className="btn btn-link" onClick={this.seeProfile}>
+                            <div className="h4">{this.props.name} </div></button>
                             <div className="h7 text-muted">@{this.props.username}</div>
                         </div>
                     </div>
