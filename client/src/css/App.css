@@ -21,6 +21,10 @@
   color: #09d3ac;
 }
 
+.auth-form {
+  width: 400px;
+}
+
 .profile-pic{
   height: 200px;
   width: 200px;
@@ -50,3 +54,4 @@ table tr th {
 .profile-section {
   width: 40rem;
 }
+
