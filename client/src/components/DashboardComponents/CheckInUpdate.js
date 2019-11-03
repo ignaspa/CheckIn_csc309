@@ -28,9 +28,6 @@ export default class CheckInUpdate extends Component {
                 <p className="card-text">
                     {this.props.message}
                    </p>
-                <div className="card-footer">
-                    <a href="#Coming" className="card-link"><i className="fa fa-gittip"></i> I'm coming!</a>
-                </div>
             </div>
             </div>
         );
