@@ -20,3 +20,30 @@
 .App-link {
   color: #09d3ac;
 }
+
+.App-Slider{
+  width: 700px;
+  height: 700px;
+  position: relative;
+}
+
+.App-Slide{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.slider-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.rarrow{
+  color: pink;
+}
+
+.larrow{
+  color: pink;
+}
