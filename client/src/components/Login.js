@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Username } from "../components/SignUp.js";
 import { Password } from "../components/SignUp.js";
 import { Button } from "../components/SignUp.js";
+import { Redirect } from "react-router";
+import { Link } from "react-router-dom"
 
 // This will be replaced by server-side code
 const user = {
@@ -18,16 +20,39 @@ const user = {
 
 const users = [user]
 
+function SignUpLink(props) {
+  return (
+    <div className="mb-3">
+      Don't have an account? <Link to="/signup">Sign up!</Link>
+    </div>
+  );
+}
+
 export default class LoginComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showInvalid: false,
+      authenticated: false,
+    }
+  }
   submitHandler = event => {
     event.preventDefault();
     for (let i = 0; i < users.length; i++) {
       if (this.state && users[i].username == this.state['username'] && users[i].password == this.state['password']) {
         event.target.className += " was-validated";
-        // TODO: Route to Dashboard
+        this.setState({
+          showInvalid: false,
+          authenticated: true,
+        })
         return;
       }
     }
+    event.target.reset();
+    this.setState({
+      showInvalid: true
+    })
+    
   };
 
   changeHandler = event => {
@@ -41,16 +66,25 @@ export default class LoginComponent extends Component {
     const style = {
       width: "400px"
     };
+    if (this.state.authenticated) {
+      // TODO redirect to dashboard
+      return <Redirect to='/'/>
+    }
 
     return (
       <div className="container">
+        <LoginHeader/>
         <article className="card-body mx-auto" style={style}>
+        
           <h4 className="card-title mt-3 text-center"> Log In </h4>{" "}
           <form
             className="needs-validation"
             onSubmit={this.submitHandler}
             noValidate
           >
+            <InvalidCredentials
+             show={this.state.showInvalid} 
+            />
             <Username
               label={"Username"}
               disclaimer={disclaimerEmail}
@@ -63,10 +97,30 @@ export default class LoginComponent extends Component {
               feedback="Please enter a valid Password"
               changeHandler={this.changeHandler}
             />
+            <SignUpLink/>
             <Button label={"Submit"} />{" "}
           </form>{" "}
         </article>{" "}
       </div>
     );
   }
+}
+
+function LoginHeader(props) {
+  return (
+    <div>
+      <h1 className="text-center mt-3 text-primary">Check-In</h1>
+    </div>
+  );
+}
+
+function InvalidCredentials(props) {
+  if (!props.show) {
+    return ""
+  }
+  return (
+    <div className="alert alert-danger">
+      Invalid username or password
+    </div>
+  )
 }
