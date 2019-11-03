@@ -88,7 +88,7 @@ let oldCheckins = [
 
 
 ]
-const id = 1; // ID of the user whose profile is being seen
+const id = 0; // ID of the user whose profile is being seen
 const user_id = 1; // ID of the user viewing the profile
 
 export default class Profile extends Component {
@@ -102,17 +102,17 @@ export default class Profile extends Component {
     onModeChange() {
         console.log(this.state)
         this.setState((state, props) => {
-            return {edit_mode: !this.state.edit_mode}
+            return { edit_mode: !this.state.edit_mode }
         })
     }
     handleInputChange(event) {
         const user_index = userData.findIndex(function (u) {
             return u.id === id;
         })
-        
+
         let newName = userData[user_index].name;
         let newBio = userData[user_index].bio;
-        
+
         if (event.target.name == "bio") {
             newBio = event.target.value;
         } else if (event.target.name == "name") {
@@ -126,9 +126,7 @@ export default class Profile extends Component {
         const user = userData.find(function (u) {
             return u.id === id;
         });
-        const headerStyle = {
-            width: "20rem",
-        }
+
         const style = {
             width: "40rem",
         }
@@ -159,26 +157,83 @@ export default class Profile extends Component {
     }
 }
 
+class ActionButton extends Component {
+    constructor(props) {
+        super(props);
+        // Index of the user viewing the profile
+        const user_index = userData.findIndex(function (u) {
+            return u.id === user_id;
+        })
+        this.state = {isFriend: userData[user_index].friends.includes(id)}
+    }
+
+    removeFriend(event) {
+        console.log(userData[user_index].friends)
+        const index_to_remove = userData[user_index].friends.indexOf(id)
+        if (index_to_remove > -1) {
+            userData[user_index].friends.splice(index_to_remove, 1);
+        }
+        console.log(userData[user_index].friends)
+    }
+
+    addFriend(event) {
+        console.log(userData[user_index].friends)
+
+    }
+
+
+
+    render() {
+        let label = "Remove Friend";
+        if (!this.state.isFriend) {
+            label = "Add Friend"
+        }
+        return <button className={button_class} onClick={removeFriend}>{label}</button>;
+
+    }
+}
+
 function ProfileHeader(props) {
+    const button_class = "btn rounded btn-primary mt-3";
+
+    // Index of the user viewing the profile
+    const user_index = userData.findIndex(function (u) {
+        return u.id === user_id;
+    })
+
+    function removeFriend(event) {
+        console.log(userData[user_index].friends)
+        const index_to_remove = userData[user_index].friends.indexOf(id)
+        userData[user_index].friends.splice(index_to_remove, 1);
+        console.log(userData[user_index].friends)
+    }
+
+
+    // Default case: If the user is viewing their own profile
+    let action_button = <button className={button_class} onClick={props.modeChange}>Edit Profile</button>;
+    // Case where the user is viewing one of their friend's profile
+    if (userData[user_index].friends.includes(id)) {
+        action_button = <button className={button_class} onClick={removeFriend}>Remove friend</button>;
+    }
     return (
         <table className="table mx-auto" style={props.cardStyle}>
             <tbody>
-            <tr>
-                <th>
-                    <img className="profile-pic rounded-circle border m-3 text-center" src={cat} />
+                <tr>
+                    <th>
+                        <img className="profile-pic rounded-circle border m-3 text-center" src={cat} />
 
-                </th>
-                <th>
-                    <div className="col-sm">
-                        <h3 className="card-title mt-3"> {props.user.name} </h3>
-                        <div><strong>{props.user.friends.length}</strong> friends</div>
-                        <div>{props.user.bio}</div>
-                    </div>
-                </th>
-                <th>
-                    <button className="btn rounded btn-primary mt-3" onClick={props.modeChange}>Edit Profile</button>
-                </th>
-            </tr>
+                    </th>
+                    <th>
+                        <div className="col-sm">
+                            <h3 className="card-title mt-3"> {props.user.name} </h3>
+                            <div><strong>{props.user.friends.length}</strong> friends</div>
+                            <div>{props.user.bio}</div>
+                        </div>
+                    </th>
+                    <th>
+                        {action_button}
+                    </th>
+                </tr>
             </tbody>
 
         </table>
@@ -186,7 +241,7 @@ function ProfileHeader(props) {
 }
 
 function EditProfileHeader(props) {
-    
+
     return (
         <table class="table mx-auto" style={props.cardStyle}>
 
