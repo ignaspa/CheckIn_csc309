@@ -12,6 +12,8 @@ export default class Slider extends Component {
             maxSlides: 2,
             spot: 0
         };
+        this.before = this.before.bind(this);
+        this.after = this.after.bind(this);
     }
     after = () => {
         this.setState({
@@ -40,8 +42,8 @@ export default class Slider extends Component {
                     }
                 </div>
 
-                <LArrow before={this.before.bind(this)} />
-                <RArrow after={this.after.bind(this)} />
+                <LArrow before={this.before} />
+                <RArrow after={this.after} />
             </div>
         );
     }
