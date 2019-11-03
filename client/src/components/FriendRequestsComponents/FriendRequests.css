@@ -1,0 +1,21 @@
+  .shadow {
+    box-shadow: 0px 0px 5px 0px;
+    padding-top: 10px;
+  }
+  
+  .request {
+    margin-top: 10px;
+  }
+
+  .decline {
+    background-color: #DC143C;
+    border-color: #DC143C;
+  }
+
+  .decline:hover {
+    background-color: rgb(153, 33, 33);
+    border-color: rgb(153, 33, 33);
+
+  }
+
+

@@ -51,7 +51,7 @@ export default class LoginComponent extends Component {
   submitHandler = event => {
     event.preventDefault();
     for (let i = 0; i < users.length; i++) {
-      if (this.state && users[i].username == this.state['username'] && users[i].password == this.state['password']) {
+      if (this.state && users[i].username === this.state['username'] && users[i].password === this.state['password']) {
         event.target.className += " was-validated";
         this.setState({
           showInvalid: false,
@@ -82,8 +82,7 @@ export default class LoginComponent extends Component {
       if (this.state.admin) {
         return <Redirect to="/admin-dashboard"/>
       }
-      // TODO redirect to dashboard
-      return <Redirect to='/'/>
+      return <Redirect to='/user-dashboard'/>
     }
 
     return (
