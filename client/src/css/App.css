@@ -23,6 +23,7 @@
 
 .profile-pic{
   height: 200px;
+  width: 200px;
   border-width: 4px;
 }
 
@@ -40,4 +41,8 @@ table tr th {
 
 .display-name-input {
   width: 15rem;
+}
+
+.handle{
+  color: grey;
 }

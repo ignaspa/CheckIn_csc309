@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import cat from "./cat.jpg";
+import cat2 from "./cat2.jpg";
+import cat3 from "./cat3.png";
+import cat4 from "./cat4.jpg";
 
 let userData = [
     {
@@ -8,7 +11,7 @@ let userData = [
         name: 'Sonia',
         friends: [1, 2, 3],
         friend_request: [5],
-        picture: "User1",
+        picture: cat2,
         username: 'SoniaZaldana',
         bio: "I'm so tired",
     },
@@ -18,7 +21,7 @@ let userData = [
         name: 'Marco Angeli',
         friends: [0, 2, 3],
         friend_request: [],
-        picture: "User2",
+        picture: cat,
         username: 'MarcoAngeli',
         bio: "henlo",
     },
@@ -28,7 +31,7 @@ let userData = [
         name: 'Abdullah',
         friends: [0, 1, 3],
         friend_request: [],
-        picture: "User3",
+        picture: cat3,
         username: 'abdamin',
         bio: "web developer",
     },
@@ -40,7 +43,7 @@ let userData = [
         current_location: 'Gerstein',
         friends: [0, 1, 2],
         friend_request: [],
-        picture: "User4",
+        picture: cat4,
         username: 'iggy',
         bio: "i love my dog carmelo",
     }
@@ -88,16 +91,20 @@ let oldCheckins = [
 
 
 ]
-const id = 1; // ID of the user whose profile is being seen
-const user_id = 1; // ID of the user viewing the profile
+
 
 export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             edit_mode: false,
+            user_id: props.user_id,
+            profile_id: props.profile_id,
         }
         this.onModeChange = this.onModeChange.bind(this)
+        this.handleInputChange = this.handleInputChange.bind(this)
+
+        
     }
     onModeChange() {
         console.log(this.state)
@@ -106,16 +113,19 @@ export default class Profile extends Component {
         })
     }
     handleInputChange(event) {
+        const profile_id = this.state.profile_id
+        const user_id = this.state.user_id
+
         const user_index = userData.findIndex(function (u) {
-            return u.id === id;
+            return u.id === profile_id;
         })
 
         let newName = userData[user_index].name;
         let newBio = userData[user_index].bio;
 
-        if (event.target.name == "bio") {
+        if (event.target.name === "bio") {
             newBio = event.target.value;
-        } else if (event.target.name == "name") {
+        } else if (event.target.name === "name") {
             newName = event.target.value;
         }
         userData[user_index].name = newName;
@@ -123,8 +133,10 @@ export default class Profile extends Component {
     }
 
     render() {
+        const profile_id = this.state.profile_id
+        const user_id = this.state.user_id
         const user = userData.find(function (u) {
-            return u.id === id;
+            return u.id === profile_id;
         });
 
         const style = {
@@ -133,13 +145,15 @@ export default class Profile extends Component {
         let profile_header = <ProfileHeader
             user={user}
             cardStyle={style}
-            modeChange={this.onModeChange}
+            onModeChange={this.onModeChange}
+            user_id={this.state.user_id}
+            profile_id={profile_id}
         />;
         if (this.state.edit_mode) {
             profile_header = <EditProfileHeader
                 user={user}
                 cardStyle={style}
-                modeChange={this.onModeChange}
+                onModeChange={this.onModeChange}
                 handleInputChange={this.handleInputChange}
             />
         }
@@ -148,9 +162,11 @@ export default class Profile extends Component {
                 {profile_header}
                 <CurrentLocation
                     cardStyle={style}
+                    profile_id={profile_id}
                 />
                 <PastLocations
                     cardStyle={style}
+                    profile_id={profile_id}
                 />
             </div>
         );
@@ -162,74 +178,74 @@ class ActionButton extends Component {
         super(props);
         // Index of the user viewing the profile
         this.user_index = userData.findIndex(function (u) {
-            return u.id === user_id;
+            return u.id === props.user_id;
         })
-        this.state = {isFriend: userData[this.user_index].friends.includes(id)}
+        this.state = {isFriend: userData[this.user_index].friends.includes(props.profile_id)}
+        this.removeFriend = this.removeFriend.bind(this)
+        this.addFriend = this.addFriend.bind(this)
+
     }
 
     removeFriend(event) {
-        console.log(userData[this.user_index].friends)
-        const index_to_remove = userData[this.user_index].friends.indexOf(id)
+        const index_to_remove = userData[this.user_index].friends.indexOf(this.props.profile_id)
         if (index_to_remove > -1) {
             userData[this.user_index].friends.splice(index_to_remove, 1);
         }
+        this.setState((state, props) => {
+            return {isFriend: false}
+        })
         console.log(userData[this.user_index].friends)
     }
 
     addFriend(event) {
+        
+        userData[this.user_index].friends.push(this.props.profile_id);
+        this.setState((state, props) => {
+            return {isFriend: true}
+        })
         console.log(userData[this.user_index].friends)
-
     }
 
     render() {
-        let label = "Remove Friend";
-        if (!this.state.isFriend) {
-            label = "Add Friend"
+        let label = "Edit Profile"
+        let onClickAction = this.props.onModeChange
+        if (this.props.user_id != this.props.profile_id && this.state.isFriend) {
+            label = "Remove Friend";
+            onClickAction = this.removeFriend;
         }
-        return <button className={"btn rounded btn-primary mt-3"} onClick={this.removeFriend}>{label}</button>;
+        
+        if (this.props.user_id != this.props.profile_id && !this.state.isFriend) {
+            label = "Add Friend"
+            onClickAction = this.addFriend;
+        }
+        return <button className={"btn rounded btn-primary mt-3"} onClick={onClickAction}>{label}</button>;
 
     }
 }
 
 function ProfileHeader(props) {
-    const button_class = "btn rounded btn-primary mt-3";
-
-    // Index of the user viewing the profile
-    const user_index = userData.findIndex(function (u) {
-        return u.id === user_id;
-    })
-
-    function removeFriend(event) {
-        console.log(userData[user_index].friends)
-        const index_to_remove = userData[user_index].friends.indexOf(id)
-        userData[user_index].friends.splice(index_to_remove, 1);
-        console.log(userData[user_index].friends)
-    }
-
-
-    // Default case: If the user is viewing their own profile
-    let action_button = <button className={button_class} onClick={props.modeChange}>Edit Profile</button>;
-    // Case where the user is viewing one of their friend's profile
-    if (userData[user_index].friends.includes(id)) {
-        action_button = <button className={button_class} onClick={removeFriend}>Remove friend</button>;
-    }
+    
     return (
         <table className="table mx-auto" style={props.cardStyle}>
             <tbody>
                 <tr>
                     <th>
-                        <img className="profile-pic rounded-circle border m-3 text-center" src={cat} />
+                        <img className="profile-pic rounded-circle border m-3 text-center" src={props.user.picture} alt="Profile" />
 
                     </th>
                     <th>
                         <div className="col-sm">
-                            <h3 className="card-title mt-3"> {props.user.name} </h3>
+                            <h3 className="card-title mt-3 mb-0"> {props.user.name} </h3>
+                            <div className="handle"> @{props.user.username} </div>
                             <div><strong>{props.user.friends.length}</strong> friends</div>
                             <div>{props.user.bio}</div>
                         </div>
                     </th>
                     <th>
-                        {action_button}
+                        <ActionButton
+                        onModeChange={props.onModeChange}
+                        user_id={props.user_id}
+                        profile_id={props.profile_id}/>
                     </th>
                 </tr>
             </tbody>
@@ -245,7 +261,7 @@ function EditProfileHeader(props) {
 
             <tr>
                 <th>
-                    <img className="profile-pic rounded-circle border m-3 text-center" src={cat} />
+                    <img className="profile-pic rounded-circle border m-3 text-center" src={props.user.picture} alt="Profile"/>
 
                 </th>
                 <th>
@@ -269,7 +285,7 @@ function EditProfileHeader(props) {
                     </div>
                 </th>
                 <th>
-                    <button className="btn rounded btn-primary mt-3" onClick={props.modeChange}>Done</button>
+                    <button className="btn rounded btn-primary mt-3" onClick={props.onModeChange}>Done</button>
                 </th>
             </tr>
 
@@ -279,7 +295,7 @@ function EditProfileHeader(props) {
 
 function CurrentLocation(props) {
     const checkin = checkins.find(function (c) {
-        return c.id == id;
+        return c.id === props.profile_id;
     });
     if (!checkin) {
         return null;
@@ -298,7 +314,7 @@ function CurrentLocation(props) {
 
 function PastLocations(props) {
     const user_oldCheckins = oldCheckins.filter(function (c) {
-        return c.id == id;
+        return c.id === props.profile_id;
     });
     console.log(user_oldCheckins)
     var checkin_list = user_oldCheckins.map(function (c) {
