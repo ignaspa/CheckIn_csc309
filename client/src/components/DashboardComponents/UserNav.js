@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "../../css/UserDashboard.css"
 import User1 from "./DashboardAssets/User1.jpg"
 import { Redirect } from "react-router";
-import { Link } from "react-router-dom"
 
 
 

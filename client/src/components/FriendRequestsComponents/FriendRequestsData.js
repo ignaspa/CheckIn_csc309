@@ -73,7 +73,7 @@ let ALL_USERS = [
         friends: [1, 2, 3, 6],
         friend_request: [5],
         picture: User5,
-        username: 'LilMarco',
+        username: 'MarkZuckerberg',
         bio: "sup",
     },
     {
