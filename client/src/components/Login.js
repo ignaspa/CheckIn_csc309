@@ -6,19 +6,31 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom"
 
 // This will be replaced by server-side code
-const user = {
-  id: 0,
-  isAdmin: false,
-  name: 'John',
-  current_location: 'BA 3200',
-  friends: [3, 5, 1, 3],
-  friend_request: [4, 6, 7],
-  picture: '/image/john.png',
-  username: 'john',
-  password: '1234'
-}
 
-const users = [user]
+const users = [
+  {
+    id: 0,
+    isAdmin: false,
+    name: 'John',
+    current_location: 'BA 3200',
+    friends: [3, 5, 1, 3],
+    friend_request: [4, 6, 7],
+    picture: '/image/john.png',
+    username: 'john',
+    password: '1234'
+  },
+  {
+    id: 1,
+    isAdmin: true,
+    name: 'admin',
+    current_location: '',
+    friends: [],
+    friend_request: [],
+    picture: '/image/john.png',
+    username: 'admin',
+    password: 'admin'
+  }
+]
 
 function SignUpLink(props) {
   return (
@@ -44,6 +56,7 @@ export default class LoginComponent extends Component {
         this.setState({
           showInvalid: false,
           authenticated: true,
+          admin: users[i].isAdmin
         })
         return;
       }
@@ -67,6 +80,10 @@ export default class LoginComponent extends Component {
       width: "400px"
     };
     if (this.state.authenticated) {
+      
+      if (this.state.admin) {
+        return <Redirect to="/admin-dashboard"/>
+      }
       // TODO redirect to dashboard
       return <Redirect to='/'/>
     }
