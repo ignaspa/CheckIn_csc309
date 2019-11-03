@@ -6,6 +6,8 @@ import SignUp from "../components/SignUp";
 import Navbar from "./Layout/Navbar";
 import LoginComponent from "../components/Login.js";
 import Profile from "../components/Profile.js"
+import UserDashboard from "../components/DashboardComponents/UserDashboard"
+import FriendRequestsSection from "./FriendRequestsComponents/FriendRequests"
 
 class App extends React.Component {
   render() {
@@ -45,6 +47,8 @@ class App extends React.Component {
               <Route path="/signup" component={SignUp} />{" "}
               <Route path="/login" component={LoginComponent} />{" "}
               <Route path="/profile" component={Profile} />{" "}
+              <Route path="/user-dashboard" component={UserDashboard}/> {" "}
+              <Route path="/friend-requests" component={FriendRequestsSection} /> {" "}
             </Switch>{" "}
           </div>{" "}
         </Router>{" "}
@@ -54,34 +58,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
-// function nav_bar() {
-//   return (
-//     <nav class="navbar navbar-expand-lg fixed-top ">
-//       <nav class="navbar-brand" href="#">Home</nav>
-//       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-//         <span class="navbar-toggler-icon"></span>
-//       </button>
-//       <div class="collapse navbar-collapse " id="navbarSupportedContent">
-//         <ul class="navbar-nav mr-4">
-//           <li class="nav-item">
-//             <button class="nav-link" data-value="Log-in" href="#">Log-in</button>
-//           </li>
-//           <li class="nav-item">
-//             <button class="nav-link " data-value="Register" href="#">Register</button>
-//           </li>
-//           <li class="nav-item">
-//             <button class="nav-link " data-value="about" href="#">About us</button>
-//           </li>
-//           <li class="nav-item">
-//             <button class="nav-link " data-value="team" href="#">Team</button>
-//           </li>
-//           <li class="nav-item">
-//             <button class="nav-link " data-value="contact" href="#">Contact</button>
-//           </li>
-//         </ul>
-//       </div>
-//     </nav>
-//   );
-// }

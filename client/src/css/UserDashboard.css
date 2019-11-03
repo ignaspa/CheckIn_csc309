@@ -1,0 +1,32 @@
+/* User dashboard css */
+
+body {
+    background-color: #eeeeee;
+}
+
+.h7 {
+    font-size: 0.8rem;
+}
+
+.gedf-wrapper {
+    margin-top: 0.97rem;
+}
+
+@media (min-width: 992px) {
+    .gedf-main {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+    .gedf-card {
+        margin-bottom: 2.77rem;
+    }
+}
+
+.dropdown-toggle::after {
+    content: none;
+}
+
+.shadow {
+    box-shadow: 0px 0px 5px 0px;
+    padding-top: 10px;
+  }
