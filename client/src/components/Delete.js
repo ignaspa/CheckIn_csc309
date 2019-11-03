@@ -95,10 +95,7 @@ export default class Delete extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            query: "",
-            results: [],
-            loading: false
-
+            results: []
         }
         this.handleOnChange = this.handleOnChange.bind(this);
     }
@@ -117,7 +114,7 @@ export default class Delete extends Component {
                     </div>
                     <input type="text" className="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" onChange={this.handleOnChange} />
                 </div>
-
+                <ResultsTable results={this.state.results} />
             </div>
         );
     }
@@ -125,12 +122,61 @@ export default class Delete extends Component {
     handleOnChange = (event) => {
         console.log("I am changing")
         console.log(event.target.value)
-        this.setState({results: []});
-        for(let i = 0; i < USER_DATA.length; i++){
-            if(USER_DATA[i].name.includes(event.target.value)){
-                this.setState({results: results.push(USER_DATA[i])});
+        if (event.target.value === "") {
+            return;
+        }
+        this.setState({ results: [] });
+        let newResults = [];
+        for (let i = 0; i < USER_DATA.length; i++) {
+            if (USER_DATA[i].name.includes(event.target.value)) {
+                newResults.push(USER_DATA[i]);
+            }
+        }
+        this.setState({ results: newResults });
+        console.log(this.state.results);
+    }
+
+    changeUserStatus(userID) {
+        for (let i = 0; i < USER_DATA.length; i++) {
+            if (USER_DATA[i].id === userID) {
+               USER_DATA.pop(i);
             }
         }
     }
 
+}
+
+function ResultsTable(props) {
+    const matchedUsers = props.results.map(user => (
+        <tr key={user.id}>
+            <td>{user.name}</td>
+            <td>{user.email}</td>
+            <td>{user.joinDate}</td>
+            <td>
+                <button
+                    onClick={() => props.changeUserStatus(user.id)}
+                    className="btn btn-danger">
+                    Delete
+              </button>
+            </td>
+            )}
+        </tr>
+    ));
+    return (
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Join Date</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {matchedUsers}
+                </tbody>
+            </table>
+        </div>
+    );
 }
