@@ -4,6 +4,7 @@ const validFeedback = "Looks Good!";
 
 export default class SignUpComponent extends Component {
   submitHandler = event => {
+    console.log('Submit Handled!')
     event.preventDefault();
     event.target.className += " was-validated";
   };
@@ -16,13 +17,11 @@ export default class SignUpComponent extends Component {
     const disclaimerEmail = "We'll never share your email with anyone else";
     const disclaimerPassword =
       "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.";
-    const style = {
-      width: "400px"
-    };
+    
 
     return (
       <div className="container">
-        <article className="card-body mx-auto" style={style}>
+        <article className="auth-form card-body mx-auto">
           <h4 className="card-title mt-3 text-center"> Create an account </h4>
 
           <form
@@ -121,10 +120,11 @@ export function Username(props) {
           <span className="input-group-text">@</span>
         </div>
         <input
-          name=""
+          name="username"
           className="form-control"
           placeholder={props.label}
           type="text"
+          onChange={props.changeHandler}
           required
         />
       </div>
@@ -139,10 +139,11 @@ export function Password(props) {
     <div className="form-group">
       <label htmlFor="inputEmail">{props.label}</label>
       <input
-        name=""
+        name="password"
         className="form-control"
         placeholder={props.label}
         type="password"
+        onChange={props.changeHandler}
         required
       />
       <small id="passwordHelpBlock" className="form-text text-muted">

@@ -55,3 +55,37 @@
   margin: 30px;
 
 }
+.auth-form {
+  width: 400px;
+}
+
+.profile-pic{
+  height: 200px;
+  width: 200px;
+  border-width: 4px;
+}
+
+table tr th {
+  font-weight: normal;
+}
+.checkin-title{
+  font-weight: bold;
+  font-size: 125%;
+}
+
+.active-card {
+  background-color: lightyellow;
+}
+
+.display-name-input {
+  width: 15rem;
+}
+
+.handle{
+  color: grey;
+}
+
+.profile-section {
+  width: 40rem;
+}
+
