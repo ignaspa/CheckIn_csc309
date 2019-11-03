@@ -3,6 +3,7 @@ import "../css/App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Home from "../components/Home";
 import SignUp from "../components/SignUp";
+import Delete from "./components/Delete";
 import Navbar from "./Layout/Navbar";
 import LoginComponent from "../components/Login.js";
 import UserDashboard from "../components/DashboardComponents/UserDashboard"
@@ -33,6 +34,11 @@ class App extends React.Component {
                     Login{" "}
                   </Link>{" "}
                 </li>{" "}
+                <li>
+                  <Link to={"/delete"} className="nav-link">
+                    Delete{" "}
+                  </Link>{" "}
+                </li>{" "}
               </ul>{" "}
             </nav>{" "}
             <hr />
@@ -42,6 +48,7 @@ class App extends React.Component {
               <Route path="/login" component={LoginComponent} />{" "}
               <Route path="/user-dashboard" component={UserDashboard}/> {" "}
               <Route path="/friend-requests" component={FriendRequestsSection} /> {" "}
+              <Route path="/delete" component={Delete} />{" "}
             </Switch>{" "}
           </div>{" "}
         </Router>{" "}

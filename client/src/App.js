@@ -2,6 +2,7 @@ import React from "react";
 import "./css/App.css";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
+import Delete from "./components/Delete";
 import SignUp from "./components/SignUp";
 import Navbar from "./components/Layout/Navbar";
 import AdminDashboard from "./components/AdminComponents/AdminDashboard";
@@ -22,6 +23,7 @@ class App extends React.Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/user-dashboard" component={UserDashboard} />
           <Route exact path="/friend-requests" component={FriendRequestsSection} />
+          <Route exact path="/delete" component={Delete} />
         </Switch>
       </BrowserRouter>
     );

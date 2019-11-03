@@ -24,3 +24,18 @@
 .auth-form {
   width: 400px;
 }
+.deletebar{
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+.pagetitle{
+  text-align: center;
+  margin-top: 10px;
+}
+
+.navitem{
+  text-align: center;
+  margin: 10px;
+}
