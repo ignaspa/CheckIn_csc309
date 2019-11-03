@@ -7,6 +7,7 @@ import Navbar from "./components/Layout/Navbar";
 import AdminDashboard from "./components/AdminComponents/AdminDashboard";
 import Login from "./components/Login"
 import Profile from "./components/Profile"
+import ProfileLinks from "./components/Profile-links"
 class App extends React.Component {
   render() {
     return (
@@ -18,7 +19,8 @@ class App extends React.Component {
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/admin-dashboard" component={AdminDashboard} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/profile" render={(props) => <Profile user_id={1} profile_id={1} />} />
+          <Route exact path="/profile" component={Profile}/>} />
+          <Route exact path="/profile-links" component={ProfileLinks} />
         </Switch>
       </BrowserRouter>
     );

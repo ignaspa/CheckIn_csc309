@@ -96,10 +96,11 @@ let oldCheckins = [
 export default class Profile extends Component {
     constructor(props) {
         super(props);
+        console.log(props)
         this.state = {
             edit_mode: false,
-            user_id: props.user_id,
-            profile_id: props.profile_id,
+            user_id: props.location.state.user_id,
+            profile_id: props.location.state.profile_id,
         }
         this.onModeChange = this.onModeChange.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)

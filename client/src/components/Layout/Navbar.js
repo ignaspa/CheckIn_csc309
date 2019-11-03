@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+
 export default class Navbar extends Component {
   render() {
     return (
@@ -23,8 +24,8 @@ export default class Navbar extends Component {
               </Link>
             </li>
             <li>
-              <Link to={"/profile"} className="nav-link text-white">
-                Profile
+              <Link to={"/profile-links"} className="nav-link text-white">
+                Profile Links
               </Link>
             </li>
           </ul>
