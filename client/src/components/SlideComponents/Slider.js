@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import "../css/App.css";
+import "../../css/App.css";
 import RArrow from "./RArrow";
 import LArrow from "./LArrow";
 import Slide from "./Slide";
 
 export default class Slider extends Component {
     constructor(props) {
+        super(props);
         this.state = {
-            images: ["../uofthighres.jpeg", "../uofthighres2.jpeg"],
+            images: [props.firstSlide, props.secondSlide],
             currentSlide: 0,
             maxSlides: 2,
             spot: 0
@@ -16,18 +17,21 @@ export default class Slider extends Component {
         this.after = this.after.bind(this);
     }
     after = () => {
-        this.setState({
-            currentSlide: currentSlide + 1,
-            spot: spot + -(this.slideSize)
+        this.setState((state, props) => {
+            return {
+                currentSlide: this.state.currentSlide + 1,
+                spot: this.state.spot + -(this.slideSize)
+            }
         });
     }
     before = () => {
-        this.setState({ currentSlide: currentSlide - 1 });
+        this.setState( (state, props) => { return { currentSlide: this.state.currentSlide - 1 } });
     }
     slideSize = () => {
         return document.querySelector(".App-Slide").clientWidth;
     }
     render() {
+        console.log("Rendering Slider");
         return (
             <div className="App-Slider">
                 <div className="slider-wrapper"
@@ -48,3 +52,5 @@ export default class Slider extends Component {
         );
     }
 }
+
+

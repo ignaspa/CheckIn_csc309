@@ -1,11 +1,11 @@
 import React from "react";
-import "../css/App.css";
+import "../../css/App.css";
 
 const RArrow = (props) => {
-
+    console.log("Rendering rightarrow");
     return (
         <div className="rarrow" onClick={props.after}>
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         </div>
     );
 

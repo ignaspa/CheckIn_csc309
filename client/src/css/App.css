@@ -28,8 +28,10 @@
 }
 
 .App-Slide{
-  width: 100%;
-  height: 100%;
+  width: 50%;
+  height: 50%;
+  border-width: 2px;
+  border-color: rebeccapurple;
   position: relative;
   background-repeat: no-repeat;
   background-size: cover;
@@ -46,4 +48,10 @@
 
 .larrow{
   color: pink;
+}
+
+.hometitle{
+  text-align: center;
+  margin: 30px;
+
 }
