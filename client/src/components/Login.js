@@ -16,8 +16,8 @@ const users = [
     friends: [3, 5, 1, 3],
     friend_request: [4, 6, 7],
     picture: '/image/john.png',
-    username: 'john',
-    password: '1234'
+    username: 'user',
+    password: 'user'
   },
   {
     id: 1,
