@@ -10,16 +10,20 @@ export default class UserDashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-          id: 0,
-          location: "",
-          message: "",
-          action: ""
+                id: 0,
+                location: "",
+                message: "",
+                action: ""
+    
         }
+        this.handleCheckInInput = this.handleCheckInInput.bind(this)
     }
 
     handleCheckInInput(event) {
-        this.setState({ [event.target.name]: event.target.value }); 
         console.log("HELLO")
+        this.setState({[
+            event.target.name]: event.target.value 
+        }); 
     }
 
     render() {
@@ -32,7 +36,7 @@ export default class UserDashboard extends Component {
 
                     <div className="col-9" id ="checkingContents">
                         
-                        <CheckInForm handleCheckInInput = {this.handleCheckInInput.bind(this)}/>
+                        <CheckInForm handleCheckInInput = {this.handleCheckInInput}/>
 
                         <CheckInUpdates newCheckIn= {this.state} />
                     </div>

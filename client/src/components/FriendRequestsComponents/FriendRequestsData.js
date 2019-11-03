@@ -30,7 +30,7 @@ let ALL_USERS = [
         isAdmin: false,
         name: 'Sonia',
         friends: [1, 2, 3],
-        friend_request: [5],
+        friend_request: friend_requests,
         picture: User1,
         username: 'SoniaZaldana',
         bio: "I'm so tired",
@@ -142,10 +142,8 @@ export default class AllFriendRequests extends Component {
             return u.id === user_id;
         })
         this.state = {
-            friendRequests: friend_requests,
             allUsers: ALL_USERS
         }
-        this.handleRequestReponse = this.handleRequestReponse.bind(this)
     }
 
     arrayRemove(arr, value) {
@@ -154,13 +152,29 @@ export default class AllFriendRequests extends Component {
         });  
     }
     
-    handleRequestReponse(event) {
-        console.log("HELLO")
+    handleRequest = event => {
+        event.persist()
+        event.preventDefault()
         console.log(this.state)
-        this.setState((state, props) => {
-            return { friendRequests: this.arrayRemove(this.state.friendRequests, event.target.key) }
-        })
+
+        let friendId = event.target.id
+        let friend_requests = this.state.allUsers[this.user_index].friend_request
+        let new_requests = this.arrayRemove(friend_requests, parseInt(friendId, 10))
+        let users = this.state.allUsers;
+        users[this.user_index].friend_request = new_requests
+        this.setState({ allUsers: users });
+
+        if (event.target.name === "accept") {
+            this.acceptFriendRequest(this.user_index, parseInt(friendId, 10))
+        }
         console.log(this.state)
+    }
+
+    acceptFriendRequest = (user_index, friend_id) => {
+        let users = this.state.allUsers
+        users[user_index].friends.push(friend_id)
+        this.setState({ allUsers: users,
+        friendRequets: this.state.friendRequests });
     }
 
     render() {
@@ -168,9 +182,9 @@ export default class AllFriendRequests extends Component {
             <div>
                 <FriendRequests
                 currentUser={ALL_USERS[0]}
-                friendRequests={this.state.friendRequests}
+                user_index = {this.user_index}
                 allUsers={this.state.allUsers}
-                handleRequest={this.handleRequestResponse}
+                handleRequest={this.handleRequest}
                 />
             </div>
         );
@@ -183,19 +197,20 @@ class FriendRequests extends Component{
     render() {
         var rows = [];
 
-    for (var i = 0; i < this.props.friendRequests.length; i++) {
-        // note: we add a key prop here to allow react to uniquely identify each
-        // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        let user = findGivenUser(this.props.friendRequests[i].id, this.props.allUsers, this.props.allUsers.length)
+    let friend_requests = this.props.allUsers[this.props.user_index].friend_request
+    
+    let key = 0;
+    for (var i = 0; i < friend_requests.length; i++) {
+        let user = findGivenUser(friend_requests[i].id, this.props.allUsers, this.props.allUsers.length)
 
         let mutualFriends = findNumberOfCommonFriends(this.props.currentUser.id, this.props.allUsers[i].id)
         if (i % 3 === 0) {
-            rows.push(<div className="row"/>)
+            rows.push(<div className="row" key={key}/>)
+            key++
         }  
          rows.push(
-             <div className="col">
+             <div className="col" key={key}>
          <FriendRequest 
-            key={user.id}
             id={user.id}
             name={user.name}
             username={user.username}
@@ -205,8 +220,8 @@ class FriendRequests extends Component{
             />
             </div>
             );
+            key++
     }
-    
     
     return (
         <div>
@@ -219,16 +234,24 @@ class FriendRequests extends Component{
 class FriendRequest extends Component {
 
     render() {
-        
+      
+    
     return (
         <div className="request">
             <div className="card">
-                <div className="card-body">
-                    <img src={this.props.picture} className="rounded-circle" width="60" height="60" />
+                <div className="card-body text-center">
+                    <img src={this.props.picture} className="rounded-circle" width="60" height="60" alt=""/>
                     <h4>{this.props.name}</h4>
                     <h6 className="text-muted"> @{this.props.username}</h6>
-                    <p><a href="#">{this.props.mutualFriends} mutual friends</a></p>
-                    <button className="btn btn-primary" key={this.props.id} onClick={this.props.handleRequest}>Accept Request</button>
+                    <p><button className="btn btn-link">{this.props.mutualFriends} mutual friends</button></p>                    
+                    <div className="row">
+                        <div className="col text-right">
+                            <button className="btn btn-primary" name="accept" id={this.props.id} onClick={this.props.handleRequest}>Accept Request</button>
+                        </div>
+                        <div className="col text-left">
+                            <button className="btn btn-primary decline" name="decline" id={this.props.id} onClick={this.props.handleRequest}>Decline Request</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>  
