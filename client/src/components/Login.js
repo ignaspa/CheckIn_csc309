@@ -76,9 +76,7 @@ export default class LoginComponent extends Component {
 
   render() {
     const disclaimerEmail = "We'll never share your email with anyone else";
-    const style = {
-      width: "400px"
-    };
+    
     if (this.state.authenticated) {
       
       if (this.state.admin) {
@@ -91,7 +89,7 @@ export default class LoginComponent extends Component {
     return (
       <div className="container">
         <LoginHeader/>
-        <article className="card-body mx-auto" style={style}>
+        <article className="auth-form card-body mx-auto">
         
           <h4 className="card-title mt-3 text-center"> Log In </h4>{" "}
           <form

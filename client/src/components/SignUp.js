@@ -17,13 +17,11 @@ export default class SignUpComponent extends Component {
     const disclaimerEmail = "We'll never share your email with anyone else";
     const disclaimerPassword =
       "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.";
-    const style = {
-      width: "400px"
-    };
+    
 
     return (
       <div className="container">
-        <article className="card-body mx-auto" style={style}>
+        <article className="auth-form card-body mx-auto">
           <h4 className="card-title mt-3 text-center"> Create an account </h4>
 
           <form
