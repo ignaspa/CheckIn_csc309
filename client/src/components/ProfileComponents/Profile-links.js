@@ -20,7 +20,7 @@ export default class ProfileLinks extends Component {
                     </Link>
                 </div>
                 <div>
-                    Marco viewing his Abdullah's profile:
+                    Marco viewing Abdullah's profile:
                     <Link
                         to={{
                             pathname: '/profile',
