@@ -76,11 +76,11 @@ export default class SignUpComponent extends Component {
 function TextEntry(props) {
   return (
     <div className="form-group">
-      <label for="inputText">{props.label}</label>
+      <label htmlFor="inputText">{props.label}</label>
       <input
         name=""
-        class="form-control"
-        id="inputText"
+        className="form-control"
+        id={props.label}
         placeholder={props.label}
         type="text"
         onChange={props.changeHandler}
@@ -95,7 +95,7 @@ function TextEntry(props) {
 function EmailEntry(props) {
   return (
     <div className="form-group">
-      <label for="inputEmail">{props.label}</label>
+      <label htmlFor="inputEmail">{props.label}</label>
       <input
         name=""
         className="form-control"
@@ -115,7 +115,7 @@ function EmailEntry(props) {
 export function Username(props) {
   return (
     <div className="form-group">
-      <label for="Username">{props.label}</label>
+      <label htmlFor="Username">{props.label}</label>
       <div className="form-group input-group-prepend">
         <div className="input-group-prepend">
           <span className="input-group-text">@</span>
@@ -136,8 +136,8 @@ export function Username(props) {
 
 export function Password(props) {
   return (
-    <div class="form-group">
-      <label for="inputEmail">{props.label}</label>
+    <div className="form-group">
+      <label htmlFor="inputEmail">{props.label}</label>
       <input
         name=""
         className="form-control"
