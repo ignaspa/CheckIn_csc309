@@ -161,7 +161,7 @@ function FriendRequests(props) {
     for (var i = 0; i < props.parentState.friendRequests.length; i++) {
         // note: we add a key prop here to allow react to uniquely identify each
         // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        let user = findGivenUser(props.parentState.allUsers[i].id, props.parentState.allUsers, props.parentState.friendRequests.length)
+        let user = findGivenUser(props.parentState.friendRequests[i].id, props.parentState.allUsers, props.parentState.allUsers.length)
 
         let mutualFriends = findNumberOfCommonFriends(props.currentUser.id, props.parentState.allUsers[i].id)
         if (i % 3 === 0) {
@@ -202,6 +202,7 @@ function FriendRequest(props) {
         console.log("ACCEPT REQUEST WAS CLICKED")
         console.log(props.parentState.friendRequests)
 
+        
         let result = arrayRemove(props.parentState.friendRequests, props.id);
         props.parentState.friendRequests = result;
         console.log(props.parentState.friendRequests)
