@@ -38,9 +38,9 @@ function BigTitle(props) {
   };
 
   return (
-    <div class="jumbotron vertical-center" style={styleJumbotron}>
-      <h1 class="display-3" style={styleDisplay}>CheckIn</h1>
-      <p class="lead" style={styleLead}>
+    <div className="jumbotron vertical-center" style={styleJumbotron}>
+      <h1 className="display-3" style={styleDisplay}>CheckIn</h1>
+      <p className="lead" style={styleLead}>
         <b>COME TOGETHER</b>
       </p>
     </div>
@@ -50,7 +50,7 @@ function Mission(props) {
   return (
     <div>
       <h3 className = "text-left" style={style} >OUR MISSION</h3>
-      <p classNames = "text-left" style={style} >{mission_description}</p>
+      <p className = "text-left" style={style} >{mission_description}</p>
     </div>
 
   );
