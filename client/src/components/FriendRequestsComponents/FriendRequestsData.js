@@ -132,14 +132,35 @@ function findGivenUser(currentUserId, userData, size) {
     }
 }
 
+let user_id = 0; // ID of the current user, we would otherwise have a server call to see the user_id
 
 export default class AllFriendRequests extends Component {
+
     constructor(props) {
         super(props)
+        this.user_index = ALL_USERS.findIndex(function (u) {
+            return u.id === user_id;
+        })
         this.state = {
             friendRequests: friend_requests,
             allUsers: ALL_USERS
         }
+        this.handleRequestReponse = this.handleRequestReponse.bind(this)
+    }
+
+    arrayRemove(arr, value) {
+        return arr.filter(function(ele){
+            return ele.id !== value;
+        });  
+    }
+    
+    handleRequestReponse(event) {
+        console.log("HELLO")
+        console.log(this.state)
+        this.setState((state, props) => {
+            return { friendRequests: this.arrayRemove(this.state.friendRequests, event.target.key) }
+        })
+        console.log(this.state)
     }
 
     render() {
@@ -147,7 +168,9 @@ export default class AllFriendRequests extends Component {
             <div>
                 <FriendRequests
                 currentUser={ALL_USERS[0]}
-                parentState={this.state}
+                friendRequests={this.state.friendRequests}
+                allUsers={this.state.allUsers}
+                handleRequest={this.handleRequestResponse}
                 />
             </div>
         );
@@ -155,15 +178,17 @@ export default class AllFriendRequests extends Component {
 }
 
 
-function FriendRequests(props) {
-    var rows = [];
+class FriendRequests extends Component{
 
-    for (var i = 0; i < props.parentState.friendRequests.length; i++) {
+    render() {
+        var rows = [];
+
+    for (var i = 0; i < this.props.friendRequests.length; i++) {
         // note: we add a key prop here to allow react to uniquely identify each
         // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        let user = findGivenUser(props.parentState.friendRequests[i].id, props.parentState.allUsers, props.parentState.allUsers.length)
+        let user = findGivenUser(this.props.friendRequests[i].id, this.props.allUsers, this.props.allUsers.length)
 
-        let mutualFriends = findNumberOfCommonFriends(props.currentUser.id, props.parentState.allUsers[i].id)
+        let mutualFriends = findNumberOfCommonFriends(this.props.currentUser.id, this.props.allUsers[i].id)
         if (i % 3 === 0) {
             rows.push(<div className="row"/>)
         }  
@@ -176,48 +201,38 @@ function FriendRequests(props) {
             username={user.username}
             picture={user.picture}
             mutualFriends = {mutualFriends}
-            parentState={props.parentState}
+            handleRequest = {this.props.handleRequest}
             />
-             </div>
+            </div>
             );
     }
+    
+    
     return (
         <div>
         {rows}
         </div>
     );
+    }
 }
 
-function FriendRequest(props) {
+class FriendRequest extends Component {
 
-    function arrayRemove(arr, value) {
-        return arr.filter(function(ele){
-            return ele.id !== value;
-        });
-     
-     }
-
-    function handleAcceptRequest(e) {
-        e.preventDefault();
-        console.log("ACCEPT REQUEST WAS CLICKED")
-        console.log(props.parentState.friendRequests)
-
+    render() {
         
-        let result = arrayRemove(props.parentState.friendRequests, props.id);
-        props.parentState.friendRequests = result;
-        console.log(props.parentState.friendRequests)
-    }
     return (
         <div className="request">
             <div className="card">
                 <div className="card-body">
-                    <img src={props.picture} className="rounded-circle" width="60" height="60" />
-                    <h4>{props.name}</h4>
-                    <h6 className="text-muted"> @{props.username}</h6>
-                    <p><a href="#">{props.mutualFriends} mutual friends</a></p>
-                    <button className="btn btn-primary" onClick={handleAcceptRequest}>Accept Request</button>
+                    <img src={this.props.picture} className="rounded-circle" width="60" height="60" />
+                    <h4>{this.props.name}</h4>
+                    <h6 className="text-muted"> @{this.props.username}</h6>
+                    <p><a href="#">{this.props.mutualFriends} mutual friends</a></p>
+                    <button className="btn btn-primary" key={this.props.id} onClick={this.props.handleRequest}>Accept Request</button>
                 </div>
             </div>
         </div>  
     );
+
+    }
 }
