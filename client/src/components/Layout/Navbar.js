@@ -12,8 +12,7 @@ export default class Navbar extends Component {
               <Link to={"/"} className="nav-link text-white navitem">
                 Home
               </Link>
-            </li>
-            
+            </li>            
           </ul>
         </nav>
       </div>
