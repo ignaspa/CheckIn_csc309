@@ -8,6 +8,8 @@ import LoginComponent from "../components/Login.js";
 import Profile from "../components/Profile.js"
 import UserDashboard from "../components/DashboardComponents/UserDashboard"
 import FriendRequestsSection from "./FriendRequestsComponents/FriendRequests"
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class App extends React.Component {
   render() {

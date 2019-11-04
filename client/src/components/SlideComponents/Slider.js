@@ -1,53 +1,64 @@
 import React, { Component } from "react";
 import "../../css/App.css";
-import RArrow from "./RArrow";
-import LArrow from "./LArrow";
-import Slide from "./Slide";
+import Food from "../../eating.JPG";
+import Study from "../../studying.JPG";
+import Walk from "../../walking.JPG";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const images = [Food, Study, Walk];
+const quotes = [
+    "Custom locations unlike a map app. (The table in the back with graffiti)",
+    "Know who is working on the same thing. ( Studying CSC309 )",
+    "Meet up to go somewhere!"
+]
 export default class Slider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            images: [props.firstSlide, props.secondSlide],
             currentSlide: 0,
-            maxSlides: 2,
-            spot: 0
         };
-        this.before = this.before.bind(this);
-        this.after = this.after.bind(this);
+        this.forward = this.forward.bind(this);
+        this.back = this.back.bind(this);
     }
-    after = () => {
-        this.setState((state, props) => {
-            return {
-                currentSlide: this.state.currentSlide + 1,
-                spot: this.state.spot + -(this.slideSize)
-            }
-        });
+
+    forward = () => {
+        if (this.state.currentSlide != 2) {
+            this.setState({ currentSlide: this.state.currentSlide + 1 });
+        }
+        else {
+            this.setState({ currentSlide: 0 });
+        }
     }
-    before = () => {
-        this.setState( (state, props) => { return { currentSlide: this.state.currentSlide - 1 } });
+    back = () => {
+        if (this.state.currentSlide != 0) {
+            this.setState({ currentSlide: this.state.currentSlide - 1 });
+        }
+        else {
+            this.setState({ currentSlide: 2 });
+        }
     }
-    slideSize = () => {
-        return document.querySelector(".App-Slide").clientWidth;
-    }
+
     render() {
         console.log("Rendering Slider");
         return (
             <div className="App-Slider">
-                <div className="slider-wrapper"
-                    style={{
-                        transform: `translateX(${this.state.spot}px)`,
-                        transition: 'transform ease-out 0.45s'
-                    }}>
-                    {
-                        this.state.images.map((image, i) => (
-                            <Slide key={i} image={image} />
-                        ))
-                    }
+                <h5 className="homequote" >{quotes[this.state.currentSlide]} </h5>
+                <div>
+                    <table className="slidertable" align="center">
+                        <tr className="sliderTableRow">
+                            <td>
+                                <FontAwesomeIcon icon={faAngleLeft} className="arrow" size="2x" onClick={this.back} />
+                            </td>
+                            <td>
+                                <img src={images[this.state.currentSlide]} className="img-fluid rounded mx-auto d-block center homeimg" alt="Responsive image" />
+                            </td>
+                            <td>
+                                <FontAwesomeIcon icon={faAngleRight} className="arrow" size="2x" onClick={this.forward} />
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-
-                <LArrow before={this.before} />
-                <RArrow after={this.after} />
             </div>
         );
     }
