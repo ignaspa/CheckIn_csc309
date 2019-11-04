@@ -12,9 +12,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const images = [UserView, Food, AddFriends, Study, UpdateStat, Walk];
 const quotes = [
     "See where your friends are!",
-    "Share custom locations unlike a map app. (The table in the back with graffiti)",
+    "Share custom locations unlike a map app.",
     "Add everyone you want to share your time with!",
-    "Know who is working on the same thing, not just where they are. ( Studying CSC309 )",
+    "Know who is working on the same thing, not just where they are.",
     "Update your friends on where you are!",
     "Meet up to go somewhere!"
 ]
