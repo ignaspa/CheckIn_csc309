@@ -27,14 +27,6 @@ const USER_DATA = [
         showPasswordChangeForm: false
     },
     {
-        id: "4",
-        name: "Sonia Zaldana",
-        email: "sonia@gmail.com",
-        totalCheckins: "198",
-        joinDate: "2016-06-12",
-        showPasswordChangeForm: false
-    },
-    {
         id: "5",
         name: "John Doe",
         email: "john@gmail.com",
@@ -95,8 +87,7 @@ export default class DeleteUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            results: [],
-            deleted: []
+            results: []
         }
         this.handleOnChange = this.handleOnChange.bind(this);
         this.changeUserStatus = this.changeUserStatus.bind(this);
@@ -121,10 +112,7 @@ export default class DeleteUser extends Component {
                 <div className="pagetitle">
                     <h5>...</h5>
                 </div>
-                <div className="pagetitle text-danger">
-                    <h5>Deleted Users</h5>
-                </div>
-                <DeletedTable deleted={this.state.deleted} />
+                
             </div>
         );
     }
@@ -153,7 +141,7 @@ export default class DeleteUser extends Component {
                 console.log(userID);
                 let item = USER_DATA.splice(i, 1);
                 console.log(item)
-                this.setState({deleted: this.state.deleted.push(item)});
+                // this.setState({deleted: this.state.deleted.push(item)});
             }
         }
         console.log(this.state.deleted);
@@ -196,30 +184,30 @@ function ResultsTable(props) {
     );
 }
 
-function DeletedTable(props) {
-    console.log(props.deleted);
-    const matchedUsers = props.deleted.map(user => (
-        <tr key={user.id}>
-            <td>{user.name}</td>
-            <td>{user.email}</td>
-            <td>{user.joinDate}</td>
-        </tr>
-    ));
-    return (
-        <div>
-            <table className="table container-fluid">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Join Date</th>
+// function DeletedTable(props) {
+//     console.log(props.deleted);
+//     const matchedUsers = props.deleted.map(user => (
+//         <tr key={user.id}>
+//             <td>{user.name}</td>
+//             <td>{user.email}</td>
+//             <td>{user.joinDate}</td>
+//         </tr>
+//     ));
+//     return (
+//         <div>
+//             <table className="table container-fluid">
+//                 <thead>
+//                     <tr>
+//                         <th scope="col">Name</th>
+//                         <th scope="col">Email</th>
+//                         <th scope="col">Join Date</th>
                         
-                    </tr>
-                </thead>
-                <tbody>
-                {matchedUsers}
-                </tbody>
-            </table>
-        </div>
-    );
-}
+//                     </tr>
+//                 </thead>
+//                 <tbody>
+//                 {matchedUsers}
+//                 </tbody>
+//             </table>
+//         </div>
+//     );
+// }

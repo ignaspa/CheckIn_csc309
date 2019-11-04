@@ -27,14 +27,6 @@ const USER_DATA = [
         showPasswordChangeForm: false
     },
     {
-        id: "4",
-        name: "Sonia Zaldana",
-        email: "sonia@gmail.com",
-        totalCheckins: "198",
-        joinDate: "2016-06-12",
-        showPasswordChangeForm: false
-    },
-    {
         id: "5",
         name: "John Doe",
         email: "john@gmail.com",
@@ -95,8 +87,7 @@ export default class AddFriend extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            results: [],
-            added: []
+            results: []
         }
         this.handleOnChange = this.handleOnChange.bind(this);
         this.changeUserStatus = this.changeUserStatus.bind(this);
@@ -121,10 +112,6 @@ export default class AddFriend extends Component {
                 <div className="pagetitle">
                     <h5>...</h5>
                 </div>
-                <div className="pagetitle text-success">
-                    <h5>Friends Added</h5>
-                </div>
-                <AddedTable added={this.state.added} />
             </div>
         );
     }
@@ -153,7 +140,7 @@ export default class AddFriend extends Component {
                 console.log(userID);
                 let item = USER_DATA.splice(i, 1);
                 console.log(item)
-                this.setState({added: this.state.added.push(item)});
+                // this.setState({added: this.state.added.push(item)});
             }
         }
         console.log(this.state.added);
@@ -196,30 +183,30 @@ function ResultsTable(props) {
     );
 }
 
-function AddedTable(props) {
-    console.log(props.added);
-    const matchedUsers = props.added.map(user => (
-        <tr key={user.id}>
-            <td>{user.name}</td>
-            <td>{user.email}</td>
-            <td>{user.joinDate}</td>
-        </tr>
-    ));
-    return (
-        <div>
-            <table className="table container-fluid">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Join Date</th>
+// function AddedTable(props) {
+//     console.log(props.added);
+//     const matchedUsers = props.added.map(user => (
+//         <tr key={user.id}>
+//             <td>{user.name}</td>
+//             <td>{user.email}</td>
+//             <td>{user.joinDate}</td>
+//         </tr>
+//     ));
+//     return (
+//         <div>
+//             <table className="table container-fluid">
+//                 <thead>
+//                     <tr>
+//                         <th scope="col">Name</th>
+//                         <th scope="col">Email</th>
+//                         <th scope="col">Join Date</th>
                         
-                    </tr>
-                </thead>
-                <tbody>
-                {matchedUsers}
-                </tbody>
-            </table>
-        </div>
-    );
-}
+//                     </tr>
+//                 </thead>
+//                 <tbody>
+//                 {matchedUsers}
+//                 </tbody>
+//             </table>
+//         </div>
+//     );
+// }
