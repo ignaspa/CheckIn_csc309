@@ -23,16 +23,7 @@ export default class Navbar extends Component {
                 Login
               </Link>
             </li>
-            <li>
-              <Link to={"/deleteuser"} className="nav-link text-white navitem">
-                Delete User
-              </Link>
-            </li>
-            <li>
-              <Link to={"/addfriend"} className="nav-link text-white navitem">
-                Add Friends
-              </Link>
-            </li>
+            
           </ul>
         </nav>
       </div>
