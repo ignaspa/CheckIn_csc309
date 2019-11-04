@@ -124,3 +124,20 @@ table tr th {
   width: 100%;
   text-align: center;
 }
+
+.homesubl{
+  text-align: left;
+  margin-left: 20px;
+}
+.homesubr{
+  text-align: right;
+  margin-right: 20px;
+}
+.hometxtr{
+  text-align: right;
+  margin-right: 30px;
+}
+
+.hometxt{
+  margin-left: 30px;
+}

@@ -8,8 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const images = [Food, Study, Walk];
 const quotes = [
-    "Custom locations unlike a map app. (The table in the back with graffiti)",
-    "Know who is working on the same thing. ( Studying CSC309 )",
+    "Share custom locations unlike a map app. (The table in the back with graffiti)",
+    "Know who is working on the same thing, not just where they are. ( Studying CSC309 )",
     "Meet up to go somewhere!"
 ]
 export default class Slider extends Component {
@@ -43,7 +43,7 @@ export default class Slider extends Component {
         console.log("Rendering Slider");
         return (
             <div className="App-Slider">
-                <h5 className="homequote" >{quotes[this.state.currentSlide]} </h5>
+                <h5 className="homequote text-primary" >{quotes[this.state.currentSlide]} </h5>
                 <div>
                     <table className="slidertable" align="center">
                         <tr className="sliderTableRow">
