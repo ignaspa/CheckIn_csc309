@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import "../../css/UserDashboard.css"
 import User1 from "./DashboardAssets/User1.jpg"
-import { Redirect } from "react-router";
-
-
+import {Redirect} from "react-router";
 
 export default class UserNav extends Component {
 
@@ -38,10 +36,12 @@ export default class UserNav extends Component {
         // this.setState({redirect: '/friend-requests'})
     }
 
+
     editProfile = event => {
         console.log("edit profile clicked")
         this.setState({ redirect: "/profile" })
-        return < Redirect
+        return (
+        < Redirect
             to={{
                 pathname: '/profile',
                 state: {
@@ -49,13 +49,13 @@ export default class UserNav extends Component {
                     profile_id: 1,
                 }
             }
-            } />
+            } push={true}/>);
     }
 
     render() {
         if (this.state.redirect === "/friend-requests") {
             return (
-                <Redirect to="/friend-requests" />
+                <Redirect to="/friend-requests" push={true}/>
             );
         } else if (this.state.redirect === "/profile") {
             return (
@@ -66,7 +66,8 @@ export default class UserNav extends Component {
                             user_id: 0,
                             profile_id: 0,
                         }
-                    }} />
+                    }} 
+                    push={true}/>
             )
         }
         // add else to check to check final redirect
