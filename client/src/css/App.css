@@ -21,6 +21,42 @@
   color: #09d3ac;
 }
 
+/* .App-Slider{
+  width: 700px;
+  height: 700px;
+  position: relative;
+}
+
+.App-Slide{
+  width: 50%;
+  height: 50%;
+  border-width: 2px;
+  border-color: rebeccapurple;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+/* .slider-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.rarrow{
+  color: pink;
+}
+
+.larrow{
+  color: pink;
+} */
+
+.hometitle{
+  text-align: center;
+  margin: 30px;
+  background-image: url("../uofthighres2.jpeg");
+  background-size:cover;
+
+}
 .auth-form {
   width: 400px;
 }
@@ -55,3 +91,53 @@ table tr th {
   width: 40rem;
 }
 
+.attractionbutton{
+  margin: 10px;
+  width: 120px;
+  height: 50px;
+}
+
+.homeline{
+  color:white;
+}
+
+.arrow{
+  width: 100px;
+  margin: 20px;
+}
+
+.homeimg{
+  width: 60vw;
+}
+.homequote{
+  text-align: center;
+  margin: 30px;
+
+}
+.sliderTable{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+.sliderTableRow{
+  width: 100%;
+  text-align: center;
+}
+
+.homesubl{
+  text-align: left;
+  margin-left: 20px;
+}
+.homesubr{
+  text-align: right;
+  margin-right: 20px;
+}
+.hometxtr{
+  text-align: right;
+  margin-right: 30px;
+}
+
+.hometxt{
+  margin-left: 30px;
+}
