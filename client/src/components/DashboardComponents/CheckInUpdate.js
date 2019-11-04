@@ -56,7 +56,8 @@ export default class CheckInUpdate extends Component {
                                 user_id: 0,
                                 profile_id: this.props.id,
                         }
-                 }}/>
+                 }}
+                 push={true}/>
             );
         }
 
