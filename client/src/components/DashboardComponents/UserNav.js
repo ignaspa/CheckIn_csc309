@@ -32,8 +32,7 @@ export default class UserNav extends Component {
 
     addFriends = event => {
         console.log("add friends clicked")
-        // set it to your path
-        // this.setState({redirect: '/friend-requests'})
+        this.setState({redirect: '/addfriend'})
     }
 
 
@@ -69,8 +68,11 @@ export default class UserNav extends Component {
                     }} 
                     push={true}/>
             )
+        } else if (this.state.redirect == "/addfriend") {
+            return (
+                <Redirect to="/addFriend" push={true} />
+            )
         }
-        // add else to check to check final redirect
 
         return (
 
