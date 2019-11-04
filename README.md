@@ -6,6 +6,9 @@
 
     $ cd client
     $ npm install //install client dependencies
+    $ npm i --save @fortawesome/fontawesome-svg-core
+    $ npm i --save @fortawesome/free-solid-svg-icons
+    $ npm i --save @fortawesome/react-fontawesome
     $ npm start
 
 # To test our app
