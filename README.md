@@ -26,7 +26,7 @@
 * Update your profile info
 
 ## Add friends
-* Search up a username and add a friend
+* Search up a username and add a friend. Try looking for "Steve" or "Marco"!
 * Delete friends 
 
 
