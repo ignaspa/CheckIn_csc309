@@ -35,7 +35,7 @@ function BigTitle(props) {
       <p className="text-light" >{mission_description}</p>
       <span>
         <button type="button" class="btn btn-primary attractionbutton">
-          <Link to={"/login"} className="nav-dark text-white">
+          <Link to={"/login"} className="nav-link text-white">
             Login
               </Link>
         </button>

@@ -3,13 +3,19 @@ import "../../css/App.css";
 import Food from "../../eating.JPG";
 import Study from "../../studying.JPG";
 import Walk from "../../walking.JPG";
+import UserView from "../../userview.JPG";
+import AddFriends from "../../addfriends.JPG";
+import UpdateStat from "../../updateyourstatus.JPG";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const images = [Food, Study, Walk];
+const images = [UserView, Food, AddFriends, Study, UpdateStat, Walk];
 const quotes = [
+    "See where your friends are!",
     "Share custom locations unlike a map app. (The table in the back with graffiti)",
+    "Add everyone you want to share your time with!",
     "Know who is working on the same thing, not just where they are. ( Studying CSC309 )",
+    "Update your friends on where you are!",
     "Meet up to go somewhere!"
 ]
 export default class Slider extends Component {
@@ -23,7 +29,7 @@ export default class Slider extends Component {
     }
 
     forward = () => {
-        if (this.state.currentSlide != 2) {
+        if (this.state.currentSlide != 5) {
             this.setState({ currentSlide: this.state.currentSlide + 1 });
         }
         else {
@@ -35,7 +41,7 @@ export default class Slider extends Component {
             this.setState({ currentSlide: this.state.currentSlide - 1 });
         }
         else {
-            this.setState({ currentSlide: 2 });
+            this.setState({ currentSlide: 5 });
         }
     }
 
