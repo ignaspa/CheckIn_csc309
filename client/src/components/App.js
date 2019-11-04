@@ -7,6 +7,7 @@ import DeleteUser from "./components/DeleteUser";
 import AddFriend from "./components/AddFriend";
 import Navbar from "./Layout/Navbar";
 import LoginComponent from "../components/Login.js";
+import Profile from "../components/Profile.js"
 import UserDashboard from "../components/DashboardComponents/UserDashboard"
 import FriendRequestsSection from "./FriendRequestsComponents/FriendRequests"
 
@@ -40,6 +41,11 @@ class App extends React.Component {
                     Delete User{" "}
                   </Link>{" "}
                 </li>{" "}
+                <li>
+                  <Link to={"/profile"} className="nav-link">
+                    Profile{" "}
+                  </Link>{" "}
+                </li>{" "}
               </ul>{" "}
             </nav>{" "}
             <hr />
@@ -47,7 +53,8 @@ class App extends React.Component {
               <Route exact path="/" component={Home} />{" "}
               <Route path="/signup" component={SignUp} />{" "}
               <Route path="/login" component={LoginComponent} />{" "}
-              <Route path="/user-dashboard" component={UserDashboard}/> {" "}
+              <Route path="/profile" component={Profile} />{" "}
+              <Route path="/user-dashboard" component={UserDashboard} /> {" "}
               <Route path="/friend-requests" component={FriendRequestsSection} /> {" "}
               <Route path="/deleteuser" component={DeleteUser} />{" "}
               <Route path="/addfriend" component={AddFriend} />{" "}

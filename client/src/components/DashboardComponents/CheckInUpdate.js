@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "../../css/UserDashboard.css"
+import { Redirect } from "react-router";
+
 
 function timeSince(date) {
     const now = new Date();
@@ -29,8 +31,35 @@ function timeSince(date) {
 }
 
 export default class CheckInUpdate extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            redirect: ""
+        }
+    }
+
+    seeProfile = event => {
+        console.log("see profile clicked")
+        console.log(this.props.id)
+        this.setState({redirect: "/profile"})
+    }
    
     render() {
+
+        if (this.state.redirect == "/profile") {
+            return(
+                <Redirect
+                        to={{
+                            pathname: '/profile',
+                            state: {
+                                user_id: 0,
+                                profile_id: this.props.id,
+                        }
+                 }}/>
+            );
+        }
+
         return (
             <div className="card gedf-card">
                 <div className="card-header">
@@ -40,18 +69,16 @@ export default class CheckInUpdate extends Component {
 
                         </div>
                         <div className="ml-2">
-                            <div className="h5 m-0">{this.props.name}</div>
+                            <button className="btn btn-link" onClick={this.seeProfile}>
+                            <div className="h4">{this.props.name} </div></button>
                             <div className="h7 text-muted">@{this.props.username}</div>
                         </div>
                     </div>
                 </div>
 
             <div className="card-body">
-                {/* TODO: Add marco's time since function here  */}
                 <div className="text-muted h7 mb-2"> <i className="fa fa-clock-o"></i> {timeSince(this.props.time)}</div>
-                {/* <a className="card-link"> */}
                     <h5 className="card-title">{this.props.name} is {this.props.action} in {this.props.location}</h5>
-                {/* </a> */}
                 <p className="card-text">
                     {this.props.message}
                    </p>
