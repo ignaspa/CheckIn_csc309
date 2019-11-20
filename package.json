@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "server": "nodemon server"
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"  "
   },
   "repository": {
     "type": "git",
@@ -18,8 +20,11 @@
   },
   "homepage": "https://github.com/csc309-fall-2019/team30#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.2.4",
     "express": "^4.17.1",
-    "mongoose": "^5.7.12"
+    "mongoose": "^5.7.12",
+    "passport": "^0.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
