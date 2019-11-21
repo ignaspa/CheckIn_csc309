@@ -4,6 +4,9 @@ import { Password } from "../components/SignUp.js";
 import { Button } from "../components/SignUp.js";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom"
+import {login} from '../redux/actions.js'
+
+import { useDispatch } from 'react-redux'
 
 // This will be replaced by server-side code
 
@@ -40,6 +43,15 @@ function SignUpLink(props) {
   );
 }
 
+function Authenticated(props) {
+    const dispatch = useDispatch();
+    dispatch(login(props.user));
+    if (props.user.isAdmin) {
+        return <Redirect to="/admin-dashboard"/>
+    }
+    return <Redirect to='/user-dashboard'/>
+}
+
 export default class LoginComponent extends Component {
   constructor(props) {
     super(props);
@@ -47,17 +59,20 @@ export default class LoginComponent extends Component {
       showInvalid: false,
       authenticated: false,
     }
+    this.user = {};
+      this.authenticated = false;
+      this.showInvalid = false;
   }
   submitHandler = event => {
     event.preventDefault();
     for (let i = 0; i < users.length; i++) {
       if (this.state && users[i].username === this.state['username'] && users[i].password === this.state['password']) {
         event.target.className += " was-validated";
-        this.setState({
-          showInvalid: false,
-          authenticated: true,
-          admin: users[i].isAdmin
-        })
+          this.user = users[i];
+          this.setState({
+              showInvalid: false,
+              authenticated: true
+          });
         return;
       }
     }
@@ -77,13 +92,9 @@ export default class LoginComponent extends Component {
   render() {
     const disclaimerEmail = "We'll never share your email with anyone else";
     
-    if (this.state.authenticated) {
-      
-      if (this.state.admin) {
-        return <Redirect to="/admin-dashboard"/>
+      if (this.state.authenticated) {
+          return <Authenticated user={this.user}/>
       }
-      return <Redirect to='/user-dashboard'/>
-    }
 
     return (
       <div className="container">
