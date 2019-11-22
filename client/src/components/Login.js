@@ -4,36 +4,11 @@ import { Password } from "../components/SignUp.js";
 import { Button } from "../components/SignUp.js";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom"
-import {login} from '../redux/actions.js'
-
-import { useDispatch } from 'react-redux'
+import { login } from '../redux/actions.js'
+import ProfilePic from './assets/profile.png';
+import { connect } from 'react-redux';
 
 // This will be replaced by server-side code
-
-const users = [
-  {
-    id: 0,
-    isAdmin: false,
-    name: 'John',
-    current_location: 'BA 3200',
-    friends: [3, 5, 1, 3],
-    friend_request: [4, 6, 7],
-    picture: '/image/john.png',
-    username: 'user',
-    password: 'user'
-  },
-  {
-    id: 1,
-    isAdmin: true,
-    name: 'admin',
-    current_location: '',
-    friends: [],
-    friend_request: [],
-    picture: '/image/john.png',
-    username: 'admin',
-    password: 'admin'
-  }
-]
 
 function SignUpLink(props) {
   return (
@@ -43,16 +18,41 @@ function SignUpLink(props) {
   );
 }
 
-function Authenticated(props) {
-    const dispatch = useDispatch();
-    dispatch(login(props.user));
-    if (props.user.isAdmin) {
-        return <Redirect to="/admin-dashboard"/>
+function authenticateUser(username, password) {
+    const users = [
+        {
+            id: 0,
+            isAdmin: false,
+            name: 'John',
+            bio: "Sup",
+            current_location: 'BA 3200',
+            friends: [1, 2, 3],
+            friend_request: [5],
+            picture: ProfilePic,
+            username: 'user',
+            password: 'user'
+        },
+        {
+            id: 1,
+            isAdmin: true,
+            name: 'admin',
+            current_location: '',
+            friends: [],
+            friend_request: [],
+            picture: '/image/john.png',
+            username: 'admin',
+            password: 'admin'
+        }
+    ]
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].username === username && users[i].password === password) {
+            return users[i];
+        }
     }
-    return <Redirect to='/user-dashboard'/>
+    return null;
 }
 
-export default class LoginComponent extends Component {
+class LoginComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,25 +62,21 @@ export default class LoginComponent extends Component {
     this.user = {};
       this.authenticated = false;
       this.showInvalid = false;
-  }
-  submitHandler = event => {
-    event.preventDefault();
-    for (let i = 0; i < users.length; i++) {
-      if (this.state && users[i].username === this.state['username'] && users[i].password === this.state['password']) {
-        event.target.className += " was-validated";
-          this.user = users[i];
-          this.setState({
-              showInvalid: false,
-              authenticated: true
-          });
-        return;
+  };
+    submitHandler = event => {
+      event.preventDefault();
+      const user = authenticateUser(this.state['username'], this.state['password']);
+      if (this.state && user != null) {
+          event.target.className += " was-validated";
+          this.user = user;
+          this.props.loginUser(user);
       }
-    }
-    event.target.reset();
-    this.setState({
-      showInvalid: true
-    })
-    
+      else {
+          event.target.reset();
+          this.setState({
+              showInvalid: true
+         });
+      }
   };
 
   changeHandler = event => {
@@ -91,16 +87,18 @@ export default class LoginComponent extends Component {
 
   render() {
     const disclaimerEmail = "We'll never share your email with anyone else";
-    
-      if (this.state.authenticated) {
-          return <Authenticated user={this.user}/>
+      console.log("this is this.props.user: ", this.props.user)
+      if (this.props.user != null) {
+          if (this.user.isAdmin) {
+              return <Redirect to="/admin-dashboard"/>
+          }
+          return <Redirect to='/user-dashboard'/>
       }
 
     return (
       <div className="container">
         <LoginHeader/>
         <article className="auth-form card-body mx-auto">
-        
           <h4 className="card-title mt-3 text-center"> Log In </h4>{" "}
           <form
             className="needs-validation"
@@ -108,7 +106,7 @@ export default class LoginComponent extends Component {
             noValidate
           >
             <InvalidCredentials
-             show={this.state.showInvalid} 
+             show={this.state.showInvalid}
             />
             <Username
               label={"Username"}
@@ -149,3 +147,13 @@ function InvalidCredentials(props) {
     </div>
   )
 }
+
+const mapStateToProps = store => ({
+    user: store.user
+});
+
+const mapDispatchToProps = dispatch => ({
+    loginUser: (user) => dispatch(login(user))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
