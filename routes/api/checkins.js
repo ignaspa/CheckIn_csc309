@@ -17,7 +17,7 @@ async function getCheckin(req, res, next) {
   
     res.checkin = checkin
     next()
-  }
+  } 
 
 // Get all checkins
 router.get('/', async (req, res) => {
@@ -29,12 +29,17 @@ router.get('/', async (req, res) => {
         res.status(500).json({message: error.message})
     }
 })
-
-// Get one Checkin
-router.get('/:id', getCheckin, (req, res) => {
-    res.json(res.checkin)
-  })
   
+// Get Checkins for given user id
+router.get('/:id', async (req, res) => {
+  try {
+    const checkins = await Checkin.find({userid: req.params.id})
+    res.json(checkins)
+  } catch (error) {
+    return res.status(500).json( {message: err.message} )
+  }
+}) 
+
 
 // Create one checkin
 router.post('/', async (req, res) => {
