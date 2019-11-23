@@ -11,6 +11,8 @@ app.use(bodyParser.json());
 
 //load routes
 const users = require("./routes/api/users");
+const checkins = require('./routes/api/checkins')
+
 
 //connect to mongo db
 const db = config.get("mongoURI");
@@ -27,6 +29,9 @@ require("./utils/passportMiddleware")(passport);
 
 //User routes
 app.use("/api/users", users);
+
+// Checkin routes
+app.use('/api/checkins', checkins)
 
 const PORT = process.env.PORT || 5000;
 
