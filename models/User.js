@@ -6,6 +6,9 @@ var User = new Schema({
     type: String,
     required: true
   },
+  bio: {
+    type: String,
+  }
   email: {
     type: String,
     required: true

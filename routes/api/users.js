@@ -127,4 +127,16 @@ router.get("/all", (req, res) => {
     });
 });
 
+//  @route GET api/users/all
+//  @desc Get all Users. Responds with a list of all users on success
+//  @access Public
+router.patch("/userdetails", (req, res) => {
+
+  User.updateOne(
+    {email: req.body.email},
+    {
+      $set: {bio: req.body.newbio, name: req.body.newname}
+    });
+});
+
 module.exports = router;
