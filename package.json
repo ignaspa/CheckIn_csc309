@@ -20,11 +20,14 @@
   },
   "homepage": "https://github.com/csc309-fall-2019/team30#readme",
   "dependencies": {
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "config": "^3.2.4",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.12",
-    "passport": "^0.4.0"
+    "passport": "^0.4.0",
+    "validator": "^12.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
