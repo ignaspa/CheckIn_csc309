@@ -24,7 +24,8 @@
     "config": "^3.2.4",
     "express": "^4.17.1",
     "mongoose": "^5.7.12",
-    "passport": "^0.4.0"
+    "passport": "^0.4.0",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

@@ -50,12 +50,8 @@ class UserNav extends Component {
             return (
                 <Redirect
                     to={{
-                        pathname: '/profile',
-                        state: {
-                            user_id: 0,
-                            profile_id: 0,
-                        }
-                    }} 
+                        pathname: '/profile/' + this.user.username,
+                    }}
                     push={true}/>
             )
         } else if (this.state.redirect == "/addfriend") {

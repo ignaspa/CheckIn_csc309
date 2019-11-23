@@ -1,9 +1,13 @@
 import React, { Component } from "react";
+import { login } from '../../redux/actions.js'
+import { connect } from 'react-redux';
+
 
 import User1 from "../DashboardComponents/DashboardAssets/User1.jpg"
 import User2 from "../DashboardComponents/DashboardAssets/User2.jpg"
 import User3 from "../DashboardComponents/DashboardAssets/User3.jpg"
 import User4 from "../DashboardComponents/DashboardAssets/User4.jpg"
+import ProfilePic from '../assets/profile.png';
 
 let userData = [
     {
@@ -19,11 +23,11 @@ let userData = [
     {
         id: 1,
         isAdmin: false,
-        name: 'Marco Angeli',
+        name: 'Marco',
         friends: [0, 2, 3],
         friend_request: [],
         picture: User2,
-        username: 'MarcoAngeli',
+        username:'MarcoAngelli',
         bio: "henlo",
     },
     {
@@ -34,22 +38,43 @@ let userData = [
         friend_request: [],
         picture: User3,
         username: 'abdamin',
-        bio: "web developer",
+        bio: "web developer", 
     },
 
     {
         id: 3,
         isAdmin: false,
         name: 'Ignas',
-        current_location: 'Gerstein',
         friends: [0, 1, 2],
         friend_request: [],
         picture: User4,
         username: 'iggy',
         bio: "i love my dog carmelo",
-    }
+    },
+        {
+            id: 0,
+            isAdmin: false,
+            name: 'John',
+            bio: "Sup",
+            current_location: 'BA 3200',
+            friends: [1, 2, 3],
+            friend_request: [5],
+            picture: ProfilePic,
+            username: 'user',
+            password: 'user'
+        },
+        {
+            id: 1,
+            isAdmin: true,
+            name: 'admin',
+            current_location: '',
+            friends: [],
+            friend_request: [],
+            picture: '/image/john.png',
+            username: 'admin',
+            password: 'admin'
+        }
 ]
-
 let checkins = [
     {
         id: 0,
@@ -59,7 +84,7 @@ let checkins = [
         message: "309 is tough. help :("
     },
     {
-        id: 2,
+        id: 1,
         action: "eating",
         location: "Sidney Smith",
         time: new Date("October 2, 2019 03:24:00"),
@@ -83,71 +108,84 @@ let oldCheckins = [
         message: "309 is tough. help :("
     },
     {
-        id: 0,
+        id: 1,
         action: "studying",
         location: "Grahams",
         time: new Date("October 28, 2019 03:24:00"),
         message: "309 is tough. help :("
     },
-
-
 ]
+/*
+   Function which returns a user object from a username handle.
+   Returns null if username
+   TODO
+*/
+function getUserFromHandle(handle, user) {
+    for (let i = 0; i < userData.length; i++) {
+        console.log(userData[i].username, handle)
+        if (userData[i].username === handle) {
+            return userData[i];
+        }
+    }
+    return null;
+}
 
 
-export default class Profile extends Component {
+class Profile extends Component {
     constructor(props) {
         super(props);
-        console.log(props)
         this.state = {
             edit_mode: false,
-            user_id: props.location.state.user_id,
-            profile_id: props.location.state.profile_id,
+            //user_id: props.user.id,
+            //profile_id: props.location.state.profile_id,
         }
+        this.user = props.user // User who is logged in
+        this.profile_user = getUserFromHandle(props.match.params.username, this.user); // User whose profile we are looking at
         this.onModeChange = this.onModeChange.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.loginUser = this.props.loginUser;
+        console.log("User: ", this.user);
+        console.log("profile_user", this.profile_user);
 
-        
     }
     onModeChange() {
-        console.log(this.state)
+        this.loginUser(this.user);
+        this.profile_user = this.user;
         this.setState((state, props) => {
             return { edit_mode: !this.state.edit_mode }
         })
+
     }
     handleInputChange(event) {
         const profile_id = this.state.profile_id
-        const user_id = this.state.user_id
 
         const user_index = userData.findIndex(function (u) {
             return u.id === profile_id;
         })
 
-        let newName = userData[user_index].name;
-        let newBio = userData[user_index].bio;
+        let newName = this.user.name;
+        let newBio = this.user.bio;
 
         if (event.target.name === "bio") {
             newBio = event.target.value;
         } else if (event.target.name === "name") {
             newName = event.target.value;
         }
-        userData[user_index].name = newName;
-        userData[user_index].bio = newBio;
+        this.user.name = newName;
+        this.user.bio = newBio;
     }
 
     render() {
         const profile_id = this.state.profile_id
-        const user = userData.find(function (u) {
-            return u.id === profile_id;
-        });
         let profile_header = <ProfileHeader
-            user={user}
+            user={this.profile_user}
             onModeChange={this.onModeChange}
-            user_id={this.state.user_id}
-            profile_id={profile_id}
+            user_id={this.user.id}
+            profile_id={this.profile_user.id}
         />;
         if (this.state.edit_mode) {
             profile_header = <EditProfileHeader
-                user={user}
+                user={this.profile_user}
                 onModeChange={this.onModeChange}
                 handleInputChange={this.handleInputChange}
             />
@@ -191,7 +229,6 @@ class ActionButton extends Component {
     }
 
     addFriend(event) {
-        
         userData[this.user_index].friends.push(this.props.profile_id);
         this.setState((state, props) => {
             return {isFriend: true}
@@ -217,7 +254,6 @@ class ActionButton extends Component {
 }
 
 function ProfileHeader(props) {
-    
     return (
         <table className="profile-section table mx-auto">
             <tbody>
@@ -361,4 +397,14 @@ function CheckIn(props) {
             </div>
         </div>
     )
-}
+};
+
+const mapStateToProps = store => ({
+    user: store.user
+});
+
+const mapDispatchToProps = dispatch => ({
+    loginUser: (user) => dispatch(login(user))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
