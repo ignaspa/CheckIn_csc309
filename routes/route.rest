@@ -1,0 +1,24 @@
+
+### To test checkins API, using REST Client plugin in Visual Studio
+
+GET http://localhost:5000/api/checkins
+
+###
+
+GET http://localhost:5000/api/checkins/0
+
+###
+
+POST http://localhost:5000/api/checkins
+Content-Type: application/json
+
+{
+  "action": "studying",
+  "location": "Gerstein",
+  "message": "A3 for 369!",
+  "userid": "0"
+}
+
+###
+
+DELETE http://localhost:5000/checkins/5dd989021c9d440000ae3754

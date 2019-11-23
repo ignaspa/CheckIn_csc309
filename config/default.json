@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://admin:checkin123@checkin-qeq4y.mongodb.net/test?retryWrites=true&w=majority"
+  "mongoURI": "mongodb+srv://admin:checkin123@checkin-qeq4y.mongodb.net/test?retryWrites=true&w=majority",
+  "jwt_secret": "secret"
 }

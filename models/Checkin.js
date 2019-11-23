@@ -2,10 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Checkin = new Schema({
-    id: {
-        type: Number,
-        required: true
-    },
     action: {
         type: String
     },
@@ -15,7 +11,8 @@ var Checkin = new Schema({
     },
     time: {
         type: Number,
-        required: true
+        required: true,
+        default: Date.now
     },
     message: {
         type: String
