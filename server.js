@@ -9,6 +9,11 @@ const passport = require("passport");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+//load routes
+const users = require("./routes/api/users");
+const checkins = require('./routes/checkins')
+
+
 //connect to mongo db
 const db = config.get("mongoURI");
 mongoose
@@ -16,9 +21,10 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-// route for checkins 
-const checkinRouter = require('./routes/checkins')
-app.use('/checkins', checkinRouter)
+//User routes
+app.use("/api/users", users);
+// Checkin routes
+app.use('/checkins', checkins)
 
 const PORT = process.env.PORT || 5000;
 

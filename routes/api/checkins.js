@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Checkin = require("../models/Checkin")
+const Checkin = require("../../models/Checkin")
 
 // middleware function
 async function getCheckin(req, res, next) {
