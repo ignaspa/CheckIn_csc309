@@ -127,4 +127,25 @@ router.get("/all", (req, res) => {
     });
 });
 
+//  @route PATCH api/users/details
+//  @desc Updates name and bio for User. Responds updated User object.
+//  @access Public
+router.patch("/details", (req, res) => {
+
+  User.updateOne(
+    {email: req.body.email},
+    {
+      // bio: req.body.newbio,
+      $set: { bio: req.body.newbio, name: req.body.newname}
+    });
+  User.findOne({email: req.body.email})
+    .then(item => {
+      return res.json(item);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+});
+
 module.exports = router;
