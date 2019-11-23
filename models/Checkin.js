@@ -15,7 +15,8 @@ var Checkin = new Schema({
     },
     time: {
         type: Number,
-        required: true
+        required: true,
+        default: Date.now
     },
     message: {
         type: String

@@ -16,6 +16,10 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
+// route for checkins 
+const checkinRouter = require('./routes/checkins')
+app.use('/checkins', checkinRouter)
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Backend Server Running On Port ${PORT}`));

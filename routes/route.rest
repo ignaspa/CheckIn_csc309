@@ -1,0 +1,21 @@
+GET http://localhost:5000/checkins
+
+###
+
+GET http://localhost:5000/checkin/0
+
+###
+
+POST http://localhost:5000/checkins
+Content-Type: application/json
+
+{
+  "action": "eating",
+  "location": "BA3200",
+  "message": "I'm studying 309!",
+  "userid": "0"
+}
+
+###
+
+DELETE http://localhost:5000/checkins/0
