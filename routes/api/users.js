@@ -136,11 +136,12 @@ router.patch("/details", (req, res) => {
     {email: req.body.email},
     {
       // bio: req.body.newbio,
-      $set: { name: req.body.newname}
+      $set: { bio: req.body.newbio, name: req.body.newname}
+    });
+  User.findOne({email: req.body.email})
+    .then(item => {
+      return res.json(item);
     })
-    // .then(item => {
-    //   return res.json(item);
-    // })
     .catch((err) => {
       console.log(err);
     })
