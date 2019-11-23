@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
+
+// load user model
 const Checkin = require("../../models/Checkin")
 
-// middleware function
+// middleware functions
 async function getCheckin(req, res, next) {
     try {
       checkin = await Checkin.findById(req.params.id)
@@ -16,8 +18,6 @@ async function getCheckin(req, res, next) {
     res.checkin = checkin
     next()
   }
-
-module.exports = router
 
 // Get all checkins
 router.get('/', async (req, res) => {
@@ -34,6 +34,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', getCheckin, (req, res) => {
     res.json(res.checkin)
   })
+  
 
 // Create one checkin
 router.post('/', async (req, res) => {
@@ -58,8 +59,11 @@ router.post('/', async (req, res) => {
 router.delete('/:id', getCheckin, async (req, res) => {
     try {
       await res.checkin.remove()
-      res.json({ message: 'Deleted This Subscriber' })
+      res.json({ message: 'Deleted checkin' })
     } catch(err) {
       res.status(500).json({ message: err.message })
     }
   })
+
+  module.exports = router
+

@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 //load routes
 const users = require("./routes/api/users");
-const checkins = require('./routes/checkins')
+const checkins = require('./routes/api/checkins')
 
 
 //connect to mongo db
@@ -23,8 +23,9 @@ mongoose
 
 //User routes
 app.use("/api/users", users);
+
 // Checkin routes
-app.use('/checkins', checkins)
+app.use('/api/checkins', checkins)
 
 const PORT = process.env.PORT || 5000;
 
