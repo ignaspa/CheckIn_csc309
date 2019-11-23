@@ -194,10 +194,10 @@ class Profile extends Component {
             <div>
                 {profile_header}
                 <CurrentLocation
-                    profile_id={profile_id}
+                    profile_id={this.profile_user.id}
                 />
                 <PastLocations
-                    profile_id={profile_id}
+                    profile_id={this.profile_user.id}
                 />
             </div>
         );

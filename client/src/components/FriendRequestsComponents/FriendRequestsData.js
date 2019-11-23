@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { login } from '../../redux/actions.js'
+import { connect } from 'react-redux';
+
 
 import User1 from "../DashboardComponents/DashboardAssets/User1.jpg"
 import User2 from "../DashboardComponents/DashboardAssets/User2.jpg"
@@ -132,14 +135,13 @@ function findGivenUser(currentUserId, userData, size) {
     }
 }
 
-let user_id = 0; // ID of the current user, we would otherwise have a server call to see the user_id
 
-export default class AllFriendRequests extends Component {
+class AllFriendRequests extends Component {
 
     constructor(props) {
         super(props)
         this.user_index = ALL_USERS.findIndex(function (u) {
-            return u.id === user_id;
+            return u.id === props.user.id;
         })
         this.state = {
             allUsers: ALL_USERS
@@ -259,3 +261,13 @@ class FriendRequest extends Component {
 
     }
 }
+
+const mapStateToProps = store => ({
+    user: store.user
+});
+
+const mapDispatchToProps = dispatch => ({
+    loginUser: (user) => dispatch(login(user))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllFriendRequests);
