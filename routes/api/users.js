@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const signToken = require("../../utils/jwtSign");
+const passport = require("passport");
 
 //load input validation
 const validateLoginInput = require("../../validation/login");
@@ -126,5 +127,17 @@ router.get("/all", (req, res) => {
       return res.status(500).json(err);
     });
 });
+
+//  @route DELETE api/users/:id
+//  @desc Delete user
+//  @access Private. Endpoint protected by passport middleware and can only be accessed by the ADMIN User.          ADMIN User cannot delete itself.
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    console.log("testing delete user");
+    return res.json("Hey");
+  }
+);
 
 module.exports = router;
