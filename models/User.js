@@ -8,7 +8,7 @@ var User = new Schema({
   },
   bio: {
     type: String,
-  }
+  },
   email: {
     type: String,
     required: true
