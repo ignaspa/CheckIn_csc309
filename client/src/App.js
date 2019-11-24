@@ -12,6 +12,7 @@ import Profile from "./components/ProfileComponents/Profile"
 import ProfileLinks from "./components/ProfileComponents/Profile-links"
 import UserDashboard from "./components/DashboardComponents/UserDashboard"
 import FriendRequestsSection from "./components/FriendRequestsComponents/FriendRequests"
+import ChangePicture from "./components/ProfileComponents/ChangePicture"
 
 class App extends React.Component {
   render() {
@@ -30,6 +31,7 @@ class App extends React.Component {
           <Route exact path="/friend-requests" component={FriendRequestsSection} />
           <Route exact path="/deleteuser" component={DeleteUser} />
           <Route exact path="/addfriend" component={AddFriend} />
+          <Route exact path="/changepic" component={ChangePicture} />
         </Switch>
       </BrowserRouter>
     );

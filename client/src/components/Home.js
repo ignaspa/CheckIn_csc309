@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "../css/App.css"
-  ; import Slider from "./SlideComponents/Slider"
+import "../css/App.css";
+import Slider from "./SlideComponents/Slider"
 import { Link } from "react-router-dom";
 
 const mission_description = "We know what if feels like to be a commuter student on campus who is working around strangers. We know what it feels like to be hungry but lacking a motivation to spend the time eating alone. We know what it's like to be bored studying  alone. Our platform is a tool friends can use to more easily find common places of interest, live. Suddenly, you always know where to head for good vibes!";

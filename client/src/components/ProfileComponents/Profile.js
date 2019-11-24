@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Link } from "react-router-dom";
 import User1 from "../DashboardComponents/DashboardAssets/User1.jpg"
 import User2 from "../DashboardComponents/DashboardAssets/User2.jpg"
 import User3 from "../DashboardComponents/DashboardAssets/User3.jpg"
@@ -106,7 +106,7 @@ export default class Profile extends Component {
         this.onModeChange = this.onModeChange.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
 
-        
+
     }
     onModeChange() {
         console.log(this.state)
@@ -173,7 +173,7 @@ class ActionButton extends Component {
         this.user_index = userData.findIndex(function (u) {
             return u.id === props.user_id;
         })
-        this.state = {isFriend: userData[this.user_index].friends.includes(props.profile_id)}
+        this.state = { isFriend: userData[this.user_index].friends.includes(props.profile_id) }
         this.removeFriend = this.removeFriend.bind(this)
         this.addFriend = this.addFriend.bind(this)
 
@@ -185,16 +185,16 @@ class ActionButton extends Component {
             userData[this.user_index].friends.splice(index_to_remove, 1);
         }
         this.setState((state, props) => {
-            return {isFriend: false}
+            return { isFriend: false }
         })
         console.log(userData[this.user_index].friends)
     }
 
     addFriend(event) {
-        
+
         userData[this.user_index].friends.push(this.props.profile_id);
         this.setState((state, props) => {
-            return {isFriend: true}
+            return { isFriend: true }
         })
         console.log(userData[this.user_index].friends)
     }
@@ -206,7 +206,7 @@ class ActionButton extends Component {
             label = "Remove Friend";
             onClickAction = this.removeFriend;
         }
-        
+
         if (this.props.user_id != this.props.profile_id && !this.state.isFriend) {
             label = "Add Friend"
             onClickAction = this.addFriend;
@@ -217,7 +217,7 @@ class ActionButton extends Component {
 }
 
 function ProfileHeader(props) {
-    
+
     return (
         <table className="profile-section table mx-auto">
             <tbody>
@@ -236,9 +236,18 @@ function ProfileHeader(props) {
                     </th>
                     <th>
                         <ActionButton
-                        onModeChange={props.onModeChange}
-                        user_id={props.user_id}
-                        profile_id={props.profile_id}/>
+                            onModeChange={props.onModeChange}
+                            user_id={props.user_id}
+                            profile_id={props.profile_id} />
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <button type="button" class="btn btn-primary attractionbutton">
+                            <Link to={"/changepic"} className="nav-link text-white">
+                                Change Profile Picture
+                            </Link>
+                        </button>
                     </th>
                 </tr>
             </tbody>
@@ -254,7 +263,7 @@ function EditProfileHeader(props) {
 
             <tr>
                 <th>
-                    <img className="profile-pic rounded-circle border m-3 text-center" src={props.user.picture} alt="Profile"/>
+                    <img className="profile-pic rounded-circle border m-3 text-center" src={props.user.picture} alt="Profile" />
 
                 </th>
                 <th>
