@@ -40,22 +40,14 @@ export default class CheckInUpdate extends Component {
     }
 
     seeProfile = event => {
-        console.log("see profile clicked")
-        console.log(this.props.id)
         this.setState({redirect: "/profile"})
     }
-   
     render() {
-
         if (this.state.redirect == "/profile") {
             return(
                 <Redirect
                         to={{
-                            pathname: '/profile',
-                            state: {
-                                user_id: 0,
-                                profile_id: this.props.id,
-                        }
+                            pathname: '/profile/' + this.props.user.username,
                  }}
                  push={true}/>
             );
