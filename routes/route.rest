@@ -25,29 +25,22 @@ DELETE http://localhost:5000/api/checkins/5dd989021c9d440000ae3754
 
 ### 
 
-PATCH http://localhost:5000/api/users/friends/add/5dd8fe08e57b41fcdd92d492
+PATCH http://localhost:5000/api/users/friends/5dd8fe08e57b41fcdd92d492
 Content-Type: application/json 
 
 {
-  "friendID": "5dd8fc74cfc26ffc10844234"
+  "friendID": "5dd8fc74cfc26ffc10844234",
+  "action": "add"
 }
 
 ###
 
-PATCH http://localhost:5000/api/users/friends/delete/5dd8fe08e57b41fcdd92d492
+PATCH http://localhost:5000/api/users/requests/5dd8fe08e57b41fcdd92d492
 Content-Type: application/json 
 
 {
-  "friendID": "5dd8fc74cfc26ffc10844234"
-}
-
-### 
-
-PATCH http://localhost:5000/api/users/requests/add/5dd8fe08e57b41fcdd92d492
-Content-Type: application/json 
-
-{
-  "requestFriendID": "5dd8fc74cfc26ffc10844234"
+  "requestFriendID": "5dd8fc74cfc26ffc10844234",
+  "action": "delete"
 }
 
 ###

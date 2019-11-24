@@ -142,11 +142,24 @@ async function getUser(req, res, next) {
   next()
 }
 
-// Add friend
-router.patch("/friends/add/:id", getUser, async (req, res) => {
-  if (req.body.friendID != null && !res.user.friends.includes(req.body.friendID)) {
-    res.user.friends.push(req.body.friendID)  
-  } 
+//  @route PATCH api/users/friends
+//  @desc Adds or deletes friends for a given user. Need to pass on "action" as "add"/"delete"
+//  @access Public
+router.patch("/friends/:id", getUser, async (req, res) => {
+  if (req.body.friendID != null) {
+    if (req.body.action == "add" & !res.user.friends.includes(req.body.friendID)) {
+      res.user.friends.push(req.body.friendID)  
+    }
+    else if (req.body.action == "delete") {
+      // find index for user in friends
+      let userIndex = res.user.friends.findIndex(userID => {
+        return userID == req.body.friendID
+      })
+      if (typeof(userIndex) != undefined) {
+        res.user.friends.splice(userIndex, 1)
+      }    
+    }
+  }
   try {
     const updatedUser = await res.user.save()
     res.json(updatedUser)
@@ -155,14 +168,24 @@ router.patch("/friends/add/:id", getUser, async (req, res) => {
   }
 })
 
-// delete friend
-router.patch("/friends/delete/:id", getUser, async (req, res) => {
-  let userIndex = res.user.friends.findIndex(userID => {
-            return userID == req.body.friendID
-          })
-  if (typeof(userIndex) != undefined) {
-      res.user.friends.splice(userIndex, 1)
-  }        
+//  @route PATCH api/users/requests
+//  @desc Adds or deletes friend requests for a given user. Need to pass on "action" as "add"/"delete"
+//  @access Public
+router.patch("/requests/:id", getUser, async (req, res) => {
+  if (req.body.requestFriendID != null) {
+    if (req.body.action == "add" & !res.user.friendRequests.includes(req.body.requestFriendID)) {
+      res.user.friendRequests.push(req.body.requestFriendID)  
+    }
+    else if (req.body.action == "delete") {
+      // find index for user in friends
+      let userIndex = res.user.friendRequests.findIndex(userID => {
+        return userID == req.body.requestFriendID
+      })
+      if (typeof(userIndex) != undefined) {
+        res.user.friendRequests.splice(userIndex, 1)
+      }    
+    }
+  }
   try {
     const updatedUser = await res.user.save()
     res.json(updatedUser)
@@ -171,33 +194,25 @@ router.patch("/friends/delete/:id", getUser, async (req, res) => {
   }
 })
 
-// Add friend request
-router.patch("/requests/add/:id", getUser, async (req, res) => {
-  if (req.body.requestFriendID != null && !res.user.friendRequests.includes(req.body.requestFriendID)) {
-    res.user.friendRequests.push(req.body.requestFriendID)  
-  } 
-  try {
-    const updatedUser = await res.user.save()
-    res.json(updatedUser)
-  } catch(err) {
-    res.status(400).json({ message: err.message })
-  }
-})
+//  @route PATCH api/users/details
+//  @desc Updates name and bio for User. Responds updated User object.
+//  @access Public
+router.patch("/details", (req, res) => {
 
-// delete friend request 
-router.patch("/requests/delete/:id", getUser, async (req, res) => {
-  let userIndex = res.user.friendRequests.findIndex(userID => {
-            return userID == req.body.requestFriendID
-          })
-  if (typeof(userIndex) != undefined) {
-      res.user.friendRequests.splice(userIndex, 1)
-  }        
-  try {
-    const updatedUser = await res.user.save()
-    res.json(updatedUser)
-  } catch(err) {
-    res.status(400).json({ message: err.message })
-  }
-})
+  User.updateOne(
+    {email: req.body.email},
+    {
+      // bio: req.body.newbio,
+      $set: { bio: req.body.newbio, name: req.body.newname}
+    });
+  User.findOne({email: req.body.email})
+    .then(item => {
+      return res.json(item);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+});
 
 module.exports = router;
