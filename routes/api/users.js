@@ -131,7 +131,6 @@ router.get("/all", (req, res) => {
     });
 });
 
-<<<<<<< HEAD
 //  @route DELETE api/users/:id
 //  @desc Delete user
 //  @access Private. Endpoint protected by passport middleware and can only be accessed by the ADMIN User.          ADMIN User cannot delete itself.
@@ -143,7 +142,6 @@ router.delete(
     return res.json("Hey");
   }
 );
-=======
 //  @route PATCH api/users/friends
 //  @desc Adds or deletes friends for a given user. Need to pass on "action" as "add"/"delete"
 //  @access Public
@@ -248,6 +246,5 @@ router.patch("/details", (req, res) => {
     })
 
 });
->>>>>>> 10733f83e532ebb45f96fcbd498c496e0f7046be
 
 module.exports = router;
