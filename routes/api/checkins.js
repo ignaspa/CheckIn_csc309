@@ -36,6 +36,11 @@ router.get(
 );
 
 // Create one checkin
+// {
+//   action: <action>, 
+//   location: <location>, 
+//   message: <message>
+// }
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
@@ -45,15 +50,14 @@ router.post(
       location: req.body.location,
       time: req.body.time,
       message: req.body.message,
-      userid: req.body.userid
+      userid: req.user.id
     });
 
     try {
       const newCheckin = await checkin.save();
-      User.findOneAndUpdate(
-        { _id: req.body.userid },
+      User.findByIdAndUpdate(req.user,
         { activeCheckin: newCheckin.id }
-      ).catch(err => {
+      ).catch((err) => {
         res.status(400).json({ message: err.message });
       });
 
@@ -66,24 +70,34 @@ router.post(
 );
 
 // Delete one checkin
+// expects
+// {
+//   checkinID: <checkinIDToDelete>
+// }
 router.delete(
-  "/:id",
+  "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    let removed = await Checkin.findOneAndDelete({ _id: req.params.id }).catch(
-      err => {
+    
+    let removed = await Checkin.findOneAndDelete({id: req.body.checkinId }
+      ).catch((err) => {
         res.status(400).json({ message: err.message });
       }
     );
-    let isActive = false;
+    
+    let user = await User.find({id: removed.userId})
+                .catch((error) => {
+                  res.status(400).json({message: error})
+                })
 
-    await User.findOneAndUpdate(
-      { _id: removed.userid },
-      { $pull: { pastCheckins: removed.id } }
-    ).catch(err => {
-      res.status(400).json({ message: err.message });
-    });
-
+    // if update being deleted is the active one
+    if (user.activeCheckin == removed.id) {
+      await User.findAndUpdate({id: removed.userId},
+        { activeCheckin: null}
+      ).catch((err) => {
+        res.status(400).json({ message: err.message });
+      });  
+    }
     res.json({ message: "Deleted checkin", checkin: removed });
   }
 );
