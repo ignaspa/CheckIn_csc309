@@ -91,8 +91,8 @@ router.delete(
                 })
 
     // if update being deleted is the active one
-    if (user.activeCheckin == removed.id) {
-      await User.findAndUpdate({id: removed.userId},
+    if (user.activeCheckin == req.body.checkinId) {
+      User.findAndUpdate({id: removed.userId},
         { activeCheckin: null}
       ).catch((err) => {
         res.status(400).json({ message: err.message });
