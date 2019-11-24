@@ -12,4 +12,3 @@ const getCheckinsForUser = async () => {
     });
 }
 
-// Get user from id 
