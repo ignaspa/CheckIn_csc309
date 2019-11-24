@@ -127,6 +127,73 @@ router.get("/all", (req, res) => {
     });
 });
 
+// middleware function to get specific user 
+async function getUser(req, res, next) {
+  try {
+    user = await User.findById(req.params.id)
+    if (user == null) {
+      return res.status(404).json({ message: 'Cant find user'})
+    }
+  } catch(err){
+    return res.status(500).json({ message: err.message })
+  }
+
+  res.user = user
+  next()
+}
+
+//  @route PATCH api/users/friends
+//  @desc Adds or deletes friends for a given user. Need to pass on "action" as "add"/"delete"
+//  @access Public
+router.patch("/friends/:id", getUser, async (req, res) => {
+  if (req.body.friendID != null) {
+    if (req.body.action == "add" & !res.user.friends.includes(req.body.friendID)) {
+      res.user.friends.push(req.body.friendID)  
+    }
+    else if (req.body.action == "delete") {
+      // find index for user in friends
+      let userIndex = res.user.friends.findIndex(userID => {
+        return userID == req.body.friendID
+      })
+      if (typeof(userIndex) != undefined) {
+        res.user.friends.splice(userIndex, 1)
+      }    
+    }
+  }
+  try {
+    const updatedUser = await res.user.save()
+    res.json(updatedUser)
+  } catch(err) {
+    res.status(400).json({ message: err.message })
+  }
+})
+
+//  @route PATCH api/users/requests
+//  @desc Adds or deletes friend requests for a given user. Need to pass on "action" as "add"/"delete"
+//  @access Public
+router.patch("/requests/:id", getUser, async (req, res) => {
+  if (req.body.requestFriendID != null) {
+    if (req.body.action == "add" & !res.user.friendRequests.includes(req.body.requestFriendID)) {
+      res.user.friendRequests.push(req.body.requestFriendID)  
+    }
+    else if (req.body.action == "delete") {
+      // find index for user in friends
+      let userIndex = res.user.friendRequests.findIndex(userID => {
+        return userID == req.body.requestFriendID
+      })
+      if (typeof(userIndex) != undefined) {
+        res.user.friendRequests.splice(userIndex, 1)
+      }    
+    }
+  }
+  try {
+    const updatedUser = await res.user.save()
+    res.json(updatedUser)
+  } catch(err) {
+    res.status(400).json({ message: err.message })
+  }
+})
+
 //  @route PATCH api/users/details
 //  @desc Updates name and bio for User. Responds updated User object.
 //  @access Public
