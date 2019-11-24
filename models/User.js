@@ -19,17 +19,17 @@ var User = new Schema({
   },
   friends: [
     {
-      type: Number
+      type: String
     }
   ],
   friendRequests: [
     {
-      type: Number
+      type: String
     }
   ],
   pastCheckins: [
     {
-      type: Number
+      type: String 
     }
   ],
   password: {

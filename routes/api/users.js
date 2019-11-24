@@ -127,4 +127,77 @@ router.get("/all", (req, res) => {
     });
 });
 
+// middleware function to get specific user 
+async function getUser(req, res, next) {
+  try {
+    user = await User.findById(req.params.id)
+    if (user == null) {
+      return res.status(404).json({ message: 'Cant find user'})
+    }
+  } catch(err){
+    return res.status(500).json({ message: err.message })
+  }
+
+  res.user = user
+  next()
+}
+
+// Add friend
+router.patch("/friends/add/:id", getUser, async (req, res) => {
+  if (req.body.friendID != null && !res.user.friends.includes(req.body.friendID)) {
+    res.user.friends.push(req.body.friendID)  
+  } 
+  try {
+    const updatedUser = await res.user.save()
+    res.json(updatedUser)
+  } catch(err) {
+    res.status(400).json({ message: err.message })
+  }
+})
+
+// delete friend
+router.patch("/friends/delete/:id", getUser, async (req, res) => {
+  let userIndex = res.user.friends.findIndex(userID => {
+            return userID == req.body.friendID
+          })
+  if (typeof(userIndex) != undefined) {
+      res.user.friends.splice(userIndex, 1)
+  }        
+  try {
+    const updatedUser = await res.user.save()
+    res.json(updatedUser)
+  } catch(err) {
+    res.status(400).json({ message: err.message })
+  }
+})
+
+// Add friend request
+router.patch("/requests/add/:id", getUser, async (req, res) => {
+  if (req.body.requestFriendID != null && !res.user.friendRequests.includes(req.body.requestFriendID)) {
+    res.user.friendRequests.push(req.body.requestFriendID)  
+  } 
+  try {
+    const updatedUser = await res.user.save()
+    res.json(updatedUser)
+  } catch(err) {
+    res.status(400).json({ message: err.message })
+  }
+})
+
+// delete friend request 
+router.patch("/requests/delete/:id", getUser, async (req, res) => {
+  let userIndex = res.user.friendRequests.findIndex(userID => {
+            return userID == req.body.requestFriendID
+          })
+  if (typeof(userIndex) != undefined) {
+      res.user.friendRequests.splice(userIndex, 1)
+  }        
+  try {
+    const updatedUser = await res.user.save()
+    res.json(updatedUser)
+  } catch(err) {
+    res.status(400).json({ message: err.message })
+  }
+})
+
 module.exports = router;
