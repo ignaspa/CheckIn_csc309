@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
 
-// load user model
+// load checkin model
 const Checkin = require("../../models/Checkin")
+// load user model 
+const User = require("../../models/User")
 
 // middleware functions
 async function getCheckin(req, res, next) {
@@ -54,9 +56,22 @@ router.post('/', async (req, res) => {
     
     try {
         const newCheckin = await checkin.save()
+        
+        User.findById(req.body.userid)
+          .then(item => {
+            let pastCheckins = item.pastCheckins
+            pastCheckins.push(newCheckin.id)
+            item.pastCheckins = pastCheckins
+            item.activeCheckin = newCheckin.id
+            item.save()
+          })
+          .catch((err) => {
+            res.status(400).json({ message: err.message})
+          })
+
         res.status(201).json(newCheckin)
     } catch (error) {
-        res.status(400).json({ message: err.message })
+        res.status(400).json({ message: error.message })
     }
 })
 

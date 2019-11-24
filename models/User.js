@@ -18,7 +18,7 @@ var User = new Schema({
     required: true
   },
   activeCheckin: {
-    type: Number
+    type: String
   },
   friends: [
     {
