@@ -5,7 +5,7 @@ GET http://localhost:5000/api/checkins
 
 ###
 
-GET http://localhost:5000/api/checkins/0
+GET http://localhost:5000/api/checkins/5dd9dc832df28b855ae89edf
 
 ###
 
@@ -14,11 +14,45 @@ Content-Type: application/json
 
 {
   "action": "studying",
-  "location": "Gerstein",
-  "message": "A3 for 369!",
-  "userid": "0"
+  "location": "gerstein",
+  "message": "369 will be the end of me",
+  "userid": "5dd8fe08e57b41fcdd92d492"
 }
 
 ###
 
-DELETE http://localhost:5000/checkins/5dd989021c9d440000ae3754
+DELETE http://localhost:5000/api/checkins/5ddad43b81eb239ce474e326
+
+### 
+
+PATCH http://localhost:5000/api/users/friends/5dd8fe08e57b41fcdd92d492
+Content-Type: application/json 
+
+{
+  "friendID": "5dd8fc74cfc26ffc10844234",
+  "action": "delete"
+}
+
+###
+
+PATCH http://localhost:5000/api/users/requests/5dd8fe08e57b41fcdd92d492
+Content-Type: application/json 
+
+{
+  "requestFriendID": "5dd8fc74cfc26ffc10844234",
+  "action": "delete"
+}
+
+###
+
+PATCH http://localhost:5000/api/users/requests/delete/5dd8fe08e57b41fcdd92d492
+Content-Type: application/json 
+
+{
+  "requestFriendID": "5dd8fc74cfc26ffc10844234"
+}
+
+###
+
+GET http://localhost:5000/api/users/all
+

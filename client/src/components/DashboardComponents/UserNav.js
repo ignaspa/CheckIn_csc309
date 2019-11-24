@@ -2,24 +2,15 @@ import React, { Component } from "react";
 import "../../css/UserDashboard.css"
 import User1 from "./DashboardAssets/User1.jpg"
 import {Redirect} from "react-router";
+import { connect } from 'react-redux';
+import {authenticateUser, getUserFromId } from '../MockData.js'
 
-export default class UserNav extends Component {
+class UserNav extends Component {
 
     // We would use a server call to get the actual current user. This is just a placeholder
     constructor(props) {
-        super(props)
-        this.user = {
-            id: 0,
-            isAdmin: false,
-            name: 'Sonia',
-            current_location: 'BA 3200',
-            friends: [1, 2, 3],
-            friend_request: [5],
-            picture: User1,
-            username: 'SoniaZaldana',
-            bio: "I'm so tired",
-            time: "10"
-        }
+        super(props);
+        this.user = getUserFromId(props.userId);
         this.state = {
             redirect: ""
         }
@@ -60,12 +51,8 @@ export default class UserNav extends Component {
             return (
                 <Redirect
                     to={{
-                        pathname: '/profile',
-                        state: {
-                            user_id: 0,
-                            profile_id: 0,
-                        }
-                    }} 
+                        pathname: '/profile/' + this.user.username,
+                    }}
                     push={true}/>
             )
         } else if (this.state.redirect == "/addfriend") {
@@ -110,3 +97,11 @@ export default class UserNav extends Component {
         );
     }
 }
+
+const mapStateToProps = store => ({
+    userId: store.userId
+})
+const mapDispatchToProps = dispatch => ({
+
+})
+export default connect(mapStateToProps, mapDispatchToProps)(UserNav);

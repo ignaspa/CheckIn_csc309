@@ -11,8 +11,10 @@ app.use(bodyParser.json());
 
 //load routes
 const users = require("./routes/api/users");
-const checkins = require('./routes/api/checkins')
-
+const checkins = require("./routes/api/checkins");
+const friends = require("./routes/api/friends");
+const changePassword = require("./routes/api/changePassword");
+const requests = require("./routes/api/requests")
 
 //connect to mongo db
 const db = config.get("mongoURI");
@@ -21,11 +23,26 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
+//Passport middleware
+app.use(passport.initialize());
+
+// Passport Config
+require("./utils/passportMiddleware")(passport);
+
 //User routes
 app.use("/api/users", users);
 
 // Checkin routes
-app.use('/api/checkins', checkins)
+app.use("/api/checkins", checkins);
+
+//change password routes
+app.use("/api/changePassword", changePassword);
+
+// Friend routes
+app.use("/api/friends", friends);
+
+// Requests routes 
+app.use("/api/requests", requests);
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,26 +1,15 @@
 const express = require('express')
 const router = express.Router()
+const passport = require("passport");
 
-// load user model
+
+// load checkin model
 const Checkin = require("../../models/Checkin")
-
-// middleware functions
-async function getCheckin(req, res, next) {
-    try {
-      checkin = await Checkin.findById(req.params.id)
-      if (checkin == null) {
-        return res.status(404).json({ message: 'Cant find checkin'})
-      }
-    } catch(err){
-      return res.status(500).json({ message: err.message })
-    }
-  
-    res.checkin = checkin
-    next()
-  } 
+// load user model 
+const User = require("../../models/User")
 
 // Get all checkins
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
         const checkins = await Checkin.find()
         res.json(checkins)
@@ -31,7 +20,7 @@ router.get('/', async (req, res) => {
 })
   
 // Get Checkins for given user id
-router.get('/:id', async (req, res) => {
+router.get('/:id', passport.authenticate("jwt", { session: false }), async (req, res) => {
   try {
     const checkins = await Checkin.find({userid: req.params.id})
     res.json(checkins)
@@ -42,7 +31,7 @@ router.get('/:id', async (req, res) => {
 
 
 // Create one checkin
-router.post('/', async (req, res) => {
+router.post('/', passport.authenticate("jwt", { session: false }), async (req, res) => {
 
     const checkin = new Checkin({
         action: req.body.action, 
@@ -54,20 +43,35 @@ router.post('/', async (req, res) => {
     
     try {
         const newCheckin = await checkin.save()
+        User.findOneAndUpdate({_id: req.body.userid},
+            { $push: { "pastCheckins": newCheckin.id }})
+        .catch((err) => {
+            res.status(400).json({message: err.message})
+          })
+
         res.status(201).json(newCheckin)
     } catch (error) {
-        res.status(400).json({ message: err.message })
+        res.status(400).json({ message: error.message })
     }
 })
 
 // Delete one checkin
-router.delete('/:id', getCheckin, async (req, res) => {
-    try {
-      await res.checkin.remove()
-      res.json({ message: 'Deleted checkin' })
-    } catch(err) {
-      res.status(500).json({ message: err.message })
-    }
+router.delete('/:id', passport.authenticate("jwt", { session: false }), async (req, res) => {
+  
+  let removed = await Checkin.findOneAndDelete({_id: req.params.id})
+  .catch((err) => {
+    res.status(400).json({message: err.message})
+  })
+  
+  await User.findOneAndUpdate({_id: removed.userid},
+    { $pull: { "pastCheckins": removed.id }})
+  .catch((err) => {
+    res.status(400).json({message: err.message})
+  })
+
+  res.json({ message: 'Deleted checkin', 
+      checkin: removed })  
+
   })
 
   module.exports = router
