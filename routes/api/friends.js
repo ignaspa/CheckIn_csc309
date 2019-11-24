@@ -6,17 +6,18 @@ const router = express.Router()
 const User = require("../../models/User")
 
 //  @route PATCH api/users/friends
-//  @desc Adds or deletes friends for a given user. Need to pass on "action" as "add"/"delete"
-//  @access Public
-router.patch("/:id", passport.authenticate("jwt", { session: false }), async (req, res) => {
+//  @desc Adds friends for a given user. 
+//  @access Private
+// Expects:
+// {
+//     friendID: <your friends id>
+// }
+router.patch("/add", passport.authenticate("jwt", { session: false }), async (req, res) => {
 
-    const id = req.params.id
-
-    if (req.body.action == "add") {
-
+    const id = req.user.id
       // add yourself to your friend's list 
       let friend = await User.findOneAndUpdate({_id: req.body.friendID},
-        { $push: { "friends": req.params.id }})
+        { $push: { "friends": id }})
       .catch((err) => {
         res.status(400).json({message: err.message})
       })
@@ -28,13 +29,23 @@ router.patch("/:id", passport.authenticate("jwt", { session: false }), async (re
       .catch((err) => {
         res.status(400).json({message: err.message})
       })
+      res.json(user)  
+  })
 
-      res.json(user)
-    }
-    else if (req.body.action == "delete") { 
+//  @route PATCH api/users/friends
+//  @desc Deletes friends for a given user. 
+//  @access Private
+// Expects:
+// {
+//     friendID: <your friends id>
+// }
+router.patch("/delete", passport.authenticate("jwt", { session: false }), async (req, res) => {
+
+    const id = req.user.id
+
       // delete yourself from friend's list
       User.findOneAndUpdate({_id: req.body.friendID},
-        { $pull: { "friends": req.params.id }})
+        { $pull: { "friends": id }})
       .catch((err) => {
         res.status(400).json({message: err.message})
       })
@@ -48,38 +59,7 @@ router.patch("/:id", passport.authenticate("jwt", { session: false }), async (re
         .then((user) => {
           return res.json(user);
         })
-      }
   })
 
-//  @route PATCH api/users/requests
-//  @desc Adds or deletes friend requests for a given user. Need to pass on "action" as "add"/"delete"
-//  @access Public
-router.patch("/requests/:id", passport.authenticate("jwt", { session: false }), async (req, res) => {
-  const id = req.params.id
-
-    if (req.body.action == "add") {
-      // add friend to your list of requests
-      let user = await User.findOneAndUpdate({_id: id},
-        { $push: { "friendRequests": req.body.requestFriendID }}, 
-        { new: true })
-      .catch((err) => {
-        res.status(400).json({message: err.message})
-      })
-
-      res.json(user)
-    }
-    else if (req.body.action == "delete") {
-      // delete friend from your friend requests
-      User.findOneAndUpdate({_id: id}, 
-        { $pull: {"friendRequests": req.body.requestFriendID}}, 
-        {new: true})
-        .catch((err) => {
-            res.status(400).json({message: err.message})
-        })
-        .then((user) => {
-          return res.json(user);
-        })
-      }
-})
 
 module.exports = router
