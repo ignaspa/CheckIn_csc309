@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const signToken = require("../../utils/jwtSign");
+const passport = require("passport");
+
+// to validate object IDs
+const { ObjectID } = require("mongodb");
 
 //load input validation
 const validateLoginInput = require("../../validation/login");
@@ -124,6 +128,39 @@ router.get("/all", (req, res) => {
     .catch(err => {
       console.log(err);
       return res.status(500).json(err);
+    });
+});
+
+//  @route DELETE api/users/:id
+//  @desc Delete user
+//  @access Private. Endpoint protected by passport middleware and can only be accessed by the ADMIN User.          ADMIN User cannot delete itself.
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    User.findByIdAndRemove({ _id: req.params.id }).then(() =>
+      res.json({ sucess: "true" })
+    );
+  }
+);
+
+//  @route PATCH api/users/details
+//  @desc Updates name and bio for User. Responds updated User object.
+//  @access Public
+router.patch("/details", passport.authenticate("jwt", { session: false }), (req, res) => {
+
+  User.updateOne(
+    { email: req.body.email },
+    {
+      $set: { bio: req.body.newbio, name: req.body.newname }
+    }
+  );
+  User.findOne({ email: req.body.email })
+    .then(item => {
+      return res.json(item);
+    })
+    .catch(err => {
+      console.log(err);
     });
 });
 
