@@ -79,6 +79,21 @@ router.post('/', async (req, res) => {
 router.delete('/:id', getCheckin, async (req, res) => {
     try {
       await res.checkin.remove()
+      let checkinId = res.id
+      User.findById(res.checkin.userid)
+          .then(item => {
+            let checkinIndex = item.pastCheckins.findIndex(checkinID => {
+              return checkinID == res.checkinID
+            })
+            if (typeof(checkinIndex) != undefined) {
+              item.pastCheckins.splice(checkinIndex, 1)
+            } 
+            item.save()
+          })
+          .catch((err) => {
+            res.status(400).json({ message: err.message})
+          })
+
       res.json({ message: 'Deleted checkin' })
     } catch(err) {
       res.status(500).json({ message: err.message })
