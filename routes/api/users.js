@@ -5,7 +5,7 @@ const signToken = require("../../utils/jwtSign");
 const passport = require("passport");
 
 // to validate object IDs
-const { ObjectID } = require('mongodb')
+const { ObjectID } = require("mongodb");
 
 //load input validation
 const validateLoginInput = require("../../validation/login");
@@ -138,8 +138,9 @@ router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    console.log("testing delete user");
-    return res.json("Hey");
+    User.findByIdAndRemove({ _id: req.params.id }).then(() =>
+      res.json({ sucess: "true" })
+    );
   }
 );
 
@@ -149,18 +150,18 @@ router.delete(
 router.patch("/details", passport.authenticate("jwt", { session: false }), (req, res) => {
 
   User.updateOne(
-    {email: req.body.email},
+    { email: req.body.email },
     {
-      $set: { bio: req.body.newbio, name: req.body.newname}
-    });
-  User.findOne({email: req.body.email})
+      $set: { bio: req.body.newbio, name: req.body.newname }
+    }
+  );
+  User.findOne({ email: req.body.email })
     .then(item => {
       return res.json(item);
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
-    })
-
+    });
 });
 
 module.exports = router;
