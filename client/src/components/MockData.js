@@ -8,6 +8,10 @@ import User6 from "./FriendRequestsComponents/FriendRequestAssets/User6.jpg";
 import User7 from "./FriendRequestsComponents/FriendRequestAssets/User7.jpg";
 import User8 from "./FriendRequestsComponents/FriendRequestAssets/User8.jpg";
 
+import axios from "axios";
+import setAuthToken from "../utils/setAuthToken";
+import jwt_decode from "jwt-decode";
+
 const users = [
   {
     id: 9,
@@ -160,7 +164,7 @@ let oldCheckins = [
    Get User ID given username and password
    TODO Implement with server calls
 **/
-export function authenticateUser(username, password) {
+export function authenticateUser(userData) {
   axios
     .post("/api/users/login", userData)
     .then(res => {
