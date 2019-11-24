@@ -12,7 +12,6 @@ var User = new Schema({
   profilepic: {
     type: String,
   },
-  email: {
   username: {
     type: String,
     required: true
