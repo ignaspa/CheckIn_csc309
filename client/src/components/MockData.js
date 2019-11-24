@@ -166,7 +166,7 @@ let oldCheckins = [
 **/
 export function authenticateUser(userData) {
   axios
-    .post("/api/users/login", userData)
+    .post("http://localhost:5000/api/users/login", userData)
     .then(res => {
       //Save to local storage
       const { token } = res.data;

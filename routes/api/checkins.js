@@ -23,11 +23,11 @@ router.get(
 
 // Get Checkins for given user id
 router.get(
-  "/:id",
+  "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const checkins = await Checkin.find({ userid: req.params.id });
+      const checkins = await Checkin.find({ userid: req.user.id });
       res.json(checkins);
     } catch (error) {
       return res.status(500).json({ message: err.message });
