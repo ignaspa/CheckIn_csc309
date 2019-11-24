@@ -148,16 +148,45 @@ async function getUser(req, res, next) {
 router.patch("/friends/:id", getUser, async (req, res) => {
   if (req.body.friendID != null) {
     if (req.body.action == "add" & !res.user.friends.includes(req.body.friendID)) {
+      // add to your list 
       res.user.friends.push(req.body.friendID)  
+
+      // add yourself to your friend's list 
+      User.findById(req.body.friendID)
+          .then(item => {
+            let friends = item.friends
+            friends.push(req.params.id)
+            item.friends = friends
+            item.save()
+          })
+          .catch((err) => {
+            res.status(400).json({ message: err.message})
+          })
     }
     else if (req.body.action == "delete") {
-      // find index for user in friends
+      // find index for user in friends and delete friend from friend's list
       let userIndex = res.user.friends.findIndex(userID => {
         return userID == req.body.friendID
       })
       if (typeof(userIndex) != undefined) {
         res.user.friends.splice(userIndex, 1)
       }    
+
+      // delete yourself from friend's list 
+      User.findById(req.body.friendID)
+          .then(item => {
+            let friendIndex = item.friends.findIndex(userID => {
+              return userID == req.params.id
+            })
+            if (typeof(friendIndex) != undefined) {
+              item.friends.splice(friendIndex, 1)
+            } 
+            item.save()
+          })
+          .catch((err) => {
+            res.status(400).json({ message: err.message})
+          })
+
     }
   }
   try {
