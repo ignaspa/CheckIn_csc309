@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const passport = require("passport");
+
 
 // load checkin model
 const Checkin = require("../../models/Checkin")
@@ -7,7 +9,7 @@ const Checkin = require("../../models/Checkin")
 const User = require("../../models/User")
 
 // Get all checkins
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
         const checkins = await Checkin.find()
         res.json(checkins)
@@ -18,7 +20,7 @@ router.get('/', async (req, res) => {
 })
   
 // Get Checkins for given user id
-router.get('/:id', async (req, res) => {
+router.get('/:id', passport.authenticate("jwt", { session: false }), async (req, res) => {
   try {
     const checkins = await Checkin.find({userid: req.params.id})
     res.json(checkins)
@@ -29,7 +31,7 @@ router.get('/:id', async (req, res) => {
 
 
 // Create one checkin
-router.post('/', async (req, res) => {
+router.post('/', passport.authenticate("jwt", { session: false }), async (req, res) => {
 
     const checkin = new Checkin({
         action: req.body.action, 
@@ -54,7 +56,7 @@ router.post('/', async (req, res) => {
 })
 
 // Delete one checkin
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', passport.authenticate("jwt", { session: false }), async (req, res) => {
   
   let removed = await Checkin.findOneAndDelete({_id: req.params.id})
   .catch((err) => {
