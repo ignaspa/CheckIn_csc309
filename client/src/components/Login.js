@@ -3,11 +3,11 @@ import { Username } from "../components/SignUp.js";
 import { Password } from "../components/SignUp.js";
 import { Button } from "../components/SignUp.js";
 import { Redirect } from "react-router";
-import { Link } from "react-router-dom"
-import { login } from '../redux/actions.js'
+import { Link } from "react-router-dom";
+import { login } from "../redux/actions.js";
 
-import { connect } from 'react-redux';
-import {authenticateUser, getUserFromId } from './MockData.js'
+import { connect } from "react-redux";
+import { authenticateUser, getUserFromId } from "./MockData.js";
 
 function SignUpLink(props) {
   return (
@@ -17,37 +17,47 @@ function SignUpLink(props) {
   );
 }
 
-
 class LoginComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showInvalid: false,
-      authenticated: false,
-    }
+      authenticated: false
+    };
     this.user = null;
-      this.authenticated = false;
-      this.showInvalid = false;
+    this.authenticated = false;
+    this.showInvalid = false;
+  }
+  submitHandler = event => {
+    event.preventDefault();
+    const userId = authenticateUser(
+      this.state["username"],
+      this.state["password"]
+    );
+    if (this.state && userId != null) {
+      event.target.className += " was-validated";
+      this.userId = userId;
+      this.props.loginUser(userId);
+      this.user = getUserFromId(this.userId);
+      console.log("Setting state");
+      this.setState({
+        showInvalid: false
+      });
+    } else {
+      event.target.reset();
+      this.setState({
+        showInvalid: true
+      });
+    }
   };
-    submitHandler = event => {
-      event.preventDefault();
-      const userId = authenticateUser(this.state['username'], this.state['password']);
-        if (this.state && userId != null) {
-          event.target.className += " was-validated";
-          this.userId = userId;
-          this.props.loginUser(userId);
-          this.user = getUserFromId(this.userId);
-            console.log("Setting state");
-            this.setState({
-                showInvalid: false
-            });
-      }
-      else {
-          event.target.reset();
-          this.setState({
-              showInvalid: true
-         });
-      }
+
+  submitData = event => {
+    event.preventDefault();
+
+    userData = {
+      password: this.state.password,
+      username: this.state.email
+    };
   };
 
   changeHandler = event => {
@@ -57,19 +67,19 @@ class LoginComponent extends Component {
   };
 
   render() {
-      console.log("Rendering...")
+    console.log("Rendering...");
     const disclaimerEmail = "We'll never share your email with anyone else";
-      console.log("this.user: " + this.user)
-      if (this.user != null) {
-          if (this.user.isAdmin) {
-              return <Redirect to="/admin-dashboard"/>
-          }
-          return <Redirect to='/user-dashboard'/>
+    console.log("this.user: " + this.user);
+    if (this.user != null) {
+      if (this.user.isAdmin) {
+        return <Redirect to="/admin-dashboard" />;
       }
+      return <Redirect to="/user-dashboard" />;
+    }
 
     return (
       <div className="container">
-        <LoginHeader/>
+        <LoginHeader />
         <article className="auth-form card-body mx-auto">
           <h4 className="card-title mt-3 text-center"> Log In </h4>{" "}
           <form
@@ -77,9 +87,7 @@ class LoginComponent extends Component {
             onSubmit={this.submitHandler}
             noValidate
           >
-            <InvalidCredentials
-             show={this.state.showInvalid}
-            />
+            <InvalidCredentials show={this.state.showInvalid} />
             <Username
               label={"Username"}
               disclaimer={disclaimerEmail}
@@ -92,7 +100,7 @@ class LoginComponent extends Component {
               feedback="Please enter a valid Password"
               changeHandler={this.changeHandler}
             />
-            <SignUpLink/>
+            <SignUpLink />
             <Button label={"Submit"} />{" "}
           </form>{" "}
         </article>{" "}
@@ -111,21 +119,17 @@ function LoginHeader(props) {
 
 function InvalidCredentials(props) {
   if (!props.show) {
-    return ""
+    return "";
   }
-  return (
-    <div className="alert alert-danger">
-      Invalid username or password
-    </div>
-  )
+  return <div className="alert alert-danger">Invalid username or password</div>;
 }
 
 const mapStateToProps = store => ({
-    userId: store.userId
+  userId: store.userId
 });
 
 const mapDispatchToProps = dispatch => ({
-    loginUser: (id) => dispatch(login(id))
-})
+  loginUser: id => dispatch(login(id))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

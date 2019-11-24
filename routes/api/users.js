@@ -30,15 +30,15 @@ router.post("/login", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  const email = req.body.email;
+  const username = req.body.username;
   const password = req.body.password;
 
-  //Find the user by email
-  User.findOne({ email: email })
+  //Find the user by username
+  User.findOne({ username: username })
     .then(user => {
       //check for user
       if (!user) {
-        errors.email = "Invalid Email or Password";
+        errors.username = "Invalid Username or Password";
         return res.status(404).json(errors);
       }
 
@@ -49,7 +49,7 @@ router.post("/login", (req, res) => {
           const token = signToken(user);
           res.status(200).json({ token: "Bearer " + token });
         } else {
-          errors.password = "Invalid Email or Password";
+          errors.password = "Invalid Username or Password";
           return res.status(400).json(errors);
         }
       });
@@ -72,14 +72,14 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.email }).then(user => {
+  User.findOne({ username: req.body.username }).then(user => {
     if (user) {
-      errors.email = "Email already exists";
+      errors.username = "Username already exists";
       return res.status(400).json(errors);
     } else {
       const newUser = new User({
         name: req.body.name,
-        email: req.body.email,
+        username: req.body.username,
         isAdmin: false,
         activeCheckin: null,
         bio: null,
@@ -117,7 +117,9 @@ router.get("/all", (req, res) => {
   let errors = {};
 
   User.find()
-    .select("friends friendRequests pastCheckins _id name email activeCheckin")
+    .select(
+      "friends friendRequests pastCheckins _id name username activeCheckin"
+    )
     .then(users => {
       if (!users) {
         errors.noUsers = "There are no users";
