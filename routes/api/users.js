@@ -152,20 +152,28 @@ router.patch("/details", (req, res) => {
 //  @desc Updates profilepic for the user. Responds updated User object.
 //  @access Public
 router.patch("/profilepic", (req, res) => {
-
-  User.updateOne(
+  console.log("newpic:");
+  console.log(req.body.newpic);
+  User.findOneAndUpdate(
     {email: req.body.email},
     {
-      // bio: req.body.newbio,
-      $set: { profilepic: req.body.newpic}
+      $set: {profilepic: req.body.newpic}
+    }, 
+    {new: true})
+    .catch((error) => {
+      res.status(500).json({message: error})
+    })
+    .then((user) => {
+      res.json(user)
     });
-  User.findOne({email: req.body.email})
-    .then(item => {
-      return res.json(item);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    
+  // User.findOne({email: req.body.email})
+  //   .then(item => {
+  //     return res.json(item);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   })
 
 });
 module.exports = router;
