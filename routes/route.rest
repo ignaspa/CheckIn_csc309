@@ -5,7 +5,7 @@ GET http://localhost:5000/api/checkins
 
 ###
 
-GET http://localhost:5000/api/checkins/0
+GET http://localhost:5000/api/checkins/5dd9dc832df28b855ae89edf
 
 ###
 
@@ -13,10 +13,10 @@ POST http://localhost:5000/api/checkins
 Content-Type: application/json
 
 {
-  "action": "studying",
-  "location": "Gerstein",
-  "message": "A3 for 369!",
-  "userid": "0"
+  "action": "eating",
+  "location": "Robarts",
+  "message": "come join me in the caf!",
+  "userid": "5dd8fc74cfc26ffc10844234"
 }
 
 ###
