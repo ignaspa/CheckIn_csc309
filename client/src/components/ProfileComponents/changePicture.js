@@ -69,7 +69,7 @@ export default class selectProfile extends Component {
 
 function picsTable(props) {
 
-    let list_of_pics = ["./pics/pikachu_sad.png", "./pics/pikachu_surprised.png", "./pics/pikachu_annoyed.png", "./pics/robarts.png", "./pics/tru_blu.png", "./pics/airpods.png"];
+    let list_of_pics = ["./pics/pikachu_sad.PNG", "./pics/pikachu_surprised.PNG", "./pics/pikachu_annoyed.PNG", "./pics/robarts.PNG", "./pics/trublu.PNG", "./pics/airpods.PNG"];
 
     const tb_profile_pics = list_of_pics.map(pic => (
         <tr>
