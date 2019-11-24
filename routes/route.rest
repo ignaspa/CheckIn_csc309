@@ -21,16 +21,16 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5000/api/checkins/5dd989021c9d440000ae3754
+DELETE http://localhost:5000/api/checkins/5dd9e034ece0f7865cb4568d
 
 ### 
 
-PATCH http://localhost:5000/api/users/friends/5dd8fe08e57b41fcdd92d492
+PATCH http://localhost:5000/api/users/friends/5dd8fc74cfc26ffc10844234
 Content-Type: application/json 
 
 {
-  "friendID": "5dd8fc74cfc26ffc10844234",
-  "action": "add"
+  "friendID": "5dd8fe08e57b41fcdd92d492",
+  "action": "delete"
 }
 
 ###
