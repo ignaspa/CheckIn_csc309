@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { login } from '../../redux/actions.js'
 import { connect } from 'react-redux';
 import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn } from '../MockData.js';
-
+import { Link } from "react-router-dom";
 
 import User1 from "../DashboardComponents/DashboardAssets/User1.jpg"
 import User2 from "../DashboardComponents/DashboardAssets/User2.jpg"
