@@ -3,6 +3,9 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const signToken = require("../../utils/jwtSign");
 
+// to validate object IDs
+const { ObjectID } = require('mongodb')
+
 //load input validation
 const validateLoginInput = require("../../validation/login");
 const validateRegisterInput = require("../../validation/register");
@@ -127,100 +130,89 @@ router.get("/all", (req, res) => {
     });
 });
 
-// middleware function to get specific user 
-async function getUser(req, res, next) {
-  try {
-    user = await User.findById(req.params.id)
-    if (user == null) {
-      return res.status(404).json({ message: 'Cant find user'})
-    }
-  } catch(err){
-    return res.status(500).json({ message: err.message })
-  }
-
-  res.user = user
-  next()
-}
-
 //  @route PATCH api/users/friends
 //  @desc Adds or deletes friends for a given user. Need to pass on "action" as "add"/"delete"
 //  @access Public
-router.patch("/friends/:id", getUser, async (req, res) => {
-  if (req.body.friendID != null) {
-    if (req.body.action == "add" & !res.user.friends.includes(req.body.friendID)) {
-      // add to your list 
-      res.user.friends.push(req.body.friendID)  
+router.patch("/friends/:id", async (req, res) => {
+
+    const id = req.params.id
+
+	  // Validate id
+	  if (!ObjectID.isValid(id) || !ObjectID.isValid(req.body.friendID)) {
+		  res.status(404).send()
+    }
+    if (req.body.action == "add") {
 
       // add yourself to your friend's list 
-      User.findById(req.body.friendID)
-          .then(item => {
-            let friends = item.friends
-            friends.push(req.params.id)
-            item.friends = friends
-            item.save()
-          })
-          .catch((err) => {
-            res.status(400).json({ message: err.message})
-          })
-    }
-    else if (req.body.action == "delete") {
-      // find index for user in friends and delete friend from friend's list
-      let userIndex = res.user.friends.findIndex(userID => {
-        return userID == req.body.friendID
+      let friend = await User.findOneAndUpdate({_id: req.body.friendID},
+        { $push: { "friends": req.params.id }})
+      .catch((err) => {
+        res.status(400).json({message: err.message})
       })
-      if (typeof(userIndex) != undefined) {
-        res.user.friends.splice(userIndex, 1)
-      }    
 
-      // delete yourself from friend's list 
-      User.findById(req.body.friendID)
-          .then(item => {
-            let friendIndex = item.friends.findIndex(userID => {
-              return userID == req.params.id
-            })
-            if (typeof(friendIndex) != undefined) {
-              item.friends.splice(friendIndex, 1)
-            } 
-            item.save()
-          })
-          .catch((err) => {
-            res.status(400).json({ message: err.message})
-          })
+      // add friend to your list 
+      let user = await User.findOneAndUpdate({_id: id},
+        { $push: { "friends": req.body.friendID }}, 
+        { new: true })
+      .catch((err) => {
+        res.status(400).json({message: err.message})
+      })
 
+      res.json(user)
     }
-  }
-  try {
-    const updatedUser = await res.user.save()
-    res.json(updatedUser)
-  } catch(err) {
-    res.status(400).json({ message: err.message })
-  }
-})
+    else if (req.body.action == "delete") { 
+      // delete yourself from friend's list
+      User.findOneAndUpdate({_id: req.body.friendID},
+        { $pull: { "friends": req.params.id }})
+      .catch((err) => {
+        res.status(400).json({message: err.message})
+      })
+
+      // delete friend from your friend's list
+      User.findOneAndUpdate({_id: id}, 
+        { $pull: {"friends": req.body.friendID}})
+        .catch((err) => {
+            res.status(400).json({message: err.message})
+        })
+        .then((user) => {
+          return res.json(user);
+        })
+      }
+  })
 
 //  @route PATCH api/users/requests
 //  @desc Adds or deletes friend requests for a given user. Need to pass on "action" as "add"/"delete"
 //  @access Public
-router.patch("/requests/:id", getUser, async (req, res) => {
-  if (req.body.requestFriendID != null) {
-    if (req.body.action == "add" & !res.user.friendRequests.includes(req.body.requestFriendID)) {
-      res.user.friendRequests.push(req.body.requestFriendID)  
+router.patch("/requests/:id", async (req, res) => {
+  const id = req.params.id
+
+	  // Validate id
+	  if (!ObjectID.isValid(id) || !ObjectID.isValid(req.body.requestFriendID)) {
+		  res.status(404).send()
+    }
+    if (req.body.action == "add") {
+      // add friend to your list of requests
+      let user = await User.findOneAndUpdate({_id: id},
+        { $push: { "friendRequests": req.body.requestFriendID }}, 
+        { new: true })
+      .catch((err) => {
+        res.status(400).json({message: err.message})
+      })
+
+      res.json(user)
     }
     else if (req.body.action == "delete") {
-      // find index for user in friends
-      let userIndex = res.user.friendRequests.findIndex(userID => {
-        return userID == req.body.requestFriendID
-      })
-      if (typeof(userIndex) != undefined) {
-        res.user.friendRequests.splice(userIndex, 1)
-      }    
-    }
-  }
-  try {
-    const updatedUser = await res.user.save()
-    res.json(updatedUser)
-  } catch(err) {
-    res.status(400).json({ message: err.message })
-  }
+      // delete friend from your friend requests
+      User.findOneAndUpdate({_id: id}, 
+        { $pull: {"friendRequests": req.body.requestFriendID}}, 
+        {new: true})
+        .catch((err) => {
+            res.status(400).json({message: err.message})
+        })
+        .then((user) => {
+          return res.json(user);
+        })
+      }
 })
 
 //  @route PATCH api/users/details
@@ -231,7 +223,6 @@ router.patch("/details", (req, res) => {
   User.updateOne(
     {email: req.body.email},
     {
-      // bio: req.body.newbio,
       $set: { bio: req.body.newbio, name: req.body.newname}
     });
   User.findOne({email: req.body.email})

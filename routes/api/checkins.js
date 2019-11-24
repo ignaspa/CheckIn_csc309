@@ -6,21 +6,6 @@ const Checkin = require("../../models/Checkin")
 // load user model 
 const User = require("../../models/User")
 
-// middleware functions
-async function getCheckin(req, res, next) {
-    try {
-      checkin = await Checkin.findById(req.params.id)
-      if (checkin == null) {
-        return res.status(404).json({ message: 'Cant find checkin'})
-      }
-    } catch(err){
-      return res.status(500).json({ message: err.message })
-    }
-  
-    res.checkin = checkin
-    next()
-  } 
-
 // Get all checkins
 router.get('/', async (req, res) => {
     try {
@@ -56,17 +41,10 @@ router.post('/', async (req, res) => {
     
     try {
         const newCheckin = await checkin.save()
-        
-        User.findById(req.body.userid)
-          .then(item => {
-            let pastCheckins = item.pastCheckins
-            pastCheckins.push(newCheckin.id)
-            item.pastCheckins = pastCheckins
-            item.activeCheckin = newCheckin.id
-            item.save()
-          })
-          .catch((err) => {
-            res.status(400).json({ message: err.message})
+        User.findOneAndUpdate({_id: req.body.userid},
+            { $push: { "pastCheckins": newCheckin.id }})
+        .catch((err) => {
+            res.status(400).json({message: err.message})
           })
 
         res.status(201).json(newCheckin)
@@ -76,28 +54,22 @@ router.post('/', async (req, res) => {
 })
 
 // Delete one checkin
-router.delete('/:id', getCheckin, async (req, res) => {
-    try {
-      await res.checkin.remove()
-      let checkinId = res.id
-      User.findById(res.checkin.userid)
-          .then(item => {
-            let checkinIndex = item.pastCheckins.findIndex(checkinID => {
-              return checkinID == res.checkinID
-            })
-            if (typeof(checkinIndex) != undefined) {
-              item.pastCheckins.splice(checkinIndex, 1)
-            } 
-            item.save()
-          })
-          .catch((err) => {
-            res.status(400).json({ message: err.message})
-          })
+router.delete('/:id', async (req, res) => {
+  
+  let removed = await Checkin.findOneAndDelete({_id: req.params.id})
+  .catch((err) => {
+    res.status(400).json({message: err.message})
+  })
+  
+  await User.findOneAndUpdate({_id: removed.userid},
+    { $pull: { "pastCheckins": removed.id }})
+  .catch((err) => {
+    res.status(400).json({message: err.message})
+  })
 
-      res.json({ message: 'Deleted checkin' })
-    } catch(err) {
-      res.status(500).json({ message: err.message })
-    }
+  res.json({ message: 'Deleted checkin', 
+      checkin: removed })  
+
   })
 
   module.exports = router
