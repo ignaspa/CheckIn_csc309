@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../../css/App.css";
 import { Redirect } from "react-router";
 import { connect } from 'react-redux'
-import {getUserFromId} from "../MockData";
+import {getUserFromId, changePicture} from "../MockData";
 
 const pic_paths = ["https://i.imgur.com/YBU8Zuq.png", "https://i.imgur.com/zWTxtlQ.png", "https://i.imgur.com/VM9iOl5.png", "https://i.imgur.com/B7KGaN6.png", "https://i.imgur.com/bnAlZ3X.png", "https://i.imgur.com/BEpJcyk.png", "https://i.imgur.com/DvuC4vb.png"]
 
@@ -28,7 +28,6 @@ class ChangePicture extends Component {
                 }}
                 push={true} /> 
         }
-        // choose users current profile image and set to the states 
         return (
             <div>
                 <div className="pagetitle">
@@ -64,7 +63,7 @@ class ChangePicture extends Component {
 
     saveProfilePic = (event) => {
         console.log("saved")
-        //changePicture(this.state.user, this.state.currently_selected);
+        changePicture(this.state.user, this.state.currently_selected);
         return (
             this.setState({redirect: '/profile'})
         );
