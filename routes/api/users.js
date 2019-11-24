@@ -148,4 +148,24 @@ router.patch("/details", (req, res) => {
 
 });
 
+//  @route PATCH api/users/profilepic
+//  @desc Updates profilepic for the user. Responds updated User object.
+//  @access Public
+router.patch("/profilepic", (req, res) => {
+
+  User.updateOne(
+    {email: req.body.email},
+    {
+      // bio: req.body.newbio,
+      $set: { profilepic: req.body.newpic}
+    });
+  User.findOne({email: req.body.email})
+    .then(item => {
+      return res.json(item);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+});
 module.exports = router;
