@@ -82,6 +82,7 @@ router.post("/register", (req, res) => {
         email: req.body.email,
         isAdmin: false,
         activeCheckin: null,
+        bio: null,
         friends: [],
         friendRequests: [],
         pastCheckins: [],
@@ -146,22 +147,22 @@ router.delete(
 
 //  @route PATCH api/users/details
 //  @desc Updates name and bio for User. Responds updated User object.
-//  @access Public
+//  @access Private 
+// expects: 
+// {newbio: "blah", 
+//  newname: "blah"
+// }
 router.patch("/details", passport.authenticate("jwt", { session: false }), (req, res) => {
 
-  User.updateOne(
-    { email: req.body.email },
-    {
-      $set: { bio: req.body.newbio, name: req.body.newname }
-    }
-  );
-  User.findOne({ email: req.body.email })
-    .then(item => {
-      return res.json(item);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
+  User.findByIdAndUpdate(req.user.id, 
+    {$set : {bio: req.body.newbio, name: req.body.newname}}, 
+    {new: true}
+  ).catch((error) => {
+    return res.status(400).json({message: error})
+  }).then((user) => {
+    return res.json(user)
+  })
+})
+  
 
 module.exports = router;
