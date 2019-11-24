@@ -69,6 +69,7 @@ export default class CheckInUpdates extends Component {
         for (let i = 0; i < checkins.length; i++) {
             let user = findUser(checkins[i].id, userData)
              rows.push(<CheckInUpdate 
+                user={user}
                 key={user.id}
                 id={checkins[i].id}
                 name={user.name}

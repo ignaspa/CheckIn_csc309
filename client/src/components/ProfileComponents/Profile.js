@@ -1,153 +1,63 @@
 import React, { Component } from "react";
+import { login } from '../../redux/actions.js'
+import { connect } from 'react-redux';
+import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn } from '../MockData.js';
+
 
 import User1 from "../DashboardComponents/DashboardAssets/User1.jpg"
 import User2 from "../DashboardComponents/DashboardAssets/User2.jpg"
 import User3 from "../DashboardComponents/DashboardAssets/User3.jpg"
 import User4 from "../DashboardComponents/DashboardAssets/User4.jpg"
+import ProfilePic from '../assets/profile.png';
 
-let userData = [
-    {
-        id: 0,
-        isAdmin: false,
-        name: 'Sonia',
-        friends: [1, 2, 3],
-        friend_request: [5],
-        picture: User1,
-        username: 'SoniaZaldana',
-        bio: "I'm so tired",
-    },
-    {
-        id: 1,
-        isAdmin: false,
-        name: 'Marco Angeli',
-        friends: [0, 2, 3],
-        friend_request: [],
-        picture: User2,
-        username: 'MarcoAngeli',
-        bio: "henlo",
-    },
-    {
-        id: 2,
-        isAdmin: false,
-        name: 'Abdullah',
-        friends: [0, 1, 3],
-        friend_request: [],
-        picture: User3,
-        username: 'abdamin',
-        bio: "web developer",
-    },
-
-    {
-        id: 3,
-        isAdmin: false,
-        name: 'Ignas',
-        current_location: 'Gerstein',
-        friends: [0, 1, 2],
-        friend_request: [],
-        picture: User4,
-        username: 'iggy',
-        bio: "i love my dog carmelo",
-    }
-]
-
-let checkins = [
-    {
-        id: 0,
-        action: "studying",
-        location: "Gerstein",
-        time: new Date("November 1, 2019 03:24:00"),
-        message: "309 is tough. help :("
-    },
-    {
-        id: 2,
-        action: "eating",
-        location: "Sidney Smith",
-        time: new Date("October 2, 2019 03:24:00"),
-        message: "let's get a burrito bowl!"
-    },
-    {
-        id: 3,
-        action: "chilling",
-        location: "CSSU",
-        time: new Date("October 29, 2019 03:24:00"),
-        message: "come play smash :)"
-    }
-]
-
-let oldCheckins = [
-    {
-        id: 0,
-        action: "studying",
-        location: "Robarts",
-        time: new Date("October 29, 2019 03:24:00"),
-        message: "309 is tough. help :("
-    },
-    {
-        id: 0,
-        action: "studying",
-        location: "Grahams",
-        time: new Date("October 28, 2019 03:24:00"),
-        message: "309 is tough. help :("
-    },
-
-
-]
-
-
-export default class Profile extends Component {
+class Profile extends Component {
     constructor(props) {
         super(props);
-        console.log(props)
         this.state = {
             edit_mode: false,
-            user_id: props.location.state.user_id,
-            profile_id: props.location.state.profile_id,
         }
+        this.user = getUserFromId(props.userId); // User who is logged in
+        console.log("asdlkfja;lksd: ", props.userId)
+        this.profile_user = getUserFromHandle(props.match.params.username, this.user); // User whose profile we are looking at
         this.onModeChange = this.onModeChange.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
+        console.log("User: ", this.user);
+        console.log("profile_user", this.profile_user);
 
-        
     }
     onModeChange() {
-        console.log(this.state)
+        this.profile_user = this.user;
         this.setState((state, props) => {
             return { edit_mode: !this.state.edit_mode }
         })
+
     }
     handleInputChange(event) {
         const profile_id = this.state.profile_id
-        const user_id = this.state.user_id
 
-        const user_index = userData.findIndex(function (u) {
-            return u.id === profile_id;
-        })
-
-        let newName = userData[user_index].name;
-        let newBio = userData[user_index].bio;
+        let newName = this.user.name;
+        let newBio = this.user.bio;
 
         if (event.target.name === "bio") {
             newBio = event.target.value;
         } else if (event.target.name === "name") {
             newName = event.target.value;
         }
-        userData[user_index].name = newName;
-        userData[user_index].bio = newBio;
+        this.user.name = newName;
+        this.user.bio = newBio;
     }
 
     render() {
         const profile_id = this.state.profile_id
-        const user = userData.find(function (u) {
-            return u.id === profile_id;
-        });
         let profile_header = <ProfileHeader
-            user={user}
+            user={this.profile_user}
             onModeChange={this.onModeChange}
-            user_id={this.state.user_id}
-            profile_id={profile_id}
+            user_id={this.user.id}
+            profile_id={this.profile_user.id}
         />;
         if (this.state.edit_mode) {
             profile_header = <EditProfileHeader
-                user={user}
+                user={this.profile_user}
                 onModeChange={this.onModeChange}
                 handleInputChange={this.handleInputChange}
             />
@@ -156,10 +66,10 @@ export default class Profile extends Component {
             <div>
                 {profile_header}
                 <CurrentLocation
-                    profile_id={profile_id}
+                    profile_id={this.profile_user.id}
                 />
                 <PastLocations
-                    profile_id={profile_id}
+                    profile_id={this.profile_user.id}
                 />
             </div>
         );
@@ -170,33 +80,22 @@ class ActionButton extends Component {
     constructor(props) {
         super(props);
         // Index of the user viewing the profile
-        this.user_index = userData.findIndex(function (u) {
-            return u.id === props.user_id;
-        })
-        this.state = {isFriend: userData[this.user_index].friends.includes(props.profile_id)}
-        this.removeFriend = this.removeFriend.bind(this)
-        this.addFriend = this.addFriend.bind(this)
-
-    }
-
-    removeFriend(event) {
-        const index_to_remove = userData[this.user_index].friends.indexOf(this.props.profile_id)
-        if (index_to_remove > -1) {
-            userData[this.user_index].friends.splice(index_to_remove, 1);
+        this.profile_id = props.profile_id;
+        this.state = {
+           isFriend: true,
+            user: getUserFromId(props.user_id),
         }
-        this.setState((state, props) => {
-            return {isFriend: false}
-        })
-        console.log(userData[this.user_index].friends)
+        //this.removeFriend = this.removeFriend.bind(this)
+        //this.addFriend = this.addFriend.bind(this)
     }
 
     addFriend(event) {
-        
-        userData[this.user_index].friends.push(this.props.profile_id);
+        requestFriend(this.state.user_id, this.profile_id);
         this.setState((state, props) => {
-            return {isFriend: true}
-        })
-        console.log(userData[this.user_index].friends)
+            return {
+                isFriend: true
+            };
+        });
     }
 
     render() {
@@ -206,7 +105,6 @@ class ActionButton extends Component {
             label = "Remove Friend";
             onClickAction = this.removeFriend;
         }
-        
         if (this.props.user_id != this.props.profile_id && !this.state.isFriend) {
             label = "Add Friend"
             onClickAction = this.addFriend;
@@ -217,7 +115,6 @@ class ActionButton extends Component {
 }
 
 function ProfileHeader(props) {
-    
     return (
         <table className="profile-section table mx-auto">
             <tbody>
@@ -287,9 +184,7 @@ function EditProfileHeader(props) {
 }
 
 function CurrentLocation(props) {
-    const checkin = checkins.find(function (c) {
-        return c.id === props.profile_id;
-    });
+    const checkin = getCheckIn(props.profile_id);
     if (!checkin) {
         return null;
     }
@@ -306,9 +201,7 @@ function CurrentLocation(props) {
 }
 
 function PastLocations(props) {
-    const user_oldCheckins = oldCheckins.filter(function (c) {
-        return c.id === props.profile_id;
-    });
+    const user_oldCheckins = getOldCheckIn(props.profile_id);
     console.log(user_oldCheckins)
     var checkin_list = user_oldCheckins.map(function (c) {
         return CheckIn({ cardStyle: "inactive-card", checkin: c })
@@ -361,4 +254,14 @@ function CheckIn(props) {
             </div>
         </div>
     )
-}
+};
+
+const mapStateToProps = store => ({
+    userId: store.userId
+});
+
+const mapDispatchToProps = dispatch => ({
+    loginUser: (user) => dispatch(login(user))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
