@@ -5,10 +5,9 @@ import { Button } from "../components/SignUp.js";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom"
 import { login } from '../redux/actions.js'
-import ProfilePic from './assets/profile.png';
-import { connect } from 'react-redux';
 
-// This will be replaced by server-side code
+import { connect } from 'react-redux';
+import {authenticateUser, getUserFromId } from './MockData.js'
 
 function SignUpLink(props) {
   return (
@@ -18,39 +17,6 @@ function SignUpLink(props) {
   );
 }
 
-function authenticateUser(username, password) {
-    const users = [
-        {
-            id: 0,
-            isAdmin: false,
-            name: 'John',
-            bio: "Sup",
-            current_location: 'BA 3200',
-            friends: [1, 2, 3],
-            friend_request: [5],
-            picture: ProfilePic,
-            username: 'user',
-            password: 'user'
-        },
-        {
-            id: 1,
-            isAdmin: true,
-            name: 'admin',
-            current_location: '',
-            friends: [],
-            friend_request: [],
-            picture: '/image/john.png',
-            username: 'admin',
-            password: 'admin'
-        }
-    ]
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].username === username && users[i].password === password) {
-            return users[i];
-        }
-    }
-    return null;
-}
 
 class LoginComponent extends Component {
   constructor(props) {
@@ -59,17 +25,22 @@ class LoginComponent extends Component {
       showInvalid: false,
       authenticated: false,
     }
-    this.user = {};
+    this.user = null;
       this.authenticated = false;
       this.showInvalid = false;
   };
     submitHandler = event => {
       event.preventDefault();
-      const user = authenticateUser(this.state['username'], this.state['password']);
-      if (this.state && user != null) {
+      const userId = authenticateUser(this.state['username'], this.state['password']);
+        if (this.state && userId != null) {
           event.target.className += " was-validated";
-          this.user = user;
-          this.props.loginUser(user);
+          this.userId = userId;
+          this.props.loginUser(userId);
+          this.user = getUserFromId(this.userId);
+            console.log("Setting state");
+            this.setState({
+                showInvalid: false
+            });
       }
       else {
           event.target.reset();
@@ -86,9 +57,10 @@ class LoginComponent extends Component {
   };
 
   render() {
+      console.log("Rendering...")
     const disclaimerEmail = "We'll never share your email with anyone else";
-      console.log("this is this.props.user: ", this.props.user)
-      if (this.props.user != null) {
+      console.log("this.user: " + this.user)
+      if (this.user != null) {
           if (this.user.isAdmin) {
               return <Redirect to="/admin-dashboard"/>
           }
@@ -149,11 +121,11 @@ function InvalidCredentials(props) {
 }
 
 const mapStateToProps = store => ({
-    user: store.user
+    userId: store.userId
 });
 
 const mapDispatchToProps = dispatch => ({
-    loginUser: (user) => dispatch(login(user))
+    loginUser: (id) => dispatch(login(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

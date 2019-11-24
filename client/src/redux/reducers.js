@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
 
 export const loginReducer = (state = null, action) => {
-    console.log("Received this:");
-    console.log(action.type);
     switch (action.type) {
     case "LOGIN":
         return action.payload;
@@ -12,7 +10,7 @@ export const loginReducer = (state = null, action) => {
 };
 
 export const allReducers = combineReducers({
-    user: loginReducer,
+    userId: loginReducer,
 });
 
 export default allReducers;

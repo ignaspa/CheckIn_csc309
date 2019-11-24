@@ -1,8 +1,8 @@
-export const login = (user) => {
+export const login = (id) => {
     console.log("TRIGGERED ACTION LOGIN");
     return {
         type: "LOGIN",
-        payload: user
+        payload: id
     };
 };
 

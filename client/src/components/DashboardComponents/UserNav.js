@@ -3,13 +3,14 @@ import "../../css/UserDashboard.css"
 import User1 from "./DashboardAssets/User1.jpg"
 import {Redirect} from "react-router";
 import { connect } from 'react-redux';
+import {authenticateUser, getUserFromId } from '../MockData.js'
 
 class UserNav extends Component {
 
     // We would use a server call to get the actual current user. This is just a placeholder
     constructor(props) {
         super(props);
-        this.user = props.user;
+        this.user = getUserFromId(props.userId);
         this.state = {
             redirect: ""
         }
@@ -98,7 +99,7 @@ class UserNav extends Component {
 }
 
 const mapStateToProps = store => ({
-    user: store.user
+    userId: store.userId
 })
 const mapDispatchToProps = dispatch => ({
 
