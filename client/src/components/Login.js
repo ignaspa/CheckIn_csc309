@@ -30,10 +30,11 @@ class LoginComponent extends Component {
   }
   submitHandler = event => {
     event.preventDefault();
-    const userId = authenticateUser(
-      this.state["username"],
-      this.state["password"]
-    );
+    const userData = {
+      username: this.state.username,
+      password: this.state.password
+    };
+    const userId = authenticateUser(userData);
     if (this.state && userId != null) {
       event.target.className += " was-validated";
       this.userId = userId;
