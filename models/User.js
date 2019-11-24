@@ -7,7 +7,7 @@ var User = new Schema({
     required: true
   },
   bio: {
-    type: String,
+    type: String
   },
   profilepic: {
     type: String,
@@ -31,11 +31,6 @@ var User = new Schema({
   friendRequests: [
     {
       type: String
-    }
-  ],
-  pastCheckins: [
-    {
-      type: String 
     }
   ],
   password: {

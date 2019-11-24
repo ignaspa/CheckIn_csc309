@@ -14,7 +14,7 @@ const validatePasswordChangeInput = require("../../validation/passwordChange");
 //  @access Private. Only Admin can change the password.
 router.post(
   "/:id",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("admin-jwt", { session: false }),
   (req, res) => {
     //look for matching user
     User.findOne({

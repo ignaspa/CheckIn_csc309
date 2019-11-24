@@ -1,63 +1,56 @@
 import React, { Component } from "react";
 import { login } from '../../redux/actions.js'
 import { connect } from 'react-redux';
-import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn } from '../MockData.js';
-import { Link } from "react-router-dom";
-
-import User1 from "../DashboardComponents/DashboardAssets/User1.jpg"
-import User2 from "../DashboardComponents/DashboardAssets/User2.jpg"
-import User3 from "../DashboardComponents/DashboardAssets/User3.jpg"
-import User4 from "../DashboardComponents/DashboardAssets/User4.jpg"
-import ProfilePic from '../assets/profile.png';
+import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn, changeBio, changeName } from '../MockData.js';
 
 class Profile extends Component {
     constructor(props) {
+
         super(props);
+        const user = getUserFromId(props.userId);
         this.state = {
             edit_mode: false,
+            user: user, // User who is logged in
+            profile_user: getUserFromHandle(props.match.params.username, user) // User whose profile we are looking at
         }
-        this.user = getUserFromId(props.userId); // User who is logged in
-        console.log("asdlkfja;lksd: ", props.userId)
-        this.profile_user = getUserFromHandle(props.match.params.username, this.user); // User whose profile we are looking at
+        this.newName = this.state.user.name;
+        this.newBio = this.state.user.bio;
         this.onModeChange = this.onModeChange.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
-        console.log("User: ", this.user);
-        console.log("profile_user", this.profile_user);
-
     }
     onModeChange() {
-        this.profile_user = this.user;
-        this.setState((state, props) => {
-            return { edit_mode: !this.state.edit_mode }
-        })
+        changeName(this.state.user.id, this.newName);
+        changeBio(this.state.user.id, this.newBio);
 
+        this.setState((state, props) => {
+            return {
+                edit_mode: !this.state.edit_mode,
+                user: getUserFromId(props.userId),
+                profile_user: this.state.user
+            };
+        })
     }
     handleInputChange(event) {
         const profile_id = this.state.profile_id
 
-        let newName = this.user.name;
-        let newBio = this.user.bio;
-
         if (event.target.name === "bio") {
-            newBio = event.target.value;
+            this.newBio = event.target.value;
         } else if (event.target.name === "name") {
-            newName = event.target.value;
+            this.newName = event.target.value;
         }
-        this.user.name = newName;
-        this.user.bio = newBio;
     }
 
     render() {
         const profile_id = this.state.profile_id
         let profile_header = <ProfileHeader
-            user={this.profile_user}
+            user={this.state.profile_user}
             onModeChange={this.onModeChange}
-            user_id={this.user.id}
-            profile_id={this.profile_user.id}
+            user_id={this.state.user.id}
+            profile_id={this.state.profile_user.id}
         />;
         if (this.state.edit_mode) {
             profile_header = <EditProfileHeader
-                user={this.profile_user}
+                user={this.state.profile_user}
                 onModeChange={this.onModeChange}
                 handleInputChange={this.handleInputChange}
             />
@@ -66,10 +59,10 @@ class Profile extends Component {
             <div>
                 {profile_header}
                 <CurrentLocation
-                    profile_id={this.profile_user.id}
+                    profile_id={this.state.profile_user.id}
                 />
                 <PastLocations
-                    profile_id={this.profile_user.id}
+                    profile_id={this.state.profile_user.id}
                 />
             </div>
         );
@@ -211,7 +204,6 @@ function CurrentLocation(props) {
 
 function PastLocations(props) {
     const user_oldCheckins = getOldCheckIn(props.profile_id);
-    console.log(user_oldCheckins)
     var checkin_list = user_oldCheckins.map(function (c) {
         return CheckIn({ cardStyle: "inactive-card", checkin: c })
     })

@@ -137,7 +137,7 @@ router.get("/all", (req, res) => {
 //  @access Private. Endpoint protected by passport middleware and can only be accessed by the ADMIN User.          ADMIN User cannot delete itself.
 router.delete(
   "/:id",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("admin-jwt", { session: false }),
   (req, res) => {
     User.findByIdAndRemove({ _id: req.params.id }).then(() =>
       res.json({ sucess: "true" })
@@ -147,23 +147,28 @@ router.delete(
 
 //  @route PATCH api/users/details
 //  @desc Updates name and bio for User. Responds updated User object.
-//  @access Private 
-// expects: 
-// {newbio: "blah", 
+//  @access Private
+// expects:
+// {newbio: "blah",
 //  newname: "blah"
 // }
-router.patch("/details", passport.authenticate("jwt", { session: false }), (req, res) => {
-
-  User.findByIdAndUpdate(req.user.id, 
-    {$set : {bio: req.body.newbio, name: req.body.newname}}, 
-    {new: true}
-  ).catch((error) => {
-    return res.status(400).json({message: error})
-  }).then((user) => {
-    return res.json(user)
-  })
-})
-  
+router.patch(
+  "/details",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    User.findByIdAndUpdate(
+      req.user.id,
+      { $set: { bio: req.body.newbio, name: req.body.newname } },
+      { new: true }
+    )
+      .catch(error => {
+        return res.status(400).json({ message: error });
+      })
+      .then(user => {
+        return res.json(user);
+      });
+  }
+);
 
 //  @route PATCH api/users/profilepic
 //  @desc Updates profilepic for the user. Responds updated User object.
