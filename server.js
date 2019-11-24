@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 //load routes
 const users = require("./routes/api/users");
 const checkins = require("./routes/api/checkins");
+const friends = require("./routes/api/friends");
 const changePassword = require("./routes/api/changePassword");
 
 //connect to mongo db
@@ -35,6 +36,9 @@ app.use("/api/checkins", checkins);
 
 //change password routes
 app.use("/api/changePassword", changePassword);
+
+// Friend routes
+app.use("/api/friends", friends);
 
 const PORT = process.env.PORT || 5000;
 
