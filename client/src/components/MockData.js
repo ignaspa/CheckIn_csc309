@@ -275,3 +275,26 @@ export function getOldCheckIn(profile_id) {
     }
     return userOldCheckins;
 }
+
+export function changeBio(user_id, newBio) {
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].id == user_id) {
+            users[i].bio = newBio;
+        }
+    }
+}
+export function changeName(user_id, newName) {
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].id == user_id) {
+            console.log("Changing name!");
+            users[i].name = newName;
+        }
+    }
+}
+export function changePicture(user_id, newPicture) {
+    for (let i = 0; i < user_id.length; i++) {
+        if (users[i].id === user_id) {
+            users[i].picture = newPicture;
+        }
+    }
+}
