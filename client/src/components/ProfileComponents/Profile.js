@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { login } from '../../redux/actions.js'
 import { connect } from 'react-redux';
 import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn, changeBio, changeName } from '../MockData.js';
+import {Link} from "react-router-dom";
 
 class Profile extends Component {
     constructor(props) {

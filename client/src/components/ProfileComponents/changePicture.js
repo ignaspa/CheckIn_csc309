@@ -2,17 +2,9 @@ import React, { Component } from "react";
 import "../../css/App.css";
 import { Redirect } from "react-router";
 import { connect } from 'react-redux'
-import ps from "./pics/pikachu_sad.PNG";
-import psur from "./pics/pikachu_surprised.PNG";
-import pa from "./pics/pikachu_annoyed.PNG";
-import rob from "./pics/robarts.PNG";
-import ap from "./pics/airpods.PNG";
-import bt from "./pics/bubbletea.PNG";
-import tb from "./pics/trublu.PNG";
 import {getUserFromId} from "../MockData";
 
-const actual_pics = [ps, psur, pa, rob, ap, bt, tb];
-const pic_paths = ["./pics/pikachu_sad.PNG", "./pics/pikachu_surprised.PNG", "./pics/pikachu_annoyed.PNG", "./pics/bubbletea.PNG", "./pics/robarts.PNG", "./pics/airpods.PNG", "./pics/trublu.PNG"]
+const pic_paths = ["https://i.imgur.com/YBU8Zuq.png", "https://i.imgur.com/zWTxtlQ.png", "https://i.imgur.com/VM9iOl5.png", "https://i.imgur.com/B7KGaN6.png", "https://i.imgur.com/bnAlZ3X.png", "https://i.imgur.com/BEpJcyk.png", "https://i.imgur.com/DvuC4vb.png"]
 
 class ChangePicture extends Component {
     constructor(props) {
@@ -20,7 +12,7 @@ class ChangePicture extends Component {
         this.current_user = getUserFromId(props.userId);
         this.state = {
             user: props.userId,
-            currently_selected: bt,
+            currently_selected: pic_paths[0],
             redirect: "",
         }
         this.saveProfilePic = this.saveProfilePic.bind(this);
@@ -32,7 +24,7 @@ class ChangePicture extends Component {
         if (this.state.redirect === '/profile') {
             return <Redirect
                 to={{
-                    pathname: '/profile/' + this.current_user.name,
+                    pathname: '/profile/' + this.current_user.username,
                 }}
                 push={true} /> 
         }
@@ -92,7 +84,7 @@ class ChangePicture extends Component {
 
 function PicsTable(props) {
 
-    const tb_profile_pics = actual_pics.map(pic => (
+    const tb_profile_pics = pic_paths.map(pic => (
         <tr key={pic}>
             <td>
                 <button
