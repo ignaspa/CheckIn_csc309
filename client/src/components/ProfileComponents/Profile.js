@@ -114,7 +114,7 @@ function ProfileHeader(props) {
             <tbody>
                 <tr>
                     <th>
-                        <img className="profile-pic rounded-circle border m-3 text-center" src={props.user.picture} alt="Profile" />
+                        <img className="profile-pic rounded-circle border m-3 text-center" src={props.user.profilepic} alt="Profile" />
 
                     </th>
                     <th>

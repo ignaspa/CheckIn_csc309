@@ -21,7 +21,7 @@ const users = [
     current_location: "BA 3200",
     friends: [1, 2, 3],
     friend_request: [5],
-    picture: ProfilePic,
+    profilepic: ProfilePic,
     username: "user",
     password: "user"
   },
@@ -32,7 +32,7 @@ const users = [
     current_location: "",
     friends: [],
     friend_request: [],
-    picture: "/image/john.png",
+    profilepic: "/image/john.png",
     username: "admin",
     password: "admin"
   },
@@ -42,7 +42,7 @@ const users = [
     name: "Sonia",
     friends: [1, 2, 3],
     friend_request: [4, 5, 6, 7],
-    picture: User1,
+    profilepic: User1,
     username: "SoniaZaldana",
     bio: "I'm so tired"
   },
@@ -52,7 +52,7 @@ const users = [
     name: "Marco",
     friends: [0, 2, 3],
     friend_request: [],
-    picture: User2,
+    profilepic: User2,
     username: "MarcoAngelli",
     bio: "henlo"
   },
@@ -62,7 +62,7 @@ const users = [
     name: "Abdullah",
     friends: [0, 1, 3],
     friend_request: [],
-    picture: User3,
+    profilepic: User3,
     username: "abdamin",
     bio: "web developer"
   },
@@ -73,7 +73,7 @@ const users = [
     name: "Ignas",
     friends: [0, 1, 2],
     friend_request: [],
-    picture: User4,
+    profilepic: User4,
     username: "iggy",
     bio: "i love my dog carmelo"
   },
@@ -83,7 +83,7 @@ const users = [
     name: "Mark",
     friends: [1, 2, 3, 6],
     friend_request: [5],
-    picture: User5,
+    profilepic: User5,
     username: "MarkZuckerberg",
     bio: "sup"
   },
@@ -93,7 +93,7 @@ const users = [
     name: "Steve",
     friends: [1, 2, 6, 7],
     friend_request: [],
-    picture: User6,
+    profilepic: User6,
     username: "SteveJobs",
     bio: "henlo"
   },
@@ -103,7 +103,7 @@ const users = [
     name: "Bill",
     friends: [2, 3, 5, 7],
     friend_request: [],
-    picture: User7,
+    profilepic: User7,
     username: "BillGates",
     bio: "i build things"
   },
@@ -114,7 +114,7 @@ const users = [
     name: "Jeff",
     friends: [5, 6, 7],
     friend_request: [],
-    picture: User8,
+    profilepic: User8,
     username: "JeffBezos",
     bio: "hi im bald"
   }
@@ -312,7 +312,7 @@ export function changeName(user_id, newName) {
 export function changePicture(user_id, newPicture) {
   for (let i = 0; i < user_id.length; i++) {
     if (users[i].id === user_id) {
-      users[i].picture = newPicture;
+      users[i].profilepic = newPicture;
     }
   }
 }

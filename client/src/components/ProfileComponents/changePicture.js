@@ -4,7 +4,7 @@ import { Redirect } from "react-router";
 import { connect } from 'react-redux'
 import {getUserFromId, changePicture} from "../MockData";
 
-const pic_paths = ["https://i.imgur.com/YBU8Zuq.png", "https://i.imgur.com/zWTxtlQ.png", "https://i.imgur.com/VM9iOl5.png", "https://i.imgur.com/B7KGaN6.png", "https://i.imgur.com/bnAlZ3X.png", "https://i.imgur.com/BEpJcyk.png", "https://i.imgur.com/DvuC4vb.png"]
+const pic_paths = ["https://i.imgur.com/YBU8Zuq.png", "https://i.imgur.com/bnAlZ3X.png", "https://i.imgur.com/zWTxtlQ.png", "https://i.imgur.com/VM9iOl5.png", "https://i.imgur.com/B7KGaN6.png", "https://i.imgur.com/BEpJcyk.png", "https://i.imgur.com/DvuC4vb.png"]
 
 class ChangePicture extends Component {
     constructor(props) {
@@ -12,7 +12,7 @@ class ChangePicture extends Component {
         this.current_user = getUserFromId(props.userId);
         this.state = {
             user: props.userId,
-            currently_selected: pic_paths[0],
+            currently_selected: this.current_user.profilepic,
             redirect: "",
         }
         this.saveProfilePic = this.saveProfilePic.bind(this);

@@ -68,7 +68,7 @@ class UserNav extends Component {
                 <div className="card">
                     <div className="card-body">
                         <div>
-                            <img className="rounded-circle img-responsive" width="65" height="65" src={this.user.picture} alt="" />
+                            <img className="rounded-circle img-responsive" width="65" height="65" src={this.user.profilepic} alt="" />
                         </div>
                         <div className="h5">{this.user.name} </div>
                         <div className="h7 text-muted">@{this.user.username}</div>
