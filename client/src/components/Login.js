@@ -51,15 +51,6 @@ class LoginComponent extends Component {
     }
   };
 
-  submitData = event => {
-    event.preventDefault();
-
-    userData = {
-      password: this.state.password,
-      username: this.state.email
-    };
-  };
-
   changeHandler = event => {
     this.setState({
       [event.target.name]: event.target.value
