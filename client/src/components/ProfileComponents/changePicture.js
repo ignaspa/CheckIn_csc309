@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 export default class selectProfile extends Component {
     constructor(props) {
         super(props);
+        // currentpic = GET current user image
         this.state = {
-            currently_selected: user
+            user: props.userid
+            currently_selected: currentpic
         }
         this.changeProfilePic = this.changeProfilePic.bind(this);
         this.selectPic = this.selectPic.bind(this);
