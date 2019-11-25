@@ -63,7 +63,7 @@ class UserNav extends Component {
           push={true}
         />
       );
-    } else if (this.state.redirect == "/addfriend") {
+    } else if (this.state.redirect === "/addfriend") {
       return <Redirect to="/addFriend" push={true} />;
     }
 
