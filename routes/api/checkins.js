@@ -7,14 +7,40 @@ const Checkin = require("../../models/Checkin");
 // load user model
 const User = require("../../models/User");
 
-// Get all checkins
+// Get all checkins (for admin)
 router.get(
-  "/",
+  "/all",
   passport.authenticate("admin-jwt", { session: false }),
   async (req, res) => {
     try {
       const checkins = await Checkin.find();
       res.json(checkins);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
+
+// Route to get our friend's checkins
+router.get(
+  "/friends",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      // const checkins = await Checkin.find();
+      // res.json(checkins);
+      const user = await User.findById(req.user.id)
+                  .catch(err => {
+                    res.status(400).json(err)
+                  })            
+      
+      const checkins = await Checkin.where("userid").in(user.friends)
+                      .catch(err => {
+                        res.status(400).json(err)
+                      })
+
+    res.json(checkins)
+
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
