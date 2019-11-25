@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 
 export default class Navbar extends Component {
+    logOut = (event) => {
+    }
   render() {
     return (
       <div>
@@ -14,6 +16,13 @@ export default class Navbar extends Component {
               </Link>
             </li>            
           </ul>
+        <ul className="navbar-nav mr-auto list-group-horizontal">
+            <li>
+                <Link to={"/"} className="nav-link text-white navitem" onClick={this.logOut}>
+                    Logout
+                </Link>
+            </li>            
+        </ul>
         </nav>
       </div>
     );
