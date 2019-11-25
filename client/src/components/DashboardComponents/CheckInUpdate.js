@@ -43,7 +43,7 @@ export default class CheckInUpdate extends Component {
         this.setState({redirect: "/profile"})
     }
     render() {
-        if (this.state.redirect == "/profile") {
+        if (this.state.redirect === "/profile") {
             return(
                 <Redirect
                         to={{

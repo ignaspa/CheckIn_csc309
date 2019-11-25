@@ -29,7 +29,7 @@ export default class Slider extends Component {
     }
 
     forward = () => {
-        if (this.state.currentSlide != 5) {
+        if (this.state.currentSlide !== 5) {
             this.setState({ currentSlide: this.state.currentSlide + 1 });
         }
         else {
@@ -37,7 +37,7 @@ export default class Slider extends Component {
         }
     }
     back = () => {
-        if (this.state.currentSlide != 0) {
+        if (this.state.currentSlide !== 0) {
             this.setState({ currentSlide: this.state.currentSlide - 1 });
         }
         else {

@@ -95,11 +95,11 @@ class ActionButton extends Component {
     render() {
         let label = "Edit Profile"
         let onClickAction = this.props.onModeChange
-        if (this.props.user_id != this.props.profile_id && this.state.isFriend) {
+        if (this.props.user_id !== this.props.profile_id && this.state.isFriend) {
             label = "Remove Friend";
             onClickAction = this.removeFriend;
         }
-        if (this.props.user_id != this.props.profile_id && !this.state.isFriend) {
+        if (this.props.user_id !== this.props.profile_id && !this.state.isFriend) {
             label = "Add Friend"
             onClickAction = this.addFriend;
         }
