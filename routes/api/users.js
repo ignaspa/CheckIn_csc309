@@ -14,12 +14,14 @@ const validateRegisterInput = require("../../validation/register");
 //Load user model
 const User = require("../../models/User");
 
-// TODO: need to test once api is back up
 //  @route GET api/users/
 //  @desc Get user object from ID
 //  @access Private
 router.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
     let user = await User.findById(req.user.id)
+    .select(
+      "friends friendRequests pastCheckins _id name username activeCheckin bio"
+    )
     .catch((error) => {
       res.status(400).json(error)
     })
@@ -126,7 +128,7 @@ router.get("/all", (req, res) => {
 
   User.find()
     .select(
-      "friends friendRequests pastCheckins _id name username activeCheckin"
+      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin"
     )
     .then(users => {
       if (!users) {

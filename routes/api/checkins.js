@@ -7,9 +7,9 @@ const Checkin = require("../../models/Checkin");
 // load user model
 const User = require("../../models/User");
 
-// Get all checkins
+// Get all checkins (for admin)
 router.get(
-  "/",
+  "/all",
   passport.authenticate("admin-jwt", { session: false }),
   async (req, res) => {
     try {
@@ -21,7 +21,6 @@ router.get(
   }
 );
 
-// TODO: Need to test once API is back up
 // Route to get our friend's checkins
 router.get(
   "/friends",
