@@ -7,11 +7,12 @@ import AddFriend from "./components/AddFriend";
 import SignUp from "./components/SignUp";
 import Navbar from "./components/Layout/Navbar";
 import AdminDashboard from "./components/AdminComponents/AdminDashboard";
-import Login from "./components/Login";
-import Profile from "./components/ProfileComponents/Profile";
-import ProfileLinks from "./components/ProfileComponents/Profile-links";
-import UserDashboard from "./components/DashboardComponents/UserDashboard";
-import FriendRequestsSection from "./components/FriendRequestsComponents/FriendRequests";
+import Login from "./components/Login"
+import Profile from "./components/ProfileComponents/Profile"
+import ProfileLinks from "./components/ProfileComponents/Profile-links"
+import UserDashboard from "./components/DashboardComponents/UserDashboard"
+import FriendRequestsSection from "./components/FriendRequestsComponents/FriendRequests"
+import ChangePicture from "./components/ProfileComponents/ChangePicture"
 
 class App extends React.Component {
   render() {
