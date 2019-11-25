@@ -4,7 +4,7 @@ import { Redirect } from "react-router";
 import { connect } from 'react-redux'
 import {getUserFromId, changePicture} from "../MockData";
 
-const pic_paths = ["https://i.imgur.com/YBU8Zuq.png", "https://i.imgur.com/bnAlZ3X.png", "https://i.imgur.com/zWTxtlQ.png", "https://i.imgur.com/VM9iOl5.png", "https://i.imgur.com/B7KGaN6.png", "https://i.imgur.com/BEpJcyk.png", "https://i.imgur.com/DvuC4vb.png"]
+const pic_paths = ["https://i.imgur.com/YBU8Zuq.png", "https://i.imgur.com/bnAlZ3X.png", "https://i.imgur.com/zWTxtlQ.png", "https://i.imgur.com/VM9iOl5.png", "https://i.imgur.com/DvuC4vb.png", "https://i.imgur.com/B7KGaN6.png", "https://i.imgur.com/BEpJcyk.png"]
 
 class ChangePicture extends Component {
     constructor(props) {

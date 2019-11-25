@@ -134,7 +134,7 @@ function ProfileHeader(props) {
                 </tr>
                 <tr>
                     <th>
-                        <button type="button" class="btn btn-primary attractionbutton">
+                        <button type="button" class="btn btn-primary changepicbutton">
                             <Link to={"/changepic"} className="nav-link text-white">
                                 Change Profile Picture
                             </Link>
