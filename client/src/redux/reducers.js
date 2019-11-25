@@ -8,6 +8,8 @@ const loginInitialState = {
 
 const errorInitialState = {};
 
+const userDataInitialState = {};
+
 export const loginReducer = (state = loginInitialState, action) => {
   switch (action.type) {
     case "LOGIN":
@@ -32,9 +34,22 @@ export const errorReducer = (state = errorInitialState, action) => {
   }
 };
 
+export const userDataReducer = (state = userDataInitialState, action) => {
+  switch (action.type) {
+    case "SET_USER_DATA":
+      return {
+        ...state,
+        userData: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
 export const allReducers = combineReducers({
   user: loginReducer,
-  errors: errorReducer
+  errors: errorReducer,
+  userData: userDataReducer
 });
 
 export default allReducers;
