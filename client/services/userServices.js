@@ -45,3 +45,14 @@ const changeUserImage = async (newimage) => {
         return null;
     });
 }
+const changeUserImage = async (newimage) => {
+    axios
+    .patch('https://localhost:5000/api/users/profilepic', {newpic: newimage})
+    .then(res => {
+        return res;
+    })
+    .catch(err => {
+        console.log(err);
+        return null;
+    });
+}
