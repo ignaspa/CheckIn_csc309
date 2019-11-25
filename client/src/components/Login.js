@@ -4,10 +4,12 @@ import { Password } from "../components/SignUp.js";
 import { Button } from "../components/SignUp.js";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
-import { login } from "../redux/actions.js";
-
+import isEmpty from "../validation/isEmpty";
 import { connect } from "react-redux";
-import { authenticateUser, getUserFromId } from "./MockData.js";
+import { bindActionCreators } from "redux";
+
+import { getUserFromId } from "./MockData.js";
+import { authenticateUser } from "../redux/actions";
 
 function SignUpLink(props) {
   return (
@@ -21,13 +23,23 @@ class LoginComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showInvalid: false,
+      errors: {},
       authenticated: false
     };
-    this.user = getUserFromId(9);
+    this.user = null;
     this.authenticated = false;
     this.showInvalid = false;
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user.isAuthenticated) {
+      this.props.history.push("/user-dashboard");
+    }
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   submitHandler = event => {
     event.preventDefault();
     const userData = {
@@ -35,26 +47,7 @@ class LoginComponent extends Component {
       password: this.state.password
     };
 
-    const tokenData = authenticateUser(userData);
-    const { isAdmin } = tokenData;
-    const userId = tokenData.id;
-    userId = 9;
-    console.log(userId);
-    if (this.state && userId != null) {
-      event.target.className += " was-validated";
-      this.userId = userId;
-      this.props.loginUser(userId);
-      this.user = getUserFromId(this.userId);
-      console.log("Setting state");
-      this.setState({
-        showInvalid: false
-      });
-    } else {
-      event.target.reset();
-      this.setState({
-        showInvalid: true
-      });
-    }
+    this.props.authenticateUser(userData);
   };
 
   changeHandler = event => {
@@ -64,9 +57,7 @@ class LoginComponent extends Component {
   };
 
   render() {
-    console.log("Rendering...");
     const disclaimerEmail = "We'll never share your email with anyone else";
-    console.log("this.user: " + this.user);
     if (this.user != null) {
       if (this.user.isAdmin) {
         return <Redirect to="/admin-dashboard" />;
@@ -84,7 +75,7 @@ class LoginComponent extends Component {
             onSubmit={this.submitHandler}
             noValidate
           >
-            <InvalidCredentials show={this.state.showInvalid} />
+            <InvalidCredentials errors={this.state.errors} />
             <Username
               label={"Username"}
               disclaimer={disclaimerEmail}
@@ -115,18 +106,30 @@ function LoginHeader(props) {
 }
 
 function InvalidCredentials(props) {
-  if (!props.show) {
-    return "";
+  const errs = [];
+  if (!isEmpty(props.errors)) {
+    if (!isEmpty(props.errors.username)) {
+      errs.push(
+        <div className="alert alert-danger">{props.errors.username}</div>
+      );
+    }
+    if (!isEmpty(props.errors.password)) {
+      errs.push(
+        <div className="alert alert-danger">{props.errors.password}</div>
+      );
+    }
   }
-  return <div className="alert alert-danger">Invalid username or password</div>;
+
+  return errs;
 }
 
 const mapStateToProps = store => ({
-  userId: store.userId
+  user: store.user,
+  errors: store.errors
 });
 
-const mapDispatchToProps = dispatch => ({
-  loginUser: id => dispatch(login(id))
-});
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ authenticateUser: authenticateUser }, dispatch);
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
