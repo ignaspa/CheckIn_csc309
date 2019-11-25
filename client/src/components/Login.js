@@ -24,7 +24,7 @@ class LoginComponent extends Component {
       showInvalid: false,
       authenticated: false
     };
-    this.user = null;
+    this.user = getUserFromId(9);
     this.authenticated = false;
     this.showInvalid = false;
   }
@@ -34,7 +34,12 @@ class LoginComponent extends Component {
       username: this.state.username,
       password: this.state.password
     };
-    const userId = authenticateUser(userData);
+
+    const tokenData = authenticateUser(userData);
+    const { isAdmin } = tokenData;
+    const userId = tokenData.id;
+    userId = 9;
+    console.log(userId);
     if (this.state && userId != null) {
       event.target.className += " was-validated";
       this.userId = userId;

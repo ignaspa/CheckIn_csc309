@@ -1,16 +1,16 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
 export const loginReducer = (state = null, action) => {
-    switch (action.type) {
+  switch (action.type) {
     case "LOGIN":
-        return action.payload;
+      return action.payload;
     default:
-        return state;
-    };
+      return 9;
+  }
 };
 
 export const allReducers = combineReducers({
-    userId: loginReducer,
+  userId: loginReducer
 });
 
 export default allReducers;
