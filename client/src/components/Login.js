@@ -73,13 +73,6 @@ class LoginComponent extends Component {
 
   render() {
     const disclaimerEmail = "We'll never share your email with anyone else";
-    if (this.user != null) {
-      if (this.user.isAdmin) {
-        return <Redirect to="/admin-dashboard" />;
-      }
-      return <Redirect to="/user-dashboard" />;
-    }
-
     return (
       <div className="container">
         <LoginHeader />
