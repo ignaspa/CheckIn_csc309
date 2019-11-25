@@ -31,9 +31,24 @@ class LoginComponent extends Component {
     this.showInvalid = false;
   }
 
+  componentDidMount() {
+    //if logged in go to dashboard
+    if (this.props.user.isAuthenticated) {
+      if (!this.props.user.isAdmin) {
+        this.props.history.push("/admin-dashboard");
+      } else {
+        this.props.history.push("/user-dashboard");
+      }
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.user.isAuthenticated) {
-      this.props.history.push("/user-dashboard");
+      if (!nextProps.user.isAdmin) {
+        this.props.history.push("/admin-dashboard");
+      } else {
+        this.props.history.push("/user-dashboard");
+      }
     }
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
