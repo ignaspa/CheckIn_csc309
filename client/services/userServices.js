@@ -45,9 +45,9 @@ const changeUserImage = async (newimage) => {
         return null;
     });
 }
-const changeUserImage = async (newimage) => {
+const deleteUser = async (user) => {
     axios
-    .patch('https://localhost:5000/api/users/profilepic', {newpic: newimage})
+    .delete('https://localhost:5000/api/users/' + user)
     .then(res => {
         return res;
     })
@@ -56,3 +56,29 @@ const changeUserImage = async (newimage) => {
         return null;
     });
 }
+
+// given a JSON of data to post
+const registerUser = async (userInfo) => {
+    axios
+    .post('https://localhost:5000/api/users/register', userInfo)
+    .then(res => {
+        return res;
+    })
+    .catch(err => {
+        console.log(err);
+        return null;
+    });
+}
+
+const loginUser = async (username, password) => {
+    axios
+    .post('https://localhost:5000/api/users/login', {username: username, password: password})
+    .then(res => {
+        return res;
+    })
+    .catch(err => {
+        console.log(err);
+        return null;
+    });
+}
+
