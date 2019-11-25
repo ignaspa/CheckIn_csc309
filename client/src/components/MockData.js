@@ -166,7 +166,7 @@ let oldCheckins = [
 **/
 export function authenticateUser(userData) {
   axios
-    .post("http://localhost:5000/api/users/login", userData)
+    .post("/api/users/login", userData)
     .then(res => {
       //Save to local storage
       const { token } = res.data;
@@ -177,8 +177,8 @@ export function authenticateUser(userData) {
       setAuthToken(token);
       //Decode token to get user data
       const decoded = jwt_decode(token);
-
       console.log(decoded);
+      return decoded;
     })
     .catch(err => {
       return null;
