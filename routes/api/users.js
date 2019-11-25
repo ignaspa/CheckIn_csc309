@@ -28,6 +28,24 @@ router.get("/", passport.authenticate("jwt", { session: false }), async (req, re
 
     res.json(user)
   })
+
+//  @route GET api/users/
+//  @desc Get user object from username
+//  @access Private
+// {
+//   username: username
+// }
+router.get("/username", passport.authenticate("jwt", { session: false }), async (req, res) => {
+  let user = await User.find({username: req.body.username})
+  .select(
+    "friends friendRequests pastCheckins _id name username activeCheckin bio"
+  )
+  .catch((error) => {
+    res.status(400).json(error)
+  })
+
+  res.json(user)
+})  
    
 //  @route GET api/users/login
 //  @desc Login User and return a JWT on success
