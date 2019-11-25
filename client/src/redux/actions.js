@@ -56,6 +56,30 @@ export const logoutUser = () => dispatch => {
   window.location.href = "/login";
 };
 
+/*Redux Action to get current user's data */
+export const getUserData = () => dispatch => {
+  axios
+    .get("/api/users/")
+    .then(res => {
+      const userData = res.data;
+
+      dispatch(setUserData(userData));
+    })
+    .catch(err => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: err.respose.data
+      });
+    });
+};
+
+export const setUserData = userData => {
+  return {
+    type: "SET_USER_DATA",
+    payload: userData
+  };
+};
+
 export const logoff = () => {
   return {
     type: "LOGOFF"

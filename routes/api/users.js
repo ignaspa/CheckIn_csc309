@@ -14,19 +14,21 @@ const validateRegisterInput = require("../../validation/register");
 //Load user model
 const User = require("../../models/User");
 
-
 //  @route GET api/users/
 //  @desc Get user object from ID
 //  @access Private
-router.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
-    let user = await User.findById(req.user.id)
-    .catch((error) => {
-      res.status(400).json(error)
-    })
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    let user = await User.findById(req.user.id).catch(error => {
+      res.status(400).json(error);
+    });
 
-    res.json(user)
-  })
-   
+    res.json(user);
+  }
+);
+
 //  @route GET api/users/login
 //  @desc Login User and return a JWT on success
 //  @access Public
