@@ -62,7 +62,6 @@ export const getUserData = () => dispatch => {
     .get("/api/users/")
     .then(res => {
       const userData = res.data;
-
       dispatch(setUserData(userData));
     })
     .catch(err => {
@@ -85,3 +84,29 @@ export const logoff = () => {
     type: "LOGOFF"
   };
 };
+
+/* Redux actions to get checkins */
+
+// Get checkins to display in the dashboard
+export const getFriendsCheckins = () => dispatch => {
+  axios.get("/api/checkins/friends")
+    .then(response => {
+        const friendsCheckins = response.data
+        dispatch(setFriendsCheckins(friendsCheckins))
+    })
+    .catch(err => {
+      return dispatch( {
+        type: "GET_ERRORS", 
+        payload: err.response.data
+      })
+    })
+}
+
+// helper function to set friends checkins
+export const setFriendsCheckins = friendsCheckins => {
+  return {
+    type: "SET_FRIENDS_CHECKINS", 
+    payload: friendsCheckins
+  }
+}
+

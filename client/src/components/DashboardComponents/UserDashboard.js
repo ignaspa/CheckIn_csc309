@@ -3,46 +3,27 @@ import React, { Component } from "react";
 import "../../css/UserDashboard.css";
 import CheckInForm from "./CheckinForm";
 import UserNav from "./UserNav";
-import CheckInUpdates from "./UserData";
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getUserData } from "../../redux/actions";
+import { getUserData, getFriendsCheckins } from "../../redux/actions";
 
-let checkins = [
-  {
-    id: 1,
-    action: "studying",
-    location: "Gerstein",
-    time: new Date("November 1, 2019 03:24:00"),
-    message: "309 is tough. help :("
-  },
-  {
-    id: 2,
-    action: "eating",
-    location: "Sidney Smith",
-    time: new Date("October 2, 2019 03:24:00"),
-    message: "let's get a burrito bowl!"
-  },
-  {
-    id: 3,
-    action: "chilling",
-    location: "CSSU",
-    time: new Date("October 29, 2019 03:24:00"),
-    message: "come play smash :)"
-  }
-];
 
 class UserDashboard extends Component {
   constructor(props) {
     super(props);
+    this.props.getFriendsCheckins();
     this.state = {
-      allCheckins: checkins
+      allCheckins: this.props.checkins
     };
   }
 
   componentDidMount() {
     this.props.getUserData();
+    this.props.getFriendsCheckins();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ allCheckins: nextProps.friendsCheckins });
   }
 
   submitCheckIn = state => {
@@ -73,10 +54,10 @@ class UserDashboard extends Component {
           <div className="col-9" id="checkingContents">
             <CheckInForm submitCheckIn={this.submitCheckIn} />
 
-            <CheckInUpdates
+            {/* <CheckInUpdates
               allCheckins={this.state.allCheckins}
-              currentUserId="0"
-            />
+              currentUserId={0}
+            /> */}
           </div>
         </div>
       </div>
@@ -86,10 +67,11 @@ class UserDashboard extends Component {
 const mapStateToProps = store => ({
   user: store.user,
   errors: store.errors,
-  userData: store.userData
+  userData: store.userData, 
+  checkins: store.friendsCheckins
 });
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ getUserData: getUserData }, dispatch);
+  return bindActionCreators({ getUserData: getUserData, getFriendsCheckins: getFriendsCheckins}, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(UserDashboard);

@@ -10,6 +10,8 @@ const errorInitialState = {};
 
 const userDataInitialState = {};
 
+const friendsCheckinsInitialState = {};
+
 export const loginReducer = (state = loginInitialState, action) => {
   switch (action.type) {
     case "LOGIN":
@@ -46,10 +48,23 @@ export const userDataReducer = (state = userDataInitialState, action) => {
   }
 };
 
+export const friendsCheckinsReducer = (state = friendsCheckinsInitialState, action) => {
+  switch(action.type) {
+    case "SET_FRIENDS_CHECKINS":
+      return {
+        ...state, 
+        friendsCheckins: action.payload
+      }
+    default:
+      return state  
+  }
+}
+
 export const allReducers = combineReducers({
   user: loginReducer,
   errors: errorReducer,
-  userData: userDataReducer
+  friendsCheckins: friendsCheckinsReducer,
+  userData: userDataReducer, 
 });
 
 export default allReducers;
