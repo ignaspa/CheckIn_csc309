@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 
 class Navbar extends Component {
     logOut = (event) => {
+        this.props.logoutUser();
     }
   render() {
       const logOutButton = this.props.user.isAuthenticated ? (<ul className="navbar-nav mr-auto list-group-horizontal">
