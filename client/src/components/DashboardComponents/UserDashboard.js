@@ -15,6 +15,8 @@ class UserDashboard extends Component {
     this.state = {
       allCheckins: this.props.checkins
     };
+    console.log("yo sonia")
+    console.log(this.props.checkins)
   }
 
   componentDidMount() {
