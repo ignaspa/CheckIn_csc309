@@ -21,6 +21,7 @@ router.get(
   }
 );
 
+// TODO: Need to test once API is back up
 // Route to get our friend's checkins
 router.get(
   "/friends",

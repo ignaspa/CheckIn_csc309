@@ -14,7 +14,7 @@ const validateRegisterInput = require("../../validation/register");
 //Load user model
 const User = require("../../models/User");
 
-
+// TODO: need to test once api is back up
 //  @route GET api/users/
 //  @desc Get user object from ID
 //  @access Private
