@@ -21,6 +21,32 @@ router.get(
   }
 );
 
+// Route to get our friend's checkins
+router.get(
+  "/friends",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      // const checkins = await Checkin.find();
+      // res.json(checkins);
+      const user = await User.findById(req.user.id)
+                  .catch(err => {
+                    res.status(400).json(err)
+                  })            
+      
+      const checkins = await Checkin.where("userid").in(user.friends)
+                      .catch(err => {
+                        res.status(400).json(err)
+                      })
+
+    res.json(checkins)
+
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
+
 // Get Checkins for given user id
 router.get(
   "/",
