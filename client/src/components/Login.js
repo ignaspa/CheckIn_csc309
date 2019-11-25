@@ -2,14 +2,12 @@ import React, { Component } from "react";
 import { Username } from "../components/SignUp.js";
 import { Password } from "../components/SignUp.js";
 import { Button } from "../components/SignUp.js";
-import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import isEmpty from "../validation/isEmpty";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
-import { getUserFromId } from "./MockData.js";
 import { authenticateUser } from "../redux/actions";
+import { redirect } from "../utils/utils";
 
 function SignUpLink(props) {
   return (
@@ -33,23 +31,12 @@ class LoginComponent extends Component {
 
   componentDidMount() {
     //if logged in go to dashboard
-    if (this.props.user.isAuthenticated) {
-      if (this.props.user.isAdmin) {
-        this.props.history.push("/admin-dashboard");
-      } else {
-        this.props.history.push("/user-dashboard");
-      }
-    }
+    redirect(this.props.user, this.props.history);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.isAuthenticated) {
-      if (!nextProps.user.isAdmin) {
-        this.props.history.push("/admin-dashboard");
-      } else {
-        this.props.history.push("/user-dashboard");
-      }
-    }
+    redirect(nextProps.user, this.props.history);
+
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
