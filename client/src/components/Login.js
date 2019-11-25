@@ -34,7 +34,7 @@ class LoginComponent extends Component {
   componentDidMount() {
     //if logged in go to dashboard
     if (this.props.user.isAuthenticated) {
-      if (!this.props.user.isAdmin) {
+      if (this.props.user.isAdmin) {
         this.props.history.push("/admin-dashboard");
       } else {
         this.props.history.push("/user-dashboard");
