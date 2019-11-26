@@ -169,7 +169,7 @@ export default class UsersTable extends Component {
           <thead>
             <tr>
               <th>Full Name</th>
-              <th>Email</th>
+              <th>Username</th>
               <th>Total Checkins</th>
               <th>Join Date</th>
               <th>Actions</th>
