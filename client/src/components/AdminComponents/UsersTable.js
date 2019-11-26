@@ -18,7 +18,6 @@ export default class UsersTable extends Component {
         const usersData = res.data;
         this.appendShowPasswordChangeField(usersData);
         this.setState({ usersData: usersData });
-        console.log(this.state.usersData);
       })
       .catch(err => {
         console.log(err);
@@ -35,7 +34,7 @@ export default class UsersTable extends Component {
   onPasswordChangeClick = userId => {
     const { usersData } = this.state;
     for (let i = 0; i < usersData.length; i++) {
-      if (usersData[i].id === userId) {
+      if (usersData[i]._id === userId) {
         usersData[i].showPasswordChangeForm = true;
         this.setState({ usersData: usersData });
         break;
@@ -43,18 +42,29 @@ export default class UsersTable extends Component {
     }
   };
 
-  //For now we are just modifying the state. Later when we implement server code, this method will send
-  // a DELETE request to our express server to delete the user from our database
-  onDeleteClick = userId => {
+  //make change password form appear
+  hidePasswordChangeForm = userId => {
     const { usersData } = this.state;
     for (let i = 0; i < usersData.length; i++) {
-      if (usersData[i].id === userId) {
-        const index = i;
-        usersData.splice(index, 1);
+      if (usersData[i]._id === userId) {
+        usersData[i].showPasswordChangeForm = false;
         this.setState({ usersData: usersData });
         break;
       }
     }
+  };
+
+  //make DELETE request to express server to delete user
+  onDeleteClick = userId => {
+    axios
+      .delete(`/api/users/${userId}`)
+      .then(res => {
+        //reload page on success
+        window.location.reload();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
   render() {
     const usersData = this.state.usersData.map(user => (
@@ -69,21 +79,24 @@ export default class UsersTable extends Component {
 
         {user.showPasswordChangeForm ? (
           <td>
-            <PasswordChangeForm />
+            <PasswordChangeForm
+              userId={user._id}
+              hidePasswordChangeForm={this.hidePasswordChangeForm}
+            />
           </td>
         ) : (
           <td>
             <button
-              onClick={() => this.onPasswordChangeClick(user.id)}
+              onClick={() => this.onPasswordChangeClick(user._id)}
               className="btn btn-primary mr-2"
             >
               Change Password
             </button>
             <button
-              onClick={() => this.onDeleteClick(user.id)}
+              onClick={() => this.onDeleteClick(user._id)}
               className="btn btn-danger"
             >
-              Delete
+              Delete User
             </button>
           </td>
         )}

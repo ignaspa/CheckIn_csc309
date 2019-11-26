@@ -59,7 +59,7 @@ export default class Options extends Component {
                 />
               </div>
               <div className="card-body">
-                <h5 className="card-title">Setup CheckIns</h5>
+                <h5 className="card-title">Manage CheckIns</h5>
                 <Link
                   className="stretched-link"
                   to="checkin-settings"
