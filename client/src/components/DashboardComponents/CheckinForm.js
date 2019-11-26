@@ -55,7 +55,6 @@ export default class CheckInForm extends Component {
                                                     id="inputText"
                                                     placeholder="Where are you?"
                                                     type="text"
-                                                    // onChange={this.props.handleCheckInInput}
                                                 />
 
                                             </div>
@@ -76,7 +75,6 @@ export default class CheckInForm extends Component {
                                             id="inputMessage"
                                             placeholder="Anything else you want to add?"
                                             type="text"
-                                            // onChange={this.props.handleCheckInInput}
                                         />
 
                                     </div>

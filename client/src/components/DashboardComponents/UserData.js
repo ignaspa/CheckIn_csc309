@@ -23,22 +23,18 @@ class Checkins extends Component {
     
       componentWillReceiveProps(nextProps) {
         this.setState({ friends: nextProps.friendsData.friendsData }); 
-        this.setState({userData: nextProps.userData.userData})
+        this.setState({ userData: nextProps.userData.userData })
       }  
     
     findUser = (userID) => {
+        if (this.state.userData._id == userID.toString()) {
+          return this.state.userData
+        }
+
         for (let i = 0; i < this.state.friends.length; i++) {
-            console.log(this.state.friends[i])
-            console.log(userID)
             if (this.state.friends[i]._id === userID.toString()) {
                 return this.state.friends[i]
             }
-
-            // return yourself if checkin is yours
-            if (this.state.userData._id === userID.toString()) {
-                return this.state.userData
-            }
-
         }
         return null
     }
@@ -48,17 +44,14 @@ class Checkins extends Component {
         let checkins = this.props.allCheckins
         if (typeof(checkins) != "undefined") {
             for (let i = 0; i < checkins.length; i++) {
-
             let user = this.findUser(checkins[i].userid)
-            console.log("USER")
-            console.log(user)
              rows.push(<CheckInUpdate 
                 user={user}
                 key={user.id}
                 id={checkins[i].id}
                 name={user.name}
                 username={user.username}
-                // picture={user.picture}
+                picture={user.picture}
                 location={checkins[i].location}
                 action={checkins[i].action}
                 message={checkins[i].message}

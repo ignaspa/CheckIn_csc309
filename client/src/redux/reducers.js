@@ -14,6 +14,8 @@ const friendsDataInitialState = {};
 
 const friendsCheckinsInitialState = {};
 
+const newCheckinInitialState = {};
+
 
 export const loginReducer = (state = loginInitialState, action) => {
   switch (action.type) {
@@ -86,14 +88,26 @@ export const friendsCheckinsReducer = (state = friendsCheckinsInitialState, acti
   }
 }
 
+export const newCheckinReducer = (state = newCheckinInitialState, action) => {
+  switch(action.type) {
+    case "SET_NEW_CHECKIN":
+      return {
+        ...state, 
+        newCheckin: action.payload
+      }
+    default:
+      return state  
+  }
+}
+
 export const allReducers = combineReducers({
   user: loginReducer,
   errors: errorReducer,
   userData: userDataReducer,
   listUsers: usersListReducer,
   friendsCheckins: friendsCheckinsReducer,
-  // specificUser: specificUserDataReducer, 
-  friendsData: friendsDataReducer
+  friendsData: friendsDataReducer, 
+  newCheckin: newCheckinReducer
 });
 
 export default allReducers;
