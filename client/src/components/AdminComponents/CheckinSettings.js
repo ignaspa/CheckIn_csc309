@@ -27,6 +27,10 @@ export default class CheckinSettings extends Component {
       typedLocation: ""
     };
   }
+
+  componentDidMount() {
+    this.setState({ locationsData: LOCATIONS_DATA });
+  }
   //currently removes from state but later this will send a DELETE request to our express server
   onDeleteClick = locationId => {
     const { locationsData } = this.state;
@@ -39,35 +43,16 @@ export default class CheckinSettings extends Component {
       }
     }
   };
-  onLocationFormChange = e => {
-    e.preventDefault();
 
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  //After server side code is implemented, this method will make a POST request to our express endpoint
-  addLocation = e => {
-    e.preventDefault();
-    console.log(this.state.typedLocation);
-
-    const { locationsData } = this.state;
-    //generate dummy id
-    const newLocation = {
-      id: locationsData.length,
-      name: this.state.typedLocation
-    };
-    console.log(newLocation);
-
-    locationsData.push(newLocation);
-    this.setState({ locationsData: locationsData });
-  };
-  componentDidMount() {
-    this.setState({ locationsData: LOCATIONS_DATA });
-  }
   render() {
     const locationsData = this.state.locationsData.map(location => (
       <tr key={location.id}>
+        <td></td>
+        <td></td>
         <td>{location.name}</td>
+
+        <td></td>
+        <td></td>
 
         <td>
           <button
@@ -83,39 +68,16 @@ export default class CheckinSettings extends Component {
       <div className="container mt-5" id="checkin-settings">
         <h2 className="mb-5 mt-5">Default CheckIn Locations</h2>
         <div className="row">
-          <div className="col-md-4">
-            <form className="form-inline" onSubmit={this.addLocation}>
-              <div className="row">
-                <div className="form-group col-sm-6 mb-12">
-                  <label htmlFor="inputLocation" className="sr-only">
-                    Location
-                  </label>
-                  <input
-                    type="test"
-                    className="form-control"
-                    id="inputLocation"
-                    placeholder="Enter Location"
-                    name="typedLocation"
-                    value={this.state.typedLocation}
-                    onChange={this.onLocationFormChange}
-                  />
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-sm-12">
-                  <button type="submit" className="btn btn-primary mb-2 mt-2">
-                    Add Location
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div className="col-md-8">
+          <div className="col-md-12">
             <table className="table">
               <thead>
                 <tr>
+                  <th>User Id</th>
+                  <th>Doing</th>
+
                   <th>Location</th>
+                  <th>Message</th>
+                  <th>Time</th>
 
                   <th>Actions</th>
                 </tr>

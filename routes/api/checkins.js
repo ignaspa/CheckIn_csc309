@@ -13,7 +13,7 @@ router.get(
   passport.authenticate("admin-jwt", { session: false }),
   async (req, res) => {
     try {
-      const checkins = await Checkin.find();
+      const checkins = await Checkin.find().sort({ date: -1 });
       res.json(checkins);
     } catch (error) {
       res.status(500).json({ message: error.message });
