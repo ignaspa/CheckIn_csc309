@@ -41,7 +41,7 @@ router.get("/all", (req, res) => {
 
   User.find({ isAdmin: false })
     .select(
-      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin"
+      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin _id"
     )
     .then(users => {
       if (!users) {
@@ -69,7 +69,7 @@ router.get(
   async (req, res) => {
     let user = await User.find({ username: req.params.userID })
       .select(
-        "friends friendRequests pastCheckins _id name username activeCheckin bio"
+        "friends friendRequests pastCheckins _id name username activeCheckin bio totalCheckins date"
       )
       .catch(error => {
         res.status(400).json(error);

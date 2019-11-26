@@ -1,93 +1,94 @@
 import React, { Component } from "react";
 import PasswordChangeForm from "./PasswordChangeForm";
+import axios from "axios";
 
 const USER_DATA = [
   {
     id: "1",
     name: "Abdullah Amin",
-    email: "abdamin30@gmal.com",
+    username: "abdamin30@gmal.com",
     totalCheckins: "140",
-    joinDate: "2019-01-10",
+    date: "2019-01-10",
     showPasswordChangeForm: false
   },
   {
     id: "2",
     name: "Marco Angeli",
-    email: "marco@gmal.com",
+    username: "marco@gmal.com",
     totalCheckins: "127",
-    joinDate: "2017-02-20",
+    date: "2017-02-20",
     showPasswordChangeForm: false
   },
   {
     id: "3",
     name: "Ignas Panero",
-    email: "ignas@gmal.com",
+    username: "ignas@gmal.com",
     totalCheckins: "250",
-    joinDate: "2018-03-15",
+    date: "2018-03-15",
     showPasswordChangeForm: false
   },
   {
     id: "4",
     name: "Sonia Zaldana",
-    email: "sonia@gmal.com",
+    username: "sonia@gmal.com",
     totalCheckins: "198",
-    joinDate: "2016-06-12",
+    date: "2016-06-12",
     showPasswordChangeForm: false
   },
   {
     id: "5",
     name: "John Doe",
-    email: "john@gmal.com",
+    username: "john@gmal.com",
     totalCheckins: "150",
-    joinDate: "2018-01-11",
+    date: "2018-01-11",
     showPasswordChangeForm: false
   },
   {
     id: "6",
     name: "Jane Doe",
-    email: "jane@gmal.com",
+    username: "jane@gmal.com",
     totalCheckins: "355",
-    joinDate: "2019-03-15",
+    date: "2019-03-15",
     showPasswordChangeForm: false
   },
   {
     id: "7",
     name: "Jack Ma",
-    email: "Jackma@gmal.com",
+    username: "Jackma@gmal.com",
     totalCheckins: "550",
-    joinDate: "2017-02-22",
+    date: "2017-02-22",
     showPasswordChangeForm: false
   },
   {
     id: "8",
     name: "Mark Zuckerberg",
-    email: "markzuck@gmal.com",
+    username: "markzuck@gmal.com",
     totalCheckins: "144",
-    joinDate: "2018-03-15",
+    date: "2018-03-15",
     showPasswordChangeForm: false
   },
   {
     id: "9",
     name: "Jeff Bezos",
-    email: "jeffbezos@gmal.com",
+    username: "jeffbezos@gmal.com",
     totalCheckins: "10",
-    joinDate: "2019-07-10",
+    date: "2019-07-10",
     showPasswordChangeForm: false
   },
   {
     id: "10",
     name: "Steve Jobs",
-    email: "stevejobs@gmal.com",
+    username: "stevejobs@gmal.com",
     totalCheckins: "350",
-    joinDate: "2014-02-07",
+    date: "2014-02-07",
     showPasswordChangeForm: false
   },
   {
     id: "11",
     name: "Elon Musk",
-    email: "elonmusk@gmal.com",
+    username: "elonmusk@gmal.com",
     totalCheckins: "122",
-    joinDate: "2018-08-25",
+    date: "2018-08-25",
     showPasswordChangeForm: false
   }
 ];
@@ -101,7 +102,15 @@ export default class UsersTable extends Component {
   }
   //later API will send a GET request to server to get user data
   componentDidMount() {
-    this.setState({ usersData: USER_DATA });
+    axios
+      .get("/api/users/all")
+      .then(res => {
+        const usersData = res.data;
+        this.setState({ usersData: usersData });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   //make change password form appear
@@ -131,12 +140,12 @@ export default class UsersTable extends Component {
   };
   render() {
     const usersData = this.state.usersData.map(user => (
-      <tr key={user.id}>
+      <tr key={user._id}>
         <td>{user.name}</td>
-        <td>{user.email}</td>
+        <td>{user.username}</td>
 
         <td>{user.totalCheckins}</td>
-        <td>{user.joinDate}</td>
+        <td>{user.date}</td>
 
         {user.showPasswordChangeForm ? (
           <td>
