@@ -30,6 +30,26 @@ export const authenticateUser = userData => dispatch => {
     });
 };
 
+export const createUser = userData => dispatch => {
+    dispatch(clearErrors());
+    axios
+        .post("/api/users/register", userData)
+        .then(data => {
+            console.log(data);
+            const newUser = {
+                username: userData.username,
+                password: userData.password,
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return dispatch({
+                type: "GET_ERRORS",
+                payload: err.response.data
+            });
+        });
+}
+
 //Clear errors
 export const clearErrors = () => {
   return {
@@ -42,6 +62,12 @@ export const login = decoded => {
     type: "LOGIN",
     payload: decoded
   };
+};
+
+export const newUser = () => {
+    return {
+        type: "NEW_USER",
+    };
 };
 
 //log user out
