@@ -93,6 +93,7 @@ export const getAllUsers = () => dispatch => {
     .get("/api/users/all")
     .then(res => {
       const userData = res.data;
+      console.log("hello", userData);
       dispatch(setListUsers(userData));
     })
     .catch(err => {
