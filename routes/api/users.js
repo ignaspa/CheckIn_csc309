@@ -39,7 +39,7 @@ router.get(
 router.get("/all", (req, res) => {
   let errors = {};
 
-  User.find()
+  User.find({ isAdmin: false })
     .select(
       "friends friendRequests pastCheckins _id name username activeCheckin isAdmin"
     )
@@ -127,7 +127,7 @@ router.post("/login", (req, res) => {
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
 
-    console.log(req.body);
+  console.log(req.body);
   //Check validation
   if (!isValid) {
     return res.status(400).json(errors);
