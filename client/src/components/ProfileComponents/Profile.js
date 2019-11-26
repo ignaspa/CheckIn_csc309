@@ -27,12 +27,16 @@ class Profile extends Component {
         this.props.getUserData()
         this.props.getUser(this.props.location.state.profile_user_id)
         this.props.getCheckinsForUser(this.props.location.state.profile_user_id)
+        console.log("ID")
+        console.log(this.props.location.state.profile_user_id)
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({profile_user: nextProps.specificUser.specificUser})
         this.setState({user: nextProps.userData.userData})
         this.setState({userCheckins: nextProps.userCheckins.userCheckins})
+        console.log("PROFILE_USER STATE")
+        console.log(this.state.profile_user)
     }
 
     onModeChange() {
@@ -48,7 +52,7 @@ class Profile extends Component {
         })
     }
     handleInputChange(event) {
-        const profile_id = this.state.profile_user._id
+        // const profile_id = this.state.profile_user._id
 
         // if (event.target.name === "bio") {
         //     this.newBio = event.target.value;
@@ -221,6 +225,7 @@ function CurrentLocation(props) {
         );
     }
     
+    // TODO: activeCheckin is the ID for the checkin not the actual checkin so you gotta create redux action to fetch that. 
     return (
         <div className="profile-section card mx-auto border-0">
             <h4 className="card-title"> Current Location </h4>
