@@ -53,6 +53,7 @@ class LoginComponent extends Component {
   };
 
   changeHandler = event => {
+    console.log(event.target);
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -82,6 +83,7 @@ class LoginComponent extends Component {
               disclaimer={""}
               feedback="Please enter a valid Password"
               changeHandler={this.changeHandler}
+              name={"password"}
             />
             <SignUpLink />
             <Button label={"Submit"} />{" "}
