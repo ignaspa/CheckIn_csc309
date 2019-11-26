@@ -139,7 +139,7 @@ router.delete(
 
     // if update being deleted is the active one
     if (user.activeCheckin == req.body.checkinId) {
-      User.findAndUpdate(
+      User.findOneAndUpdate(
         { id: removed.userId },
         { $inc: { totalCheckins: -1 } },
         { activeCheckin: null }

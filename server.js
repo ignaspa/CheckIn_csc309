@@ -14,12 +14,16 @@ const users = require("./routes/api/users");
 const checkins = require("./routes/api/checkins");
 const friends = require("./routes/api/friends");
 const changePassword = require("./routes/api/changePassword");
-const requests = require("./routes/api/requests")
+const requests = require("./routes/api/requests");
 
 //connect to mongo db
 const db = config.get("mongoURI");
 mongoose
-  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
@@ -41,7 +45,7 @@ app.use("/api/changePassword", changePassword);
 // Friend routes
 app.use("/api/friends", friends);
 
-// Requests routes 
+// Requests routes
 app.use("/api/requests", requests);
 
 const PORT = process.env.PORT || 5000;

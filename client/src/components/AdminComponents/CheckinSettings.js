@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import axios from "axios";
+import Moment from "react-moment";
 
-const LOCATIONS_DATA = [
+const checkinS_DATA = [
   {
     id: "0",
     name: "BA2200"
@@ -23,40 +25,51 @@ export default class CheckinSettings extends Component {
   constructor() {
     super();
     this.state = {
-      locationsData: [],
-      typedLocation: ""
+      checkinsData: [],
+      typedcheckin: ""
     };
   }
 
   componentDidMount() {
-    this.setState({ locationsData: LOCATIONS_DATA });
+    axios
+      .get("/api/checkins/all")
+      .then(res => {
+        const checkinsData = res.data;
+        this.setState({ checkinsData: checkinsData });
+        console.log(checkinsData);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   //currently removes from state but later this will send a DELETE request to our express server
-  onDeleteClick = locationId => {
-    const { locationsData } = this.state;
-    for (let i = 0; i < locationsData.length; i++) {
-      if (locationsData[i].id === locationId) {
-        const index = i;
-        locationsData.splice(index, 1);
-        this.setState({ locationsData: locationsData });
-        break;
-      }
-    }
+  onDeleteClick = checkinId => {
+    axios
+      .delete(`/api/checkins/`, checkinId)
+      .then(res => {
+        //reload page on success
+        window.location.reload();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
-    const locationsData = this.state.locationsData.map(location => (
-      <tr key={location.id}>
-        <td></td>
-        <td></td>
-        <td>{location.name}</td>
+    const checkinsData = this.state.checkinsData.map(checkin => (
+      <tr key={checkin._id}>
+        <td>{checkin.userid}</td>
+        <td>{checkin.action}</td>
+        <td>{checkin.location}</td>
 
-        <td></td>
-        <td></td>
+        <td>{checkin.message}</td>
+        <td>
+          <Moment fparse="YYYY-MM-DD HH:mm">{checkin.time}</Moment>
+        </td>
 
         <td>
           <button
-            onClick={() => this.onDeleteClick(location.id)}
+            onClick={() => this.onDeleteClick(checkin._id)}
             className="btn btn-danger"
           >
             Delete
@@ -66,7 +79,7 @@ export default class CheckinSettings extends Component {
     ));
     return (
       <div className="container mt-5" id="checkin-settings">
-        <h2 className="mb-5 mt-5">Default CheckIn Locations</h2>
+        <h2 className="mb-5 mt-5">Checkins</h2>
         <div className="row">
           <div className="col-md-12">
             <table className="table">
@@ -81,7 +94,7 @@ export default class CheckinSettings extends Component {
 
                   <th>Actions</th>
                 </tr>
-                {locationsData}
+                {checkinsData}
               </thead>
             </table>
           </div>
