@@ -10,10 +10,10 @@ class UserNav extends Component {
   // We would use a server call to get the actual current user. This is just a placeholder
   constructor(props) {
     super(props);
-    console.log("prosp: ", props);
+    this.props.getUserData();
     this.state = {
       redirect: "",
-      user: {}
+      user: this.props.userData
     };
   }
   componentDidMount() {
@@ -114,6 +114,7 @@ class UserNav extends Component {
 
 const mapStateToProps = store => ({
   user: store.user,
+  errors: store.errors,
   userData: store.userData
 });
 

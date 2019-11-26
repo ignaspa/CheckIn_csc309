@@ -13,11 +13,12 @@ import ProfileLinks from "./components/ProfileComponents/Profile-links"
 import UserDashboard from "./components/DashboardComponents/UserDashboard"
 import FriendRequestsSection from "./components/FriendRequestsComponents/FriendRequests"
 import ChangePicture from "./components/ProfileComponents/ChangePicture"
-
 import setAuthToken from "./utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import { login, logoutUser } from "./redux/actions";
 import store from "./redux/store";
+import UserPrivateRoute from "./components/PrivateRoutes/UserPrivateRoute";
+import AdminPrivateRoute from "./components/PrivateRoutes/AdminPrivateRoute";
 
 //Check for Token and change store state to make it persists over page refreshes as well
 if (localStorage.jwtToken) {
@@ -46,12 +47,29 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/admin-dashboard" component={AdminDashboard} />
+          <AdminPrivateRoute
+            exact
+            path="/admin-dashboard"
+            component={AdminDashboard}
+          />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/profile/:username" component={Profile} />} />
-          <Route exact path="/profile-links" component={ProfileLinks} />
-          <Route exact path="/user-dashboard" component={UserDashboard} />
-          <Route
+          <UserPrivateRoute
+            exact
+            path="/profile/:username"
+            component={Profile}
+          />
+          } />
+          <UserPrivateRoute
+            exact
+            path="/profile-links"
+            component={ProfileLinks}
+          />
+          <UserPrivateRoute
+            exact
+            path="/user-dashboard"
+            component={UserDashboard}
+          />
+          <UserPrivateRoute
             exact
             path="/friend-requests"
             component={FriendRequestsSection}

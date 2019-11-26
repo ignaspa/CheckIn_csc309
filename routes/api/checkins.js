@@ -21,14 +21,29 @@ router.get(
   }
 );
 
+// Route to get active checkin for this user 
+router.get(
+  "/active",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id)
+                  .catch(err => {
+                    res.status(400).json(err)
+                  })            
+    res.json(user.activeCheckin)
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
+
 // Route to get our friend's checkins
 router.get(
   "/friends",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      // const checkins = await Checkin.find();
-      // res.json(checkins);
       const user = await User.findById(req.user.id)
                   .catch(err => {
                     res.status(400).json(err)

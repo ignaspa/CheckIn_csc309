@@ -63,13 +63,27 @@ export const getUserData = () => dispatch => {
     .get("/api/users/")
     .then(res => {
       const userData = res.data;
-
       dispatch(setUserData(userData));
     })
     .catch(err => {
       return dispatch({
         type: "GET_ERRORS",
-        payload: err.respose.data
+        payload: err
+      });
+    });
+};
+
+export const getFriends = () => dispatch => {
+  axios
+    .get("/api/friends/")
+    .then(res => {
+      const friendsData = res.data;
+      dispatch(setFriendsData(friendsData));
+    })
+    .catch(err => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: err
       });
     });
 };
@@ -96,7 +110,15 @@ export const setListUsers = usersData => {
   };
 };
 
-export const setUserData = userData => {
+
+export const setFriendsData = (friendsData) => {
+  return {
+    type: "SET_FRIENDS_DATA", 
+    payload: friendsData
+  }
+}
+
+export const setUserData = (userData) => {
   return {
     type: "SET_USER_DATA",
     payload: userData
@@ -108,3 +130,29 @@ export const logoff = () => {
     type: "LOGOFF"
   };
 };
+
+/* Redux actions to get checkins */
+
+// Get checkins to display in the dashboard
+export const getFriendsCheckins = () => dispatch => {
+  axios.get("/api/checkins/friends")
+    .then(response => {
+        const friendsCheckins = response.data
+        dispatch(setFriendsCheckins(friendsCheckins))
+    })
+    .catch(err => {
+      return dispatch( {
+        type: "GET_ERRORS", 
+        payload: err
+      })
+    })
+}
+
+// helper function to set friends checkins
+export const setFriendsCheckins = friendsCheckins => {
+  return {
+    type: "SET_FRIENDS_CHECKINS", 
+    payload: friendsCheckins
+  }
+}
+
