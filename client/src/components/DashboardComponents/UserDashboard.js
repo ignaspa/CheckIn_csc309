@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import "../../css/UserDashboard.css";
 import CheckInForm from "./CheckinForm";
+import CheckInUpdates from "./UserData"
 import UserNav from "./UserNav";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -11,12 +12,10 @@ import { getUserData, getFriendsCheckins } from "../../redux/actions";
 class UserDashboard extends Component {
   constructor(props) {
     super(props);
-    this.props.getFriendsCheckins();
+    // this.props.getFriendsCheckins();
     this.state = {
-      allCheckins: this.props.checkins
+      allCheckins: []
     };
-    console.log("yo sonia")
-    console.log(this.props.checkins)
   }
 
   componentDidMount() {
@@ -25,8 +24,17 @@ class UserDashboard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ allCheckins: nextProps.friendsCheckins });
+    this.setState({ allCheckins: nextProps.friendsCheckins.friendsCheckins }); 
   }
+
+  // static getDerivedStateFromProps(props, state) {
+  //   if (props.checkins.length !== state.allCheckins.length) {
+  //     return {
+  //       allCheckins: props.checkins
+  //     };
+  //   }
+  //   return null;
+  // }
 
   submitCheckIn = state => {
     console.log("Submitting check in");
@@ -55,11 +63,9 @@ class UserDashboard extends Component {
 
           <div className="col-9" id="checkingContents">
             <CheckInForm submitCheckIn={this.submitCheckIn} />
-
-            {/* <CheckInUpdates
+            <CheckInUpdates
               allCheckins={this.state.allCheckins}
-              currentUserId={0}
-            /> */}
+            />
           </div>
         </div>
       </div>
@@ -70,7 +76,7 @@ const mapStateToProps = store => ({
   user: store.user,
   errors: store.errors,
   userData: store.userData, 
-  checkins: store.friendsCheckins
+  friendsCheckins: store.friendsCheckins
 });
 
 const mapDispatchToProps = dispatch => {

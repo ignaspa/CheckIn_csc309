@@ -15,8 +15,6 @@ class UserNav extends Component {
       redirect: "",
       user: this.props.userData
     };
-
-    console.log(this.state)
   }
   componentDidMount() {
     this.props.getUserData();
@@ -116,6 +114,7 @@ class UserNav extends Component {
 
 const mapStateToProps = store => ({
   user: store.user,
+  errors: store.errors,
   userData: store.userData
 });
 

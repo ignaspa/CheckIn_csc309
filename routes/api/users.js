@@ -33,17 +33,17 @@ router.get(
   }
 );
 
-//  @route GET api/users/
-//  @desc Get specific user object from user id
+//  @route POST api/users/
+//  @desc Gets specific user object from user id
 //  @access Private
 // {
 //   userID: userID
 // }
 router.get(
-  "/user",
+  "/:userID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    let user = await User.find({ username: req.body.userID })
+    let user = await User.find({ username: req.params.userID })
       .select(
         "friends friendRequests pastCheckins _id name username activeCheckin bio"
       )

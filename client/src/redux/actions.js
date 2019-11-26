@@ -67,12 +67,34 @@ export const getUserData = () => dispatch => {
     .catch(err => {
       return dispatch({
         type: "GET_ERRORS",
-        payload: err.respose.data
+        payload: err
       });
     });
 };
 
-export const setUserData = userData => {
+export const getFriends = () => dispatch => {
+  axios
+    .get("/api/friends/")
+    .then(res => {
+      const friendsData = res.data;
+      dispatch(setFriendsData(friendsData));
+    })
+    .catch(err => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: err
+      });
+    });
+};
+
+export const setFriendsData = (friendsData) => {
+  return {
+    type: "SET_FRIENDS_DATA", 
+    payload: friendsData
+  }
+}
+
+export const setUserData = (userData) => {
   return {
     type: "SET_USER_DATA",
     payload: userData
@@ -97,7 +119,7 @@ export const getFriendsCheckins = () => dispatch => {
     .catch(err => {
       return dispatch( {
         type: "GET_ERRORS", 
-        payload: err.response.data
+        payload: err
       })
     })
 }

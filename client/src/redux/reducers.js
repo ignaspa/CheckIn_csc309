@@ -10,7 +10,10 @@ const errorInitialState = {};
 
 const userDataInitialState = {};
 
+const friendsDataInitialState = {};
+
 const friendsCheckinsInitialState = {};
+
 
 export const loginReducer = (state = loginInitialState, action) => {
   switch (action.type) {
@@ -48,6 +51,18 @@ export const userDataReducer = (state = userDataInitialState, action) => {
   }
 };
 
+export const friendsDataReducer = (state = friendsDataInitialState, action) => {
+  switch (action.type) {
+    case "SET_FRIENDS_DATA":
+      return {
+        ...state,
+        friendsData: action.payload
+      };
+    default:
+      return state;
+  }
+}
+
 export const friendsCheckinsReducer = (state = friendsCheckinsInitialState, action) => {
   switch(action.type) {
     case "SET_FRIENDS_CHECKINS":
@@ -63,8 +78,10 @@ export const friendsCheckinsReducer = (state = friendsCheckinsInitialState, acti
 export const allReducers = combineReducers({
   user: loginReducer,
   errors: errorReducer,
-  friendsCheckins: friendsCheckinsReducer,
   userData: userDataReducer, 
+  friendsCheckins: friendsCheckinsReducer,
+  // specificUser: specificUserDataReducer, 
+  friendsData: friendsDataReducer
 });
 
 export default allReducers;
