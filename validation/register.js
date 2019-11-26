@@ -17,7 +17,7 @@ module.exports = function validateRegisterInput(data) {
     errors.name = "Name field is required";
   }
   if (Validator.isEmpty(data.username)) {
-    errors.username = "username field is required";
+    errors.username = "Username field is required";
   }
 
   if (Validator.isEmpty(data.password)) {
@@ -25,7 +25,7 @@ module.exports = function validateRegisterInput(data) {
   }
 
   if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
-    errors.password = "Password must be atleast 6 characters";
+    errors.password = "Password must be at least 6 characters";
   }
   if (Validator.isEmpty(data.password2)) {
     errors.password2 = "Confirm Password field is required";

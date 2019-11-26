@@ -30,6 +30,13 @@ export const loginReducer = (state = loginInitialState, action) => {
   }
 };
 
+export const newUserReducer = (state = false, action) => {
+    switch (action.type) {
+    case "NEW_USER":
+        return true;
+    }
+};
+
 export const errorReducer = (state = errorInitialState, action) => {
   switch (action.type) {
     case "GET_ERRORS":
