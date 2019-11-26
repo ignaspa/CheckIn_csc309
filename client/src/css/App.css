@@ -50,34 +50,32 @@
   color: pink;
 } */
 
-.hometitle{
+.hometitle {
   text-align: center;
   margin: 30px;
-  background-image: url("../uofthighres2.jpeg");
-  background-size:cover;
-
+  background-image: url("../components/assets/uofthighres2.jpeg");
+  background-size: cover;
 }
 .auth-form {
   width: 400px;
 }
-.deletebar{
+.deletebar {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;
 }
-.pagetitle{
+.pagetitle {
   text-align: center;
   margin-top: 10px;
 }
 
-.navitem{
+.navitem {
   text-align: center;
   margin: 10px;
 }
 
-
-.profile-pic{
+.profile-pic {
   height: 200px;
   width: 200px;
   border-width: 4px;
@@ -86,7 +84,7 @@
 table tr th {
   font-weight: normal;
 }
-.checkin-title{
+.checkin-title {
   font-weight: bold;
   font-size: 125%;
 }
@@ -99,7 +97,7 @@ table tr th {
   width: 15rem;
 }
 
-.handle{
+.handle {
   color: grey;
 }
 
@@ -107,53 +105,51 @@ table tr th {
   width: 40rem;
 }
 
-.attractionbutton{
+.attractionbutton {
   margin: 10px;
   width: 120px;
   height: 50px;
 }
 
-.homeline{
-  color:white;
+.homeline {
+  color: white;
 }
 
-.arrow{
+.arrow {
   width: 100px;
   margin: 20px;
 }
 
-.homeimg{
+.homeimg {
   width: 60vw;
 }
-.homequote{
+.homequote {
   text-align: center;
   margin: 30px;
-
 }
-.sliderTable{
+.sliderTable {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-
 }
-.sliderTableRow{
+.sliderTableRow {
   width: 100%;
   text-align: center;
 }
 
-.homesubl{
+.homesubl {
   text-align: left;
   margin-left: 20px;
 }
-.homesubr{
+.homesubr {
   text-align: right;
   margin-right: 20px;
 }
-.hometxtr{
+.hometxtr {
   text-align: right;
   margin-right: 30px;
 }
 
-.hometxt{
+.hometxt {
   margin-left: 30px;
 }
