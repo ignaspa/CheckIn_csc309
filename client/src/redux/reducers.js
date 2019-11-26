@@ -46,10 +46,23 @@ export const userDataReducer = (state = userDataInitialState, action) => {
   }
 };
 
+export const usersListReducer = (state = userDataInitialState, action) => {
+  switch (action.type) {
+    case "SET_LIST_USERS":
+      return {
+        ...state,
+        listUsers: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
 export const allReducers = combineReducers({
   user: loginReducer,
   errors: errorReducer,
-  userData: userDataReducer
+  userData: userDataReducer,
+  listUsers: usersListReducer
 });
 
 export default allReducers;

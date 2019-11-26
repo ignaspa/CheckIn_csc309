@@ -22,6 +22,7 @@ export const authenticateUser = userData => dispatch => {
       dispatch(login(decoded));
     })
     .catch(err => {
+      console.log("here is an error in logging in");
       console.log(err);
       return dispatch({
         type: "GET_ERRORS",
@@ -71,6 +72,28 @@ export const getUserData = () => dispatch => {
         payload: err.respose.data
       });
     });
+};
+
+export const getAllUsers = () => dispatch => {
+  axios
+    .get("/api/users/all")
+    .then(res => {
+      const userData = res.data;
+      dispatch(setListUsers(userData));
+    })
+    .catch(err => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: err.response.data
+      });
+    });
+};
+
+export const setListUsers = usersData => {
+  return {
+    type: "SET_LIST_USERS",
+    payload: usersData
+  };
 };
 
 export const setUserData = userData => {
