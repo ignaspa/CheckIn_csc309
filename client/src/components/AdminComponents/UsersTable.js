@@ -107,6 +107,7 @@ export default class UsersTable extends Component {
       .then(res => {
         const usersData = res.data;
         this.setState({ usersData: usersData });
+        console.log(this.state.usersData);
       })
       .catch(err => {
         console.log(err);

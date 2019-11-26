@@ -41,7 +41,7 @@ router.get("/all", (req, res) => {
 
   User.find({ isAdmin: false })
     .select(
-      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin _id"
+      "friends friendRequests pastCheckins _id name username activeCheckin totalCheckins date"
     )
     .then(users => {
       if (!users) {
