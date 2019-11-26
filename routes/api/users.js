@@ -33,6 +33,30 @@ router.get(
   }
 );
 
+//  @route GET api/users/all
+//  @desc Get all Users. Responds with a list of all users on success
+//  @access Public
+router.get("/all", (req, res) => {
+  let errors = {};
+
+  User.find()
+    .select(
+      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin"
+    )
+    .then(users => {
+      if (!users) {
+        errors.noUsers = "There are no users";
+        return res.status(404).json(errors);
+      }
+
+      return res.json(users);
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(500).json(err);
+    });
+});
+
 //  @route POST api/users/
 //  @desc Gets specific user object from user id
 //  @access Private
@@ -145,30 +169,6 @@ router.post("/register", (req, res) => {
       });
     }
   });
-});
-
-//  @route GET api/users/all
-//  @desc Get all Users. Responds with a list of all users on success
-//  @access Public
-router.get("/all", (req, res) => {
-  let errors = {};
-
-  User.find()
-    .select(
-      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin"
-    )
-    .then(users => {
-      if (!users) {
-        errors.noUsers = "There are no users";
-        return res.status(404).json(errors);
-      }
-
-      return res.json(users);
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(500).json(err);
-    });
 });
 
 //  @route DELETE api/users/:id

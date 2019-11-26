@@ -158,3 +158,30 @@ export const setFriendsCheckins = friendsCheckins => {
   }
 }
 
+export const addNewCheckin = (action, message, location) => dispatch => {
+  axios
+    .post('/api/checkins/', {
+        action: action, 
+        message: message, 
+        location: location
+    })
+    .then(response => {
+        const newCheckin = response.data 
+       dispatch(setNewCheckin(newCheckin))
+    })
+    .catch(err => {
+      return dispatch( {
+        type: "GET_ERRORS", 
+        payload: err
+      })
+    })
+}
+
+// helper function to set friends checkins
+export const setNewCheckin = newCheckin => {
+  return {
+    type: "SET_NEW_CHECKIN", 
+    payload: newCheckin
+  }
+}
+
