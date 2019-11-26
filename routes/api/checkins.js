@@ -47,14 +47,21 @@ router.get(
       const user = await User.findById(req.user.id)
                   .catch(err => {
                     res.status(400).json(err)
-                  })            
+                  })    
+                  
+      let userList = user.friends
+      userList.push(req.user.id)
       
-      const checkins = await Checkin.where("userid").in(user.friends)
-                      .catch(err => {
-                        res.status(400).json(err)
-                      })
+      let query = Checkin.where("userid").in(userList)
+        .sort({ time: -1 });
 
-    res.json(checkins)
+        let promise = query.exec()
+
+        promise.then(response => {
+          res.json(response)
+        }).catch(err => {
+          res.status(400).json(err)
+        })
 
     } catch (error) {
       res.status(500).json({ message: error.message });
