@@ -41,7 +41,7 @@ router.get("/all", (req, res) => {
 
   User.find({ isAdmin: false })
     .select(
-      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin _id"
+      "friends friendRequests pastCheckins _id name username activeCheckin totalCheckins date"
     )
     .then(users => {
       if (!users) {
@@ -178,9 +178,12 @@ router.delete(
   "/:id",
   passport.authenticate("admin-jwt", { session: false }),
   (req, res) => {
-    User.findByIdAndRemove({ _id: req.params.id }).then(() =>
-      res.json({ sucess: "true" })
-    );
+    User.findByIdAndRemove({ _id: req.params.id })
+      .then(() => res.json({ sucess: "true" }))
+      .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   }
 );
 

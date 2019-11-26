@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import axios from "axios";
+import Moment from "react-moment";
 
-const LOCATIONS_DATA = [
+const checkinS_DATA = [
   {
     id: "0",
     name: "BA2200"
@@ -23,55 +25,51 @@ export default class CheckinSettings extends Component {
   constructor() {
     super();
     this.state = {
-      locationsData: [],
-      typedLocation: ""
+      checkinsData: [],
+      typedcheckin: ""
     };
+  }
+
+  componentDidMount() {
+    axios
+      .get("/api/checkins/all")
+      .then(res => {
+        const checkinsData = res.data;
+        this.setState({ checkinsData: checkinsData });
+        console.log(checkinsData);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   //currently removes from state but later this will send a DELETE request to our express server
-  onDeleteClick = locationId => {
-    const { locationsData } = this.state;
-    for (let i = 0; i < locationsData.length; i++) {
-      if (locationsData[i].id === locationId) {
-        const index = i;
-        locationsData.splice(index, 1);
-        this.setState({ locationsData: locationsData });
-        break;
-      }
-    }
-  };
-  onLocationFormChange = e => {
-    e.preventDefault();
-
-    this.setState({ [e.target.name]: e.target.value });
+  onDeleteClick = checkinId => {
+    axios
+      .delete(`/api/checkins/`, checkinId)
+      .then(res => {
+        //reload page on success
+        window.location.reload();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
-  //After server side code is implemented, this method will make a POST request to our express endpoint
-  addLocation = e => {
-    e.preventDefault();
-    console.log(this.state.typedLocation);
-
-    const { locationsData } = this.state;
-    //generate dummy id
-    const newLocation = {
-      id: locationsData.length,
-      name: this.state.typedLocation
-    };
-    console.log(newLocation);
-
-    locationsData.push(newLocation);
-    this.setState({ locationsData: locationsData });
-  };
-  componentDidMount() {
-    this.setState({ locationsData: LOCATIONS_DATA });
-  }
   render() {
-    const locationsData = this.state.locationsData.map(location => (
-      <tr key={location.id}>
-        <td>{location.name}</td>
+    const checkinsData = this.state.checkinsData.map(checkin => (
+      <tr key={checkin._id}>
+        <td>{checkin.userid}</td>
+        <td>{checkin.action}</td>
+        <td>{checkin.location}</td>
+
+        <td>{checkin.message}</td>
+        <td>
+          <Moment fparse="YYYY-MM-DD HH:mm">{checkin.time}</Moment>
+        </td>
 
         <td>
           <button
-            onClick={() => this.onDeleteClick(location.id)}
+            onClick={() => this.onDeleteClick(checkin._id)}
             className="btn btn-danger"
           >
             Delete
@@ -81,45 +79,22 @@ export default class CheckinSettings extends Component {
     ));
     return (
       <div className="container mt-5" id="checkin-settings">
-        <h2 className="mb-5 mt-5">Default CheckIn Locations</h2>
+        <h2 className="mb-5 mt-5">Checkins</h2>
         <div className="row">
-          <div className="col-md-4">
-            <form className="form-inline" onSubmit={this.addLocation}>
-              <div className="row">
-                <div className="form-group col-sm-6 mb-12">
-                  <label htmlFor="inputLocation" className="sr-only">
-                    Location
-                  </label>
-                  <input
-                    type="test"
-                    className="form-control"
-                    id="inputLocation"
-                    placeholder="Enter Location"
-                    name="typedLocation"
-                    value={this.state.typedLocation}
-                    onChange={this.onLocationFormChange}
-                  />
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-sm-12">
-                  <button type="submit" className="btn btn-primary mb-2 mt-2">
-                    Add Location
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div className="col-md-8">
+          <div className="col-md-12">
             <table className="table">
               <thead>
                 <tr>
+                  <th>User Id</th>
+                  <th>Doing</th>
+
                   <th>Location</th>
+                  <th>Message</th>
+                  <th>Time</th>
 
                   <th>Actions</th>
                 </tr>
-                {locationsData}
+                {checkinsData}
               </thead>
             </table>
           </div>
