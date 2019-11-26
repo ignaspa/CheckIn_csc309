@@ -57,7 +57,7 @@ router.get("/all", (req, res) => {
     });
 });
 
-//  @route POST api/users/
+//  @route GET api/users/
 //  @desc Gets specific user object from user id
 //  @access Private
 // {

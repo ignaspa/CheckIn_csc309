@@ -206,3 +206,52 @@ export const setActiveCheckin = activeCheckin => {
   }
 }
 
+export const getSpecificUser = (userID) => dispatch => {
+  axios.get("/api/users/", {
+    params: {
+      userID: userID
+    }
+  }).then(response => {
+    const specificUser = response.data 
+    dispatch(setSpecificUser(specificUser))
+  }).catch(error => {
+    return dispatch( {
+      type: "GET_ERRORS", 
+      payload: error
+    })
+  })
+}
+
+export const setSpecificUser = specificUser => {
+  return {
+    type: "SET_SPECIFIC_USER", 
+    payload: specificUser
+  }
+}
+
+export const getCheckinsForUser = (userID) => dispatch => {
+  axios.get("/api/checkins/", {
+    params: {
+      userID: userID
+    }
+  })
+  .then(response => {
+    const userCheckins = response.data 
+    dispatch(setUserCheckins(userCheckins))
+  }).catch(error => {
+    return dispatch( {
+      type: "GET_ERRORS", 
+      payload: error
+    })
+  })
+}
+
+export const setUserCheckins = userCheckins => {
+  return {
+    type: "SET_USER_CHECKINS", 
+    payload: userCheckins
+  }
+}
+
+
+
