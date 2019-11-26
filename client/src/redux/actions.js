@@ -185,3 +185,24 @@ export const setNewCheckin = newCheckin => {
   }
 }
 
+export const getActiveCheckin = () =>  dispatch =>{
+  axios.get("/api/checkins/active")
+    .then(response => {
+        const activeCheckin = response.data
+        dispatch(setActiveCheckin(activeCheckin))
+    })
+    .catch(err => {
+      return dispatch( {
+        type: "GET_ERRORS", 
+        payload: err
+      })
+    })
+}
+
+export const setActiveCheckin = activeCheckin => {
+  return {
+    type: "SET_ACTIVE_CHECKIN", 
+    payload: activeCheckin
+  }
+}
+

@@ -103,7 +103,8 @@ router.post(
 
     try {
       const newCheckin = await checkin.save();
-      User.findByIdAndUpdate(req.user,
+      User.findByIdAndUpdate(req.user, 
+        {$inc : {totalCheckins : 1}},
         { activeCheckin: newCheckin.id }
       ).catch((err) => {
         res.status(400).json({ message: err.message });
@@ -141,6 +142,7 @@ router.delete(
     // if update being deleted is the active one
     if (user.activeCheckin == req.body.checkinId) {
       User.findAndUpdate({id: removed.userId},
+        {$inc : {totalCheckins : -1}},
         { activeCheckin: null}
       ).catch((err) => {
         res.status(400).json({ message: err.message });
