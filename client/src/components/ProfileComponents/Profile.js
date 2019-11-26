@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { login } from '../../redux/actions.js'
+import { login, getActiveCheckin } from '../../redux/actions.js'
 import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
 import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn, changeBio, changeName } from '../MockData.js';
 
 class Profile extends Component {
@@ -249,11 +250,14 @@ function CheckIn(props) {
 };
 
 const mapStateToProps = store => ({
-    userId: store.userId
+    userId: store.userId, 
+    userData: store.userData,
+    activeCheckin: store.activeCheckin
 });
 
-const mapDispatchToProps = dispatch => ({
-    loginUser: (user) => dispatch(login(user))
-})
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({ loginUser: login, getActiveCheckin: getActiveCheckin}, dispatch);
+}
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
