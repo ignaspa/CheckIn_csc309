@@ -45,6 +45,7 @@ class Checkins extends Component {
         if (typeof(checkins) != "undefined") {
             for (let i = 0; i < checkins.length; i++) {
             let user = this.findUser(checkins[i].userid)
+            console.log(checkins[i].time)
              rows.push(<CheckInUpdate 
                 user={user}
                 key={user.id}
