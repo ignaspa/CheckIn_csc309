@@ -265,8 +265,9 @@ function PastLocations(props) {
     );
 }
 
-function timeSince(date) {
+function timeSince(mongoDate) {
     const now = new Date();
+    const date = new Date(mongoDate)
     var seconds = Math.floor((now - date) / 1000);
     var interval = Math.floor(seconds / 31536000);
 
@@ -297,7 +298,7 @@ function CheckIn(props) {
     return (
         <div className={className}>
             <div className="card-body">
-                <div><span className="checkin-title card-title">{props.checkin.location}</span> {timeSince(new Date(props.checkin.time))}</div>
+                <div><span className="checkin-title card-title">{props.checkin.location}</span> {timeSince(props.checkin.time)}</div>
                 <h6 className="card-subtitle mb-2 mt-1 text-muted">{props.checkin.action}</h6>
                 <p className="card-text">{props.checkin.message}</p>
             </div>

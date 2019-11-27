@@ -7,7 +7,6 @@ import { getUserData } from "../../redux/actions";
 import { bindActionCreators } from "redux";
 
 class UserNav extends Component {
-  // We would use a server call to get the actual current user. This is just a placeholder
   constructor(props) {
     super(props);
     this.props.getUserData();
