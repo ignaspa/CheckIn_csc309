@@ -8,6 +8,7 @@ class Profile extends Component {
     constructor(props) {
 
         super(props);
+        console.log("ID IN PROFILE: " + this.props.location.state.profile_user_id)
         this.props.getUserData()
         this.props.getUser(this.props.location.state.profile_user_id)
         this.props.getCheckinsForUser(this.props.location.state.profile_user_id)
@@ -35,9 +36,8 @@ class Profile extends Component {
         this.setState({profile_user: nextProps.specificUser.specificUser})
         this.setState({user: nextProps.userData.userData})
         this.setState({userCheckins: nextProps.userCheckins.userCheckins})
-        console.log("PROFILE_USER STATE")
-        console.log(this.state.profile_user)
     }
+    
 
     onModeChange() {
         changeName(this.state.user.id, this.newName);
