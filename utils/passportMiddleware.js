@@ -1,6 +1,6 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const CustomStrategy = require("passport-custom").Strategy;
-
+const isEmpty = require("../validation/isEmpty");
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const mongoose = require("mongoose");
 const User = mongoose.model("users");
@@ -28,7 +28,11 @@ module.exports = passport => {
   passport.use(
     "admin-jwt",
     new CustomStrategy((req, done) => {
+      if (isEmpty(req.headers.authorization)) {
+        return done(null, false);
+      }
       //get admin id from token
+
       const userData = jwtDecode(req.headers.authorization);
 
       User.findById(userData.id)
