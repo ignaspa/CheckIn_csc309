@@ -27,8 +27,8 @@ class UserDashboard extends Component {
    let friendsCheckins = nextProps.friendsCheckins.friendsCheckins
     this.setState({ allCheckins: friendsCheckins}); 
 
-    console.log("NEW STATE")
-    console.log(this.state)
+    // console.log("NEW STATE")
+    // console.log(this.state)
   }
 
   submitCheckIn = state => {

@@ -3,8 +3,9 @@ import "../../css/UserDashboard.css"
 import { Redirect } from "react-router";
 
 
-function timeSince(date) {
+function timeSince(mongoDate) {
     const now = new Date();
+    const date = new Date(mongoDate)
     var seconds = Math.floor((now - date) / 1000);
     var interval = Math.floor(seconds / 31536000);
 

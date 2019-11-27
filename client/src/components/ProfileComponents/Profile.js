@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { login, getActiveCheckin, getSpecificUser, getUserData, getCheckinsForUser, updateUserInfo } from '../../redux/actions.js'
+import { login, getActiveCheckin, getSpecificUser, getUserData, getCheckinsForUser, updateUserInfo, deleteFriend } from '../../redux/actions.js'
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn, changeBio, changeName } from '../MockData.js';
@@ -42,10 +42,12 @@ class Profile extends Component {
         }
     }
 
+    onClickAction(event) {
+        console.log("THEY CLICKED")
+    }
+
 
     onModeChange() {
-        // changeName(this.state.user.id, this.newName);
-        // changeBio(this.state.user.id, this.newBio);
 
         this.setState({
             edit_mode: !this.state.edit_mode,
@@ -63,8 +65,14 @@ class Profile extends Component {
         }
     }
 
+    deleteFriend(friendID) {
+        console.log("DELETING FRIEND")
+        this.props.deleteFriend(friendID)
+        console.log(this.state.user.friends)
+    }
+
     render() {
-        console.log("this.state in render: ", this.state)
+        // console.log("this.state in render: ", this.state)
         if (this.state.edit_mode && typeof (this.state.profile_user) != "undefined") {
             return (
                 <div>
@@ -72,6 +80,8 @@ class Profile extends Component {
                         user={this.state.profile_user}
                         onModeChange={this.onModeChange}
                         handleInputChange={this.handleInputChange}
+                        deleteFriend={this.deleteFriend}
+
                     />
                     <CurrentLocation
                         profile_user={this.state.profile_user}
@@ -85,6 +95,15 @@ class Profile extends Component {
         }
 
         if (typeof (this.state.profile_user) != "undefined" && typeof (this.state.user) != "undefined") {
+
+            let label = ""
+            if (this.state.user._id !== this.state.profile_user._id) {
+                label = "Remove Friend";
+            }
+            else if (this.state.user._id == this.state.profile_user._id) {
+                label = "Edit Profile"
+            }
+
             return (
                 <div>
                     <ProfileHeader
@@ -92,6 +111,8 @@ class Profile extends Component {
                         onModeChange={this.onModeChange}
                         // user_id={this.state.user._id}
                         otherUser={this.state.user}
+                        label={label}
+                        onClickAction={this.onClickAction}
                     />
                     <CurrentLocation
                         profile_user={this.state.profile_user}
@@ -107,52 +128,14 @@ class Profile extends Component {
     }
 }
 
-class ActionButton extends Component {
-    constructor(props) {
-        super(props);
-        // Index of the user viewing the profile
-        this.state = {
-            user: props.user,
-            isFriend: true,
-            otherUser: props.otherUser
-        }
-        //this.removeFriend = this.removeFriend.bind(this)
-        //this.addFriend = this.addFriend.bind(this)
+function ActionButton(props) {
+    console.log("label: " + props.label)
+    if (typeof (props.label) != "undefined") {
+        return (
+            <button className={"btn rounded btn-primary mt-3"} onClick={props.onClickAction}>{props.label}</button>
+        );
     }
-
-    addFriend(event) {
-        // TODO: add redux action here to add friend 
-
-
-        // requestFriend(this.state.user_id, this.profile_id);
-        // this.setState((state, props) => {
-        //     return {
-        //         isFriend: true
-        //     };
-        // });
-    }
-
-    removeFriend(event) {
-        // TODO: add redux action here to delete friend
-    }
-
-    render() {
-        let label = "Edit Profile"
-        let onClickAction = this.props.onModeChange
-        console.log(this.state)
-
-
-        if (this.state.user && this.state.otherUser && this.state.user._id !== this.state.otherUser._id && this.state.isFriend) {
-            label = "Remove Friend";
-            onClickAction = this.removeFriend;
-        }
-        if (this.state.user && this.state.otherUser && this.state.user._id !== this.state.otherUser._id && !this.state.isFriend) {
-            label = "Add Friend"
-            onClickAction = this.addFriend;
-        }
-        return <button className={"btn rounded btn-primary mt-3"} onClick={onClickAction}>{label}</button>;
-
-    }
+    return null
 }
 
 function ProfileHeader(props) {
@@ -174,9 +157,12 @@ function ProfileHeader(props) {
                     </th>
                     <th>
                         <ActionButton
-                            onModeChange={props.onModeChange}
-                            user={props.user}
-                            otherUser={props.otherUser} />
+                            onClickAction={props.onClickAction}
+                            label={props.label}
+
+                        // user={props.user}
+                        // otherUser={props.otherUser}
+                        />
                     </th>
                 </tr>
                 <tr>
@@ -219,6 +205,7 @@ function EditProfileHeader(props) {
                             name="bio"
                             defaultValue={props.user.bio}
                             onChange={props.handleInputChange}
+                            deleteFriend={props.deleteFriend}
 
                         />
                         </div>
@@ -277,8 +264,9 @@ function PastLocations(props) {
     );
 }
 
-function timeSince(date) {
+function timeSince(mongoDate) {
     const now = new Date();
+    const date = new Date(mongoDate)
     var seconds = Math.floor((now - date) / 1000);
     var interval = Math.floor(seconds / 31536000);
 
@@ -309,7 +297,7 @@ function CheckIn(props) {
     return (
         <div className={className}>
             <div className="card-body">
-                <div><span className="checkin-title card-title">{props.checkin.location}</span> {timeSince(new Date(props.checkin.time))}</div>
+                <div><span className="checkin-title card-title">{props.checkin.location}</span> {timeSince(props.checkin.time)}</div>
                 <h6 className="card-subtitle mb-2 mt-1 text-muted">{props.checkin.action}</h6>
                 <p className="card-text">{props.checkin.message}</p>
             </div>
@@ -332,7 +320,8 @@ const mapDispatchToProps = dispatch => {
         getUser: getSpecificUser,
         getUserData: getUserData,
         getCheckinsForUser: getCheckinsForUser,
-        updateUserInfo: updateUserInfo
+        updateUserInfo: updateUserInfo,
+        deleteFriend: deleteFriend
     }, dispatch);
 }
 
