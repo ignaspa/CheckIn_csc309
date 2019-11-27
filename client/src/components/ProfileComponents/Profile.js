@@ -9,7 +9,7 @@ class Profile extends Component {
     constructor(props) {
 
         super(props);
-        console.log("ID IN PROFILE: " + this.props.location.state.profile_user_id)
+        //console.log("ID IN PROFILE: " + this.props.location.state.profile_user_id)
         this.props.getUserData()
         this.props.getUser(this.props.location.state.profile_user_id)
         this.props.getCheckinsForUser(this.props.location.state.profile_user_id)

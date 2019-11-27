@@ -2,22 +2,26 @@ import React, { Component } from "react";
 import "../../css/App.css";
 import { Redirect } from "react-router";
 import { connect } from 'react-redux'
-import {getUserFromId, changePicture} from "../MockData";
+import { bindActionCreators } from "redux";
+import { updateProfilePic } from "../redux/actions";
 
-const pic_paths = ["https://i.imgur.com/YBU8Zuq.png", "https://i.imgur.com/bnAlZ3X.png", "https://i.imgur.com/zWTxtlQ.png", "https://i.imgur.com/VM9iOl5.png", "https://i.imgur.com/DvuC4vb.png", "https://i.imgur.com/B7KGaN6.png", "https://i.imgur.com/BEpJcyk.png"]
+const pic_paths = ["https://i.imgur.com/YBU8Zuq.png", "https://i.imgur.com/bnAlZ3X.png", "https://i.imgur.com/zWTxtlQ.png", "https://i.imgur.com/VM9iOl5.png", "https://i.imgur.com/DvuC4vb.png", "https://i.imgur.com/B7KGaN6.png", "https://i.imgur.com/BEpJcyk.png", "https://i.imgur.com/BBW93ax.png", "https://i.imgur.com/27cDPQb.png", "https://i.imgur.com/dEtzlVD.png", "https://i.imgur.com/eDljJSu.png", "https://i.imgur.com/kaPPeNr.png"]
 
 class ChangePicture extends Component {
     constructor(props) {
         super(props);
-        this.current_user = getUserFromId(props.userId);
         this.state = {
-            user: props.userId,
-            currently_selected: this.current_user.profilepic,
+            user: {},
+            currently_selected: "https://i.imgur.com/YBU8Zuq.png",
             redirect: "",
         }
         this.saveProfilePic = this.saveProfilePic.bind(this);
         this.cancelProfilePic = this.cancelProfilePic.bind(this);
         this.selectPic = this.selectPic.bind(this);
+    }
+    componentWillReceiveProps(nextProps) {
+        let cu = nextProps.user.userData;
+        this.setState({user: cu });
     }
 
     render() {
@@ -26,7 +30,7 @@ class ChangePicture extends Component {
                 to={{
                     pathname: '/profile/' + this.current_user.username,
                 }}
-                push={true} /> 
+                push={true} />
         }
         return (
             <div>
@@ -63,15 +67,15 @@ class ChangePicture extends Component {
 
     saveProfilePic = (event) => {
         console.log("saved")
-        changePicture(this.state.user, this.state.currently_selected);
+        this.props.updateProfilePic(this.state.currently_selected);
         return (
-            this.setState({redirect: '/profile'})
+            this.setState({ redirect: '/profile' })
         );
     }
     cancelProfilePic = (event) => {
         console.log("canceled")
-        return(
-        this.setState({redirect: '/profile'})
+        return (
+            this.setState({ redirect: '/profile' })
         );
     }
 
@@ -111,7 +115,10 @@ function PicsTable(props) {
     );
 }
 const mapStateToProps = store => ({
-    userId: store.userId
-})
+    user: store.userData,
+});
 
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({updatePic: updateProfilePic}, dispatch);
+};
 export default connect(mapStateToProps)(ChangePicture);

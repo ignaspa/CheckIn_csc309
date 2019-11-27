@@ -289,6 +289,29 @@ export const getCheckinsForUser = (userID) => dispatch => {
     })
 }
 
+export const updateProfilePic = (pic) => {
+  axios.patch("/api/users/profilepic")
+    .then(response => {
+      axios
+        .get("/api/users/")
+        .then(res => {
+          const userData = res.data;
+          dispatch(setUserData(userData));
+        })
+        .catch(err => {
+          return dispatch({
+            type: "GET_ERRORS",
+            payload: err
+          });
+        });
+    }).catch(error => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: error
+      })
+    })
+}
+
 export const setUserCheckins = userCheckins => {
   return {
     type: "SET_USER_CHECKINS",
