@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { login, getActiveCheckin, getSpecificUser, getUserData, getCheckinsForUser, updateUserInfo } from '../../redux/actions.js'
+import { login, getActiveCheckin, getSpecificUser, getUserData, getCheckinsForUser, updateUserInfo, deleteFriend } from '../../redux/actions.js'
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
-import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn, changeBio, changeName } from '../MockData.js';
 
 class Profile extends Component {
     constructor(props) {
@@ -41,9 +40,7 @@ class Profile extends Component {
             }
 
     onModeChange() {
-        // changeName(this.state.user.id, this.newName);
-        // changeBio(this.state.user.id, this.newBio);
-
+        
         this.setState({
             edit_mode: !this.state.edit_mode, 
             user: this.props.userData, 
@@ -60,6 +57,10 @@ class Profile extends Component {
         }
     }
 
+    deleteFriend(friendID) {
+        this.props.deleteFriend(friendID)
+    }
+
     render() {
         if (this.state.edit_mode && typeof(this.state.profile_user) != "undefined") {
             return (
@@ -68,6 +69,7 @@ class Profile extends Component {
                     user={this.state.profile_user}
                     onModeChange={this.onModeChange}
                     handleInputChange={this.handleInputChange}
+                    deleteFriend={this.deleteFriend}
                     />
                     <CurrentLocation
                         profile_user={this.state.profile_user}
@@ -115,7 +117,6 @@ class ActionButton extends Component {
             isFriend: true,
             otherUser: props.profile_user
         }
-        //this.removeFriend = this.removeFriend.bind(this)
         //this.addFriend = this.addFriend.bind(this)
     }
 
@@ -131,21 +132,17 @@ class ActionButton extends Component {
         // });
     }
 
-    removeFriend(event) {
-        // TODO: add redux action here to delete friend
-    }
-
     render() {
         let label = "Edit Profile"
         let onClickAction = this.props.onModeChange
 
         if (this.state.user._id !== this.state.otherUser._id && this.state.isFriend) {
             label = "Remove Friend";
-            onClickAction = this.removeFriend;
+            onClickAction = this.props.deleteFriend;
         }
         if (this.state.user._id !== this.state.otherUser._id && !this.state.isFriend) {
             label = "Add Friend"
-            onClickAction = this.addFriend;
+            onClickAction = this.props.addFriend;
         }
         return <button className={"btn rounded btn-primary mt-3"} onClick={onClickAction}>{label}</button>;
 
@@ -207,6 +204,7 @@ function EditProfileHeader(props) {
                             name="bio"
                             defaultValue={props.user.bio}
                             onChange={props.handleInputChange}
+                            deleteFriend={props.deleteFriend}
 
                         />
                         </div>
@@ -321,7 +319,8 @@ const mapDispatchToProps = dispatch => {
         getUser: getSpecificUser, 
         getUserData: getUserData, 
         getCheckinsForUser: getCheckinsForUser, 
-        updateUserInfo: updateUserInfo
+        updateUserInfo: updateUserInfo, 
+        deleteFriend: deleteFriend
 }, dispatch);
 }
 

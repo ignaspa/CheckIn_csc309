@@ -267,6 +267,23 @@ export const updateUserInfo = (newbio, newname) => dispatch => {
   })
 }
 
+export const deleteFriend = (friendID) => dispatch => {
+  axios.patch("/api/friends/delete", {
+    friendID: friendID
+  })
+  .then(response => {
+    const updatedUser = response.data 
+    dispatch(setUserData(updatedUser))
+  }).catch(error => {
+    return dispatch( {
+      type: "GET_ERRORS", 
+      payload: error
+    })
+  })
+}
+
+
+
 
 
 
