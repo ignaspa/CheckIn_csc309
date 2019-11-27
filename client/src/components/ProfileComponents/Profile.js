@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { login } from '../../redux/actions.js'
+import { login, getActiveCheckin, getSpecificUser, getUserData, getCheckinsForUser } from '../../redux/actions.js'
 import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
 import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn, changeBio, changeName } from '../MockData.js';
 import {Link} from "react-router-dom";
 
@@ -8,17 +9,37 @@ class Profile extends Component {
     constructor(props) {
 
         super(props);
-        const user = getUserFromId(props.userId);
+        this.props.getUserData()
+        this.props.getUser(this.props.location.state.profile_user_id)
+        this.props.getCheckinsForUser(this.props.location.state.profile_user_id)
+
         this.state = {
             edit_mode: false,
-            user: user, // User who is logged in
-            profile_user: getUserFromHandle(props.match.params.username, user) // User whose profile we are looking at
+            user: this.props.userData, // User who is logged in
+            userCheckins: this.props.userCheckins, 
+            profile_user: this.props.specificUser // User whose profile we are looking at
         }
         this.newName = this.state.user.name;
         this.newBio = this.state.user.bio;
         this.onModeChange = this.onModeChange.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
     }
+    componentDidMount() {
+        this.props.getUserData()
+        this.props.getUser(this.props.location.state.profile_user_id)
+        this.props.getCheckinsForUser(this.props.location.state.profile_user_id)
+        console.log("ID")
+        console.log(this.props.location.state.profile_user_id)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({profile_user: nextProps.specificUser.specificUser})
+        this.setState({user: nextProps.userData.userData})
+        this.setState({userCheckins: nextProps.userCheckins.userCheckins})
+        console.log("PROFILE_USER STATE")
+        console.log(this.state.profile_user)
+    }
+
     onModeChange() {
         changeName(this.state.user.id, this.newName);
         changeBio(this.state.user.id, this.newBio);
@@ -32,41 +53,56 @@ class Profile extends Component {
         })
     }
     handleInputChange(event) {
-        const profile_id = this.state.profile_id
+        // const profile_id = this.state.profile_user._id
 
-        if (event.target.name === "bio") {
-            this.newBio = event.target.value;
-        } else if (event.target.name === "name") {
-            this.newName = event.target.value;
-        }
+        // if (event.target.name === "bio") {
+        //     this.newBio = event.target.value;
+        // } else if (event.target.name === "name") {
+        //     this.newName = event.target.value;
+        // }
     }
 
     render() {
-        const profile_id = this.state.profile_id
-        let profile_header = <ProfileHeader
-            user={this.state.profile_user}
-            onModeChange={this.onModeChange}
-            user_id={this.state.user.id}
-            profile_id={this.state.profile_user.id}
-        />;
-        if (this.state.edit_mode) {
-            profile_header = <EditProfileHeader
-                user={this.state.profile_user}
-                onModeChange={this.onModeChange}
-                handleInputChange={this.handleInputChange}
-            />
+        if (typeof(this.state.profile_user) != "undefined" && typeof(this.state.user) != "undefined") {
+            return (
+                <div>
+                    <ProfileHeader
+                    user={this.state.profile_user}
+                    onModeChange={this.onModeChange}
+                    user_id={this.state.user._id}
+                    profile_id={this.state.profile_user._id}
+                    />
+                    <CurrentLocation
+                        profile_user={this.state.profile_user}
+                    />
+                    <PastLocations
+                        profile_user={this.state.profile_user}
+                        userCheckins={this.state.userCheckins}
+                    />
+                </div>
+            );
         }
-        return (
-            <div>
-                {profile_header}
-                <CurrentLocation
-                    profile_id={this.state.profile_user.id}
-                />
-                <PastLocations
-                    profile_id={this.state.profile_user.id}
-                />
-            </div>
-        );
+        
+        if (this.state.edit_mode && typeof(this.state.profile_user) != "undefined") {
+            return (
+                <div>
+                   <EditProfileHeader
+                    user={this.state.profile_user}
+                    onModeChange={this.onModeChange}
+                    handleInputChange={this.handleInputChange}
+                    />
+                    <CurrentLocation
+                        profile_user={this.state.profile_user}
+                    />
+                    <PastLocations
+                        profile_user={this.state.profile_user}
+                        userCheckins={this.state.userCheckins}
+                    />
+                </div>
+            );
+        }
+        
+        return null
     }
 }
 
@@ -121,7 +157,7 @@ function ProfileHeader(props) {
                         <div className="col-sm">
                             <h3 className="card-title mt-3 mb-0"> {props.user.name} </h3>
                             <div className="handle"> @{props.user.username} </div>
-                            <div><strong>{props.user.friends.length}</strong> friends</div>
+                            {/* <div><strong>{props.user.friends.length}</strong> friends</div> */}
                             <div>{props.user.bio}</div>
                         </div>
                     </th>
@@ -187,34 +223,47 @@ function EditProfileHeader(props) {
 }
 
 function CurrentLocation(props) {
-    const checkin = getCheckIn(props.profile_id);
-    if (!checkin) {
-        return null;
+    
+    // const checkin = getCheckIn(props.profile_id);
+    const profile_user = props.profile_user
+
+    if (typeof(profile_user) == "undefined" || profile_user.activeCheckin == null) {
+        return (
+            <div className="profile-section card mx-auto border-0">
+            <h4 className="card-title"> No Current Location </h4>
+        </div>
+        );
     }
+    
+    // TODO: activeCheckin is the ID for the checkin not the actual checkin so you gotta create redux action to fetch that. 
     return (
         <div className="profile-section card mx-auto border-0">
             <h4 className="card-title"> Current Location </h4>
             <CheckIn
                 cardStyle="active-card"
-                checkin={checkin}
+                checkin={profile_user.activeCheckin}
             />
         </div>
-
     );
 }
 
 function PastLocations(props) {
-    const user_oldCheckins = getOldCheckIn(props.profile_id);
-    var checkin_list = user_oldCheckins.map(function (c) {
-        return CheckIn({ cardStyle: "inactive-card", checkin: c })
-    })
+
+    let checkin_list = null
+    if (typeof(props.profile_user) != "undefined" && typeof(props.userCheckins) != "undefined") {
+        const user_oldCheckins = props.userCheckins
+        if (Array.isArray(user_oldCheckins)) {
+            checkin_list = user_oldCheckins.map(function (c) {
+                return CheckIn({ cardStyle: "inactive-card", checkin: c, key: c._id })
+            })
+        }
+        
+    }
     return (
         <div className="profile-section card mx-auto border-0 mt-3">
             <h4 className="card-title"> Past Locations </h4>
             {checkin_list}
         </div>
-
-
     );
 }
 
@@ -259,11 +308,22 @@ function CheckIn(props) {
 };
 
 const mapStateToProps = store => ({
-    userId: store.userId
+    userId: store.userId, 
+    userData: store.userData,
+    activeCheckin: store.activeCheckin, 
+    specificUser: store.specificUser, 
+    userCheckins: store.userCheckins
 });
 
-const mapDispatchToProps = dispatch => ({
-    loginUser: (user) => dispatch(login(user))
-})
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({ 
+        loginUser: login, 
+        getActiveCheckin: getActiveCheckin, 
+        getUser: getSpecificUser, 
+        getUserData: getUserData, 
+        getCheckinsForUser: getCheckinsForUser
+}, dispatch);
+}
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

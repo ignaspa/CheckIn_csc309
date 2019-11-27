@@ -20,6 +20,10 @@ var User = new Schema({
     type: Boolean,
     required: true
   },
+  totalCheckins: {
+    type: Number,
+    default: 0
+  },
   activeCheckin: {
     type: String
   },

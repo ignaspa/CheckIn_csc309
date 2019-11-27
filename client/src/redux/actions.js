@@ -31,6 +31,26 @@ export const authenticateUser = userData => dispatch => {
     });
 };
 
+export const createUser = userData => dispatch => {
+    dispatch(clearErrors());
+    axios
+        .post("/api/users/register", userData)
+        .then(data => {
+            console.log(data);
+            const newUser = {
+                username: userData.username,
+                password: userData.password,
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return dispatch({
+                type: "GET_ERRORS",
+                payload: err.response.data
+            });
+        });
+}
+
 //Clear errors
 export const clearErrors = () => {
   return {
@@ -43,6 +63,12 @@ export const login = decoded => {
     type: "LOGIN",
     payload: decoded
   };
+};
+
+export const newUser = () => {
+    return {
+        type: "NEW_USER",
+    };
 };
 
 //log user out
@@ -183,4 +209,74 @@ export const setNewCheckin = newCheckin => {
     payload: newCheckin
   }
 }
+
+export const getActiveCheckin = () =>  dispatch =>{
+  axios.get("/api/checkins/active")
+    .then(response => {
+        const activeCheckin = response.data
+        dispatch(setActiveCheckin(activeCheckin))
+    })
+    .catch(err => {
+      return dispatch( {
+        type: "GET_ERRORS", 
+        payload: err
+      })
+    })
+}
+
+export const setActiveCheckin = activeCheckin => {
+  return {
+    type: "SET_ACTIVE_CHECKIN", 
+    payload: activeCheckin
+  }
+}
+
+export const getSpecificUser = (userID) => dispatch => {
+  axios.get("/api/users/", {
+    params: {
+      userID: userID
+    }
+  }).then(response => {
+    const specificUser = response.data 
+    dispatch(setSpecificUser(specificUser))
+  }).catch(error => {
+    return dispatch( {
+      type: "GET_ERRORS", 
+      payload: error
+    })
+  })
+}
+
+export const setSpecificUser = specificUser => {
+  return {
+    type: "SET_SPECIFIC_USER", 
+    payload: specificUser
+  }
+}
+
+export const getCheckinsForUser = (userID) => dispatch => {
+  axios.get("/api/checkins/", {
+    params: {
+      userID: userID
+    }
+  })
+  .then(response => {
+    const userCheckins = response.data 
+    dispatch(setUserCheckins(userCheckins))
+  }).catch(error => {
+    return dispatch( {
+      type: "GET_ERRORS", 
+      payload: error
+    })
+  })
+}
+
+export const setUserCheckins = userCheckins => {
+  return {
+    type: "SET_USER_CHECKINS", 
+    payload: userCheckins
+  }
+}
+
+
 

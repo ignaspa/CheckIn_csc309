@@ -16,6 +16,11 @@ const friendsCheckinsInitialState = {};
 
 const newCheckinInitialState = {};
 
+const activeCheckinInitialState = {};
+
+const specificUserInitialState = {};
+
+const userCheckinsInitialState = {};
 
 export const loginReducer = (state = loginInitialState, action) => {
   switch (action.type) {
@@ -28,6 +33,13 @@ export const loginReducer = (state = loginInitialState, action) => {
     default:
       return state;
   }
+};
+
+export const newUserReducer = (state = false, action) => {
+    switch (action.type) {
+    case "NEW_USER":
+        return true;
+    }
 };
 
 export const errorReducer = (state = errorInitialState, action) => {
@@ -100,6 +112,42 @@ export const newCheckinReducer = (state = newCheckinInitialState, action) => {
   }
 }
 
+export const activeCheckinReducer = (state = activeCheckinInitialState, action) => {
+  switch(action.type) {
+    case "SET_ACTIVE_CHECKIN":
+      return {
+        ...state, 
+        activeCheckin: action.payload
+      }
+    default:
+      return state  
+  }
+}
+
+export const specificUserReducer = (state = specificUserInitialState, action) => {
+  switch(action.type) {
+    case "SET_SPECIFIC_USER":
+      return {
+        ...state, 
+        specificUser: action.payload
+      }
+    default:
+      return state
+  }
+}
+
+export const userCheckinsReducer = (state = userCheckinsInitialState, action) => {
+  switch(action.type) {
+    case "SET_USER_CHECKINS":
+      return {
+        ...state, 
+        userCheckins: action.payload
+      }
+    default:
+      return state
+  }
+}
+
 export const allReducers = combineReducers({
   user: loginReducer,
   errors: errorReducer,
@@ -107,7 +155,10 @@ export const allReducers = combineReducers({
   listUsers: usersListReducer,
   friendsCheckins: friendsCheckinsReducer,
   friendsData: friendsDataReducer, 
-  newCheckin: newCheckinReducer
+  newCheckin: newCheckinReducer, 
+  activeCheckin: activeCheckinReducer, 
+  specificUser: specificUserReducer, 
+  userCheckins: userCheckinsReducer
 });
 
 export default allReducers;

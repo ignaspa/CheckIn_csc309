@@ -82,6 +82,7 @@ class LoginComponent extends Component {
               disclaimer={""}
               feedback="Please enter a valid Password"
               changeHandler={this.changeHandler}
+              name={"password"}
             />
             <SignUpLink />
             <Button label={"Submit"} />{" "}

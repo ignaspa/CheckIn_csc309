@@ -39,9 +39,9 @@ router.get(
 router.get("/all", (req, res) => {
   let errors = {};
 
-  User.find()
+  User.find({ isAdmin: false })
     .select(
-      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin"
+      "friends friendRequests pastCheckins _id name username activeCheckin totalCheckins date"
     )
     .then(users => {
       if (!users) {
@@ -57,7 +57,7 @@ router.get("/all", (req, res) => {
     });
 });
 
-//  @route POST api/users/
+//  @route GET api/users/
 //  @desc Gets specific user object from user id
 //  @access Private
 // {
@@ -69,7 +69,7 @@ router.get(
   async (req, res) => {
     let user = await User.find({ username: req.params.userID })
       .select(
-        "friends friendRequests pastCheckins _id name username activeCheckin bio"
+        "friends friendRequests pastCheckins _id name username activeCheckin bio totalCheckins date"
       )
       .catch(error => {
         res.status(400).json(error);
@@ -127,6 +127,7 @@ router.post("/login", (req, res) => {
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
 
+  console.log(req.body);
   //Check validation
   if (!isValid) {
     return res.status(400).json(errors);
@@ -202,9 +203,12 @@ router.delete(
   "/:id",
   passport.authenticate("admin-jwt", { session: false }),
   (req, res) => {
-    User.findByIdAndRemove({ _id: req.params.id }).then(() =>
-      res.json({ sucess: "true" })
-    );
+    User.findByIdAndRemove({ _id: req.params.id })
+      .then(() => res.json({ sucess: "true" }))
+      .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   }
 );
 

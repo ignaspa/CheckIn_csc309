@@ -48,6 +48,7 @@ export default class CheckInUpdate extends Component {
                 <Redirect
                         to={{
                             pathname: '/profile/' + this.props.user.username,
+                            state: { profile_user_id: this.props.user._id }
                  }}
                  push={true}/>
             );
