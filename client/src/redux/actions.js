@@ -253,5 +253,22 @@ export const setUserCheckins = userCheckins => {
   }
 }
 
+export const updateUserInfo = (newbio, newname) => dispatch => {
+  axios.patch("/api/users/details", {
+    newname: newname, 
+    newbio: newbio
+  })
+  .then(response => {
+    const updatedUser = response.data 
+    dispatch(setUserData(updatedUser))
+  }).catch(error => {
+    return dispatch( {
+      type: "GET_ERRORS", 
+      payload: error
+    })
+  })
+}
+
+
 
 

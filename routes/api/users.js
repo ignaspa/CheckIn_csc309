@@ -143,7 +143,7 @@ router.post("/register", (req, res) => {
         username: req.body.username,
         isAdmin: false,
         activeCheckin: null,
-        bio: null,
+        bio: "",
         friends: [],
         friendRequests: [],
         pastCheckins: [],

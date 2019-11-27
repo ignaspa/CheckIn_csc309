@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { login, getActiveCheckin, getSpecificUser, getUserData, getCheckinsForUser } from '../../redux/actions.js'
+import { login, getActiveCheckin, getSpecificUser, getUserData, getCheckinsForUser, updateUserInfo } from '../../redux/actions.js'
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn, changeBio, changeName } from '../MockData.js';
@@ -27,61 +27,39 @@ class Profile extends Component {
         this.props.getUserData()
         this.props.getUser(this.props.location.state.profile_user_id)
         this.props.getCheckinsForUser(this.props.location.state.profile_user_id)
-        console.log("ID")
-        console.log(this.props.location.state.profile_user_id)
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({profile_user: nextProps.specificUser.specificUser})
         this.setState({user: nextProps.userData.userData})
         this.setState({userCheckins: nextProps.userCheckins.userCheckins})
-        console.log("PROFILE_USER STATE")
-        console.log(this.state.profile_user)
-    }
+        if (typeof(nextProps.specificUser.specificUser) != "undefined") {
+            this.newBio = nextProps.specificUser.specificUser.bio
+            this.newName = nextProps.specificUser.specificUser.name
+        }
+            }
 
     onModeChange() {
-        changeName(this.state.user.id, this.newName);
-        changeBio(this.state.user.id, this.newBio);
+        // changeName(this.state.user.id, this.newName);
+        // changeBio(this.state.user.id, this.newBio);
 
-        this.setState((state, props) => {
-            return {
-                edit_mode: !this.state.edit_mode,
-                user: getUserFromId(props.userId),
-                profile_user: this.state.user
-            };
+        this.setState({
+            edit_mode: !this.state.edit_mode, 
+            user: this.props.userData, 
+            profile_user: this.props.specificUser
         })
+        this.props.updateUserInfo(this.newBio, this.newName)
     }
     handleInputChange(event) {
-        // const profile_id = this.state.profile_user._id
 
-        // if (event.target.name === "bio") {
-        //     this.newBio = event.target.value;
-        // } else if (event.target.name === "name") {
-        //     this.newName = event.target.value;
-        // }
+        if (event.target.name === "bio") {
+            this.newBio = event.target.value;
+        } else if (event.target.name === "name") {
+            this.newName = event.target.value;
+        }
     }
 
     render() {
-        if (typeof(this.state.profile_user) != "undefined" && typeof(this.state.user) != "undefined") {
-            return (
-                <div>
-                    <ProfileHeader
-                    user={this.state.profile_user}
-                    onModeChange={this.onModeChange}
-                    user_id={this.state.user._id}
-                    profile_id={this.state.profile_user._id}
-                    />
-                    <CurrentLocation
-                        profile_user={this.state.profile_user}
-                    />
-                    <PastLocations
-                        profile_user={this.state.profile_user}
-                        userCheckins={this.state.userCheckins}
-                    />
-                </div>
-            );
-        }
-        
         if (this.state.edit_mode && typeof(this.state.profile_user) != "undefined") {
             return (
                 <div>
@@ -100,6 +78,28 @@ class Profile extends Component {
                 </div>
             );
         }
+
+        if (typeof(this.state.profile_user) != "undefined" && typeof(this.state.user) != "undefined") {
+            return (
+                <div>
+                    <ProfileHeader
+                    user={this.state.user}
+                    onModeChange={this.onModeChange}
+                    // user_id={this.state.user._id}
+                    profile_user={this.state.profile_user}
+                    />
+                    <CurrentLocation
+                        profile_user={this.state.profile_user}
+                    />
+                    <PastLocations
+                        profile_user={this.state.profile_user}
+                        userCheckins={this.state.userCheckins}
+                    />
+                </div>
+            );
+        }
+        
+        
         
         return null
     }
@@ -109,32 +109,40 @@ class ActionButton extends Component {
     constructor(props) {
         super(props);
         // Index of the user viewing the profile
-        this.profile_id = props.profile_id;
         this.state = {
-           isFriend: true,
-            user: getUserFromId(props.user_id),
+            user: props.user, 
+            isFriend: true,
+            otherUser: props.profile_user
         }
         //this.removeFriend = this.removeFriend.bind(this)
         //this.addFriend = this.addFriend.bind(this)
     }
 
     addFriend(event) {
-        requestFriend(this.state.user_id, this.profile_id);
-        this.setState((state, props) => {
-            return {
-                isFriend: true
-            };
-        });
+        // TODO: add redux action here to add friend 
+
+
+        // requestFriend(this.state.user_id, this.profile_id);
+        // this.setState((state, props) => {
+        //     return {
+        //         isFriend: true
+        //     };
+        // });
+    }
+
+    removeFriend(event) {
+        // TODO: add redux action here to delete friend
     }
 
     render() {
         let label = "Edit Profile"
         let onClickAction = this.props.onModeChange
-        if (this.props.user_id !== this.props.profile_id && this.state.isFriend) {
+
+        if (this.state.user._id !== this.state.otherUser._id && this.state.isFriend) {
             label = "Remove Friend";
             onClickAction = this.removeFriend;
         }
-        if (this.props.user_id !== this.props.profile_id && !this.state.isFriend) {
+        if (this.state.user._id !== this.state.otherUser._id && !this.state.isFriend) {
             label = "Add Friend"
             onClickAction = this.addFriend;
         }
@@ -163,8 +171,8 @@ function ProfileHeader(props) {
                     <th>
                         <ActionButton
                         onModeChange={props.onModeChange}
-                        user_id={props.user_id}
-                        profile_id={props.profile_id}/>
+                        user={props.user}
+                        profile_user={props.profile_user}/>
                     </th>
                 </tr>
             </tbody>
@@ -193,7 +201,7 @@ function EditProfileHeader(props) {
                             />
                         </h3>
 
-                        <div><strong>{props.user.friends.length}</strong> friends</div>
+                        {/* <div><strong>{props.user.friends.length}</strong> friends</div> */}
                         <div><input className="mt-3"
                             name="bio"
                             defaultValue={props.user.bio}
@@ -311,7 +319,8 @@ const mapDispatchToProps = dispatch => {
         getActiveCheckin: getActiveCheckin, 
         getUser: getSpecificUser, 
         getUserData: getUserData, 
-        getCheckinsForUser: getCheckinsForUser
+        getCheckinsForUser: getCheckinsForUser, 
+        updateUserInfo: updateUserInfo
 }, dispatch);
 }
 
