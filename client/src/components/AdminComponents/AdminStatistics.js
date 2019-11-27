@@ -1,7 +1,47 @@
 import React, { Component } from "react";
 import { Star, User, MapPin, CheckSquare } from "react-feather";
+import axios from "axios";
 
 export default class AdminStatistics extends Component {
+  constructor() {
+    super();
+    this.state = {
+      totalUsers: 0,
+      totalCheckins: 0,
+      newUsersToday: 0,
+      newCheckinsToday: 0
+    };
+  }
+
+  componentDidMount() {
+    //get totol stats
+    axios
+      .get("/api/statistics/total")
+      .then(res => {
+        const totalStatsData = res.data;
+        this.setState({
+          totalUsers: totalStatsData.totalUsers,
+          totalCheckins: totalStatsData.totalCheckins
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    //get today's stats
+    axios
+      .get("/api/statistics/today")
+      .then(res => {
+        const newTodayStatsData = res.data;
+        this.setState({
+          newUsersToday: newTodayStatsData.newUsersToday,
+          newCheckinsToday: newTodayStatsData.newCheckinsToday
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   render() {
     return (
       <div className=" mt-5 container">
@@ -14,10 +54,10 @@ export default class AdminStatistics extends Component {
                     <Star className="feather-lg text-warning" />
                   </div>
                   <div className="media-body">
-                    <h3 className="mb-2">10</h3>
+                    <h3 className="mb-2">{this.state.newUsersToday} </h3>
                     <div className="mb-0">
-                      Active Users <br />
-                      last 24 hours
+                      New Signups <br />
+                      Today
                     </div>
                   </div>
                 </div>
@@ -32,7 +72,7 @@ export default class AdminStatistics extends Component {
                     <User className="feather-lg text-primary" />
                   </div>
                   <div className="media-body">
-                    <h3 className="mb-2">11</h3>
+                    <h3 className="mb-2">{this.state.totalUsers}</h3>
                     <div className="mb-0">
                       Total Registered <br /> Users
                     </div>
@@ -49,7 +89,7 @@ export default class AdminStatistics extends Component {
                     <MapPin className="feather-lg text-success" />
                   </div>
                   <div className="media-body">
-                    <h3 className="mb-2">8920</h3>
+                    <h3 className="mb-2">{this.state.totalCheckins}</h3>
                     <div className="mb-0">
                       Total CheckIns <br /> to date
                     </div>
@@ -66,9 +106,9 @@ export default class AdminStatistics extends Component {
                     <CheckSquare className="feather-lg text-danger" />
                   </div>
                   <div className="media-body">
-                    <h3 className="mb-2">43</h3>
+                    <h3 className="mb-2">{this.state.newCheckinsToday} </h3>
                     <div className="mb-0">
-                      CheckIns <br /> last 24 hours
+                      New CheckIns <br /> today
                     </div>
                   </div>
                 </div>
