@@ -228,11 +228,7 @@ export const setSpecificUser = specificUser => {
 }
 
 export const getCheckinsForUser = (userID) => dispatch => {
-  axios.get("/api/checkins/", {
-    params: {
-      userID: userID
-    }
-  })
+  axios.get("/api/checkins/" + userID)
   .then(response => {
     const userCheckins = response.data 
     dispatch(setUserCheckins(userCheckins))

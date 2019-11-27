@@ -15,7 +15,7 @@ class Profile extends Component {
 
         this.state = {
             edit_mode: false,
-            user: this.props.userData, // User who is logged in
+            user: props.userData, // User who is logged in
             userCheckins: this.props.userCheckins, 
             profile_user: this.props.specificUser // User whose profile we are looking at
         }
@@ -30,15 +30,17 @@ class Profile extends Component {
         this.props.getCheckinsForUser(this.props.location.state.profile_user_id)
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({profile_user: nextProps.specificUser.specificUser})
-        this.setState({user: nextProps.userData.userData})
-        this.setState({userCheckins: nextProps.userCheckins.userCheckins})
-        if (typeof(nextProps.specificUser.specificUser) != "undefined") {
-            this.newBio = nextProps.specificUser.specificUser.bio
-            this.newName = nextProps.specificUser.specificUser.name
+    componentDidUpdate(prevProps) {
+        if (this.props !== prevProps) {
+            this.setState({
+                edit_mode: false,
+                user: this.props.userData.userData, // User who is logged in
+                userCheckins: this.props.userCheckins.userCheckins,
+                profile_user: this.props.specificUser.specificUser
+            })
         }
-            }
+    }
+
 
     onModeChange() {
         // changeName(this.state.user.id, this.newName);
@@ -61,6 +63,7 @@ class Profile extends Component {
     }
 
     render() {
+        console.log("this.state in render: ", this.state)
         if (this.state.edit_mode && typeof(this.state.profile_user) != "undefined") {
             return (
                 <div>
@@ -84,10 +87,10 @@ class Profile extends Component {
             return (
                 <div>
                     <ProfileHeader
-                    user={this.state.user}
+                    user={this.state.profile_user}
                     onModeChange={this.onModeChange}
                     // user_id={this.state.user._id}
-                    profile_user={this.state.profile_user}
+                    otherUser={this.state.user}
                     />
                     <CurrentLocation
                         profile_user={this.state.profile_user}
@@ -99,9 +102,6 @@ class Profile extends Component {
                 </div>
             );
         }
-        
-        
-        
         return null
     }
 }
@@ -113,7 +113,7 @@ class ActionButton extends Component {
         this.state = {
             user: props.user, 
             isFriend: true,
-            otherUser: props.profile_user
+            otherUser: props.otherUser
         }
         //this.removeFriend = this.removeFriend.bind(this)
         //this.addFriend = this.addFriend.bind(this)
@@ -138,12 +138,14 @@ class ActionButton extends Component {
     render() {
         let label = "Edit Profile"
         let onClickAction = this.props.onModeChange
+        console.log(this.state)
 
-        if (this.state.user._id !== this.state.otherUser._id && this.state.isFriend) {
+
+        if (this.state.user && this.state.otherUser && this.state.user._id !== this.state.otherUser._id && this.state.isFriend) {
             label = "Remove Friend";
             onClickAction = this.removeFriend;
         }
-        if (this.state.user._id !== this.state.otherUser._id && !this.state.isFriend) {
+        if (this.state.user && this.state.otherUser && this.state.user._id !== this.state.otherUser._id && !this.state.isFriend) {
             label = "Add Friend"
             onClickAction = this.addFriend;
         }
@@ -173,7 +175,7 @@ function ProfileHeader(props) {
                         <ActionButton
                         onModeChange={props.onModeChange}
                         user={props.user}
-                        profile_user={props.profile_user}/>
+                        otherUser={props.otherUser}/>
                     </th>
                 </tr>
             </tbody>
@@ -256,7 +258,6 @@ function PastLocations(props) {
                 return CheckIn({ cardStyle: "inactive-card", checkin: c, key: c._id })
             })
         }
-        
     }
     return (
         <div className="profile-section card mx-auto border-0 mt-3">
@@ -298,7 +299,7 @@ function CheckIn(props) {
     return (
         <div className={className}>
             <div className="card-body">
-                <div><span className="checkin-title card-title">{props.checkin.location}</span> {timeSince(props.checkin.time)}</div>
+                <div><span className="checkin-title card-title">{props.checkin.location}</span> {timeSince(new Date(props.checkin.time))}</div>
                 <h6 className="card-subtitle mb-2 mt-1 text-muted">{props.checkin.action}</h6>
                 <p className="card-text">{props.checkin.message}</p>
             </div>
