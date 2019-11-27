@@ -207,13 +207,11 @@ export const setActiveCheckin = activeCheckin => {
 }
 
 export const getSpecificUser = (userID) => dispatch => {
-  axios.get("/api/users/", {
-    params: {
-      userID: userID
-    }
-  }).then(response => {
-    const specificUser = response.data 
-    dispatch(setSpecificUser(specificUser))
+    console.log(userID);
+  axios.get("/api/users/" + userID).then(response => {
+      console.log(response.data);
+      const specificUser = response.data[0];
+      dispatch(setSpecificUser(specificUser));
   }).catch(error => {
     return dispatch( {
       type: "GET_ERRORS", 

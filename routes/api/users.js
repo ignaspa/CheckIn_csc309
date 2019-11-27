@@ -21,6 +21,7 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
+      console.log(req.user.id);
     let user = await User.findById(req.user.id)
       .select(
         "friends friendRequests pastCheckins _id name username activeCheckin bio"
@@ -67,7 +68,7 @@ router.get(
   "/:userID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    let user = await User.find({ username: req.params.userID })
+    let user = await User.find({ _id: req.params.userID })
       .select(
         "friends friendRequests pastCheckins _id name username activeCheckin bio totalCheckins date"
       )

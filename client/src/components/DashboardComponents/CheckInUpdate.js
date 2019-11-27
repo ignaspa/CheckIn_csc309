@@ -44,6 +44,7 @@ export default class CheckInUpdate extends Component {
     }
     render() {
         if (this.state.redirect === "/profile") {
+            console.log("ID feeding into profile: " + this.props.user._id)
             return(
                 <Redirect
                         to={{
