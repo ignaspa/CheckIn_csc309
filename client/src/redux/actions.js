@@ -206,3 +206,63 @@ export const setActiveCheckin = activeCheckin => {
   }
 }
 
+export const getSpecificUser = (userID) => dispatch => {
+    console.log(userID);
+  axios.get("/api/users/" + userID).then(response => {
+      console.log(response.data);
+      const specificUser = response.data[0];
+      dispatch(setSpecificUser(specificUser));
+  }).catch(error => {
+    return dispatch( {
+      type: "GET_ERRORS", 
+      payload: error
+    })
+  })
+}
+
+export const setSpecificUser = specificUser => {
+  return {
+    type: "SET_SPECIFIC_USER", 
+    payload: specificUser
+  }
+}
+
+export const getCheckinsForUser = (userID) => dispatch => {
+  axios.get("/api/checkins/" + userID)
+  .then(response => {
+    const userCheckins = response.data 
+    dispatch(setUserCheckins(userCheckins))
+  }).catch(error => {
+    return dispatch( {
+      type: "GET_ERRORS", 
+      payload: error
+    })
+  })
+}
+
+export const setUserCheckins = userCheckins => {
+  return {
+    type: "SET_USER_CHECKINS", 
+    payload: userCheckins
+  }
+}
+
+export const updateUserInfo = (newbio, newname) => dispatch => {
+  axios.patch("/api/users/details", {
+    newname: newname, 
+    newbio: newbio
+  })
+  .then(response => {
+    const updatedUser = response.data 
+    dispatch(setUserData(updatedUser))
+  }).catch(error => {
+    return dispatch( {
+      type: "GET_ERRORS", 
+      payload: error
+    })
+  })
+}
+
+
+
+

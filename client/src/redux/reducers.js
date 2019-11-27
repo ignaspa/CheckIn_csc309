@@ -18,6 +18,9 @@ const newCheckinInitialState = {};
 
 const activeCheckinInitialState = {};
 
+const specificUserInitialState = {};
+
+const userCheckinsInitialState = {};
 
 export const loginReducer = (state = loginInitialState, action) => {
   switch (action.type) {
@@ -110,6 +113,30 @@ export const activeCheckinReducer = (state = activeCheckinInitialState, action) 
   }
 }
 
+export const specificUserReducer = (state = specificUserInitialState, action) => {
+  switch(action.type) {
+    case "SET_SPECIFIC_USER":
+      return {
+        ...state, 
+        specificUser: action.payload
+      }
+    default:
+      return state
+  }
+}
+
+export const userCheckinsReducer = (state = userCheckinsInitialState, action) => {
+  switch(action.type) {
+    case "SET_USER_CHECKINS":
+      return {
+        ...state, 
+        userCheckins: action.payload
+      }
+    default:
+      return state
+  }
+}
+
 export const allReducers = combineReducers({
   user: loginReducer,
   errors: errorReducer,
@@ -117,7 +144,9 @@ export const allReducers = combineReducers({
   friendsCheckins: friendsCheckinsReducer,
   friendsData: friendsDataReducer, 
   newCheckin: newCheckinReducer, 
-  activeCheckin: activeCheckinReducer
+  activeCheckin: activeCheckinReducer, 
+  specificUser: specificUserReducer, 
+  userCheckins: userCheckinsReducer
 });
 
 export default allReducers;

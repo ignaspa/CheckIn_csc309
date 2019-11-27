@@ -69,7 +69,7 @@ router.get(
   }
 );
 
-// Get Checkins for given user id
+// Get Checkins for this user
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
@@ -82,6 +82,21 @@ router.get(
     }
   }
 );
+
+// Get checkins for a given user id 
+router.get(
+  "/:userID",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const checkins = await Checkin.find({ userid: req.params.userID });
+      res.json(checkins);
+    } catch (error) {
+      return res.status(500).json({ message: err.message });
+    }
+  }
+);
+
 
 // Create one checkin
 // {
@@ -102,11 +117,10 @@ router.post(
 
     try {
       const newCheckin = await checkin.save();
-      User.findByIdAndUpdate(
-        req.user,
-        { $inc: { totalCheckins: 1 } },
-        { activeCheckin: newCheckin.id }
-      ).catch(err => {
+      User.findByIdAndUpdate(req.user, 
+        { activeCheckin: newCheckin.id, 
+          $inc : {totalCheckins : 1}}
+      ).catch((err) => {
         res.status(400).json({ message: err.message });
       });
 
@@ -139,11 +153,10 @@ router.delete(
 
     // if update being deleted is the active one
     if (user.activeCheckin == req.body.checkinId) {
-      User.findOneAndUpdate(
-        { id: removed.userId },
-        { $inc: { totalCheckins: -1 } },
-        { activeCheckin: null }
-      ).catch(err => {
+      User.findAndUpdate({id: removed.userId},
+        { activeCheckin: null, 
+          $inc : {totalCheckins : -1}}
+      ).catch((err) => {
         res.status(400).json({ message: err.message });
       });
     }

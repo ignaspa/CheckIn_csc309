@@ -58,7 +58,8 @@ class UserNav extends Component {
       return (
         <Redirect
           to={{
-            pathname: "/profile/" + user.username
+            pathname: "/profile/" + user.username, 
+            state: { profile_user_id: this.props.user._id }
           }}
           push={true}
         />
