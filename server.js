@@ -15,6 +15,7 @@ const checkins = require("./routes/api/checkins");
 const friends = require("./routes/api/friends");
 const changePassword = require("./routes/api/changePassword");
 const requests = require("./routes/api/requests");
+const statistics = require("./routes/api/statistics");
 
 //connect to mongo db
 const db = config.get("mongoURI");
@@ -47,6 +48,9 @@ app.use("/api/friends", friends);
 
 // Requests routes
 app.use("/api/requests", requests);
+
+// Statistics routes
+app.use("/api/statistics", statistics);
 
 const PORT = process.env.PORT || 5000;
 
