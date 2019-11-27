@@ -32,23 +32,23 @@ export const authenticateUser = userData => dispatch => {
 };
 
 export const createUser = userData => dispatch => {
-    dispatch(clearErrors());
-    axios
-        .post("/api/users/register", userData)
-        .then(data => {
-            console.log(data);
-            const newUser = {
-                username: userData.username,
-                password: userData.password,
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            return dispatch({
-                type: "GET_ERRORS",
-                payload: err.response.data
-            });
-        });
+  dispatch(clearErrors());
+  axios
+    .post("/api/users/register", userData)
+    .then(data => {
+      console.log(data);
+      const newUser = {
+        username: userData.username,
+        password: userData.password,
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: err.response.data
+      });
+    });
 }
 
 //Clear errors
@@ -66,9 +66,9 @@ export const login = decoded => {
 };
 
 export const newUser = () => {
-    return {
-        type: "NEW_USER",
-    };
+  return {
+    type: "NEW_USER",
+  };
 };
 
 //log user out
@@ -99,6 +99,31 @@ export const getUserData = () => dispatch => {
     });
 };
 
+export const addFriend = (friend_id) => dispatch => {
+  axios
+    .patch("/api/requests/add", { friendID: friend_id })
+    .then(res => {
+      axios
+        .get("/api/users/all")
+        .then(response => {
+          const userData = response.data;
+          dispatch(setListUsers(userData));
+        })
+        .catch(err => {
+          return dispatch({
+            type: "GET_ERRORS",
+            payload: err.response.data
+          });
+        });
+    })
+    .catch(err => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: err
+      });
+    });
+};
+
 export const getFriends = () => dispatch => {
   axios
     .get("/api/friends/")
@@ -119,7 +144,6 @@ export const getAllUsers = () => dispatch => {
     .get("/api/users/all")
     .then(res => {
       const userData = res.data;
-      console.log("hello", userData);
       dispatch(setListUsers(userData));
     })
     .catch(err => {
@@ -140,7 +164,7 @@ export const setListUsers = usersData => {
 
 export const setFriendsData = (friendsData) => {
   return {
-    type: "SET_FRIENDS_DATA", 
+    type: "SET_FRIENDS_DATA",
     payload: friendsData
   }
 }
@@ -164,12 +188,12 @@ export const logoff = () => {
 export const getFriendsCheckins = () => dispatch => {
   axios.get("/api/checkins/friends")
     .then(response => {
-        const friendsCheckins = response.data
-        dispatch(setFriendsCheckins(friendsCheckins))
+      const friendsCheckins = response.data
+      dispatch(setFriendsCheckins(friendsCheckins))
     })
     .catch(err => {
-      return dispatch( {
-        type: "GET_ERRORS", 
+      return dispatch({
+        type: "GET_ERRORS",
         payload: err
       })
     })
@@ -178,7 +202,7 @@ export const getFriendsCheckins = () => dispatch => {
 // helper function to set friends checkins
 export const setFriendsCheckins = friendsCheckins => {
   return {
-    type: "SET_FRIENDS_CHECKINS", 
+    type: "SET_FRIENDS_CHECKINS",
     payload: friendsCheckins
   }
 }
@@ -186,17 +210,17 @@ export const setFriendsCheckins = friendsCheckins => {
 export const addNewCheckin = (action, message, location) => dispatch => {
   axios
     .post('/api/checkins/', {
-        action: action, 
-        message: message, 
-        location: location
+      action: action,
+      message: message,
+      location: location
     })
     .then(response => {
-        const newCheckin = response.data 
-       dispatch(setNewCheckin(newCheckin))
+      const newCheckin = response.data
+      dispatch(setNewCheckin(newCheckin))
     })
     .catch(err => {
-      return dispatch( {
-        type: "GET_ERRORS", 
+      return dispatch({
+        type: "GET_ERRORS",
         payload: err
       })
     })
@@ -205,20 +229,20 @@ export const addNewCheckin = (action, message, location) => dispatch => {
 // helper function to set friends checkins
 export const setNewCheckin = newCheckin => {
   return {
-    type: "SET_NEW_CHECKIN", 
+    type: "SET_NEW_CHECKIN",
     payload: newCheckin
   }
 }
 
-export const getActiveCheckin = () =>  dispatch =>{
+export const getActiveCheckin = () => dispatch => {
   axios.get("/api/checkins/active")
     .then(response => {
-        const activeCheckin = response.data
-        dispatch(setActiveCheckin(activeCheckin))
+      const activeCheckin = response.data
+      dispatch(setActiveCheckin(activeCheckin))
     })
     .catch(err => {
-      return dispatch( {
-        type: "GET_ERRORS", 
+      return dispatch({
+        type: "GET_ERRORS",
         payload: err
       })
     })
@@ -226,7 +250,7 @@ export const getActiveCheckin = () =>  dispatch =>{
 
 export const setActiveCheckin = activeCheckin => {
   return {
-    type: "SET_ACTIVE_CHECKIN", 
+    type: "SET_ACTIVE_CHECKIN",
     payload: activeCheckin
   }
 }
@@ -237,11 +261,11 @@ export const getSpecificUser = (userID) => dispatch => {
       userID: userID
     }
   }).then(response => {
-    const specificUser = response.data 
+    const specificUser = response.data
     dispatch(setSpecificUser(specificUser))
   }).catch(error => {
-    return dispatch( {
-      type: "GET_ERRORS", 
+    return dispatch({
+      type: "GET_ERRORS",
       payload: error
     })
   })
@@ -249,7 +273,7 @@ export const getSpecificUser = (userID) => dispatch => {
 
 export const setSpecificUser = specificUser => {
   return {
-    type: "SET_SPECIFIC_USER", 
+    type: "SET_SPECIFIC_USER",
     payload: specificUser
   }
 }
@@ -260,20 +284,20 @@ export const getCheckinsForUser = (userID) => dispatch => {
       userID: userID
     }
   })
-  .then(response => {
-    const userCheckins = response.data 
-    dispatch(setUserCheckins(userCheckins))
-  }).catch(error => {
-    return dispatch( {
-      type: "GET_ERRORS", 
-      payload: error
+    .then(response => {
+      const userCheckins = response.data
+      dispatch(setUserCheckins(userCheckins))
+    }).catch(error => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: error
+      })
     })
-  })
 }
 
 export const setUserCheckins = userCheckins => {
   return {
-    type: "SET_USER_CHECKINS", 
+    type: "SET_USER_CHECKINS",
     payload: userCheckins
   }
 }

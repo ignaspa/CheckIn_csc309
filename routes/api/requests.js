@@ -16,8 +16,8 @@ router.patch("/add", passport.authenticate("jwt", { session: false }), async (re
   const id = req.user.id
 
       // add friend to your list of requests
-      let user = await User.findOneAndUpdate({_id: id},
-        { $push: { "friendRequests": req.body.friendID }}, 
+      let user = await User.findOneAndUpdate({_id: req.body.friendID},
+        { $push: { "friendRequests": id }}, 
         { new: true })
       .catch((err) => {
         res.status(400).json({message: err.message})
