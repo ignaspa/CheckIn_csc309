@@ -10,7 +10,7 @@ class Checkins extends Component {
         this.props.getFriends()
         this.props.getUserData();
         this.state = {
-          friends: this.props.friendsData, 
+          friends: this.props.friendsData,
           checkins: this.props.allCheckins,
           userData: this.props.userData
         };
@@ -20,12 +20,10 @@ class Checkins extends Component {
         this.props.getFriends();
         this.props.getUserData();
       }
-    
       componentWillReceiveProps(nextProps) {
-        this.setState({ friends: nextProps.friendsData.friendsData }); 
+        this.setState({ friends: nextProps.friendsData.friendsData });
         this.setState({ userData: nextProps.userData.userData })
-      }  
-    
+      }
     findUser = (userID) => {
         if (this.state.userData._id == userID.toString()) {
           return this.state.userData

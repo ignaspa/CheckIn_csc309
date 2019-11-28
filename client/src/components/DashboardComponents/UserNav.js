@@ -35,18 +35,6 @@ class UserNav extends Component {
   editProfile = event => {
     console.log("edit profile clicked");
     this.setState({ redirect: "/profile" });
-    return (
-      <Redirect
-        to={{
-          pathname: "/profile",
-          state: {
-            user_id: 1,
-            profile_id: 1
-          }
-        }}
-        push={true}
-      />
-    );
   };
 
   render() {
@@ -58,7 +46,7 @@ class UserNav extends Component {
         <Redirect
           to={{
             pathname: "/profile/" + user.username, 
-            state: { profile_user_id: this.props.user._id }
+            state: { profile_user_id: user._id }
           }}
           push={true}
         />
