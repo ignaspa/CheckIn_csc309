@@ -9,6 +9,9 @@ var User = new Schema({
   bio: {
     type: String
   },
+  profilepic: {
+    type: String,
+  },
   username: {
     type: String,
     required: true

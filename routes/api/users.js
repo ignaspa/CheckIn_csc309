@@ -24,7 +24,7 @@ router.get(
       console.log(req.user.id);
     let user = await User.findById(req.user.id)
       .select(
-        "friends friendRequests pastCheckins _id name username activeCheckin bio"
+        "friends friendRequests pastCheckins _id name username activeCheckin bio profilepic"
       )
       .catch(error => {
         res.status(400).json(error);
@@ -70,7 +70,7 @@ router.get(
   async (req, res) => {
     let user = await User.find({ _id: req.params.userID })
       .select(
-        "friends friendRequests pastCheckins _id name username activeCheckin bio totalCheckins date"
+        "friends friendRequests pastCheckins _id name username activeCheckin bio totalCheckins date profilepic"
       )
       .catch(error => {
         res.status(400).json(error);
@@ -172,6 +172,31 @@ router.post("/register", (req, res) => {
   });
 });
 
+//  @route GET api/users/all
+//  @desc Get all Users. Responds with a list of all users on success
+//  @access Public
+router.get("/all", (req, res) => {
+  let errors = {};
+
+  User.find()
+    .select(
+      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin"
+    )
+    .then(users => {
+      if (!users) {
+        console.log("hello")
+        errors.noUsers = "There are no users";
+        return res.status(404).json(errors);
+      }
+
+      return res.json(users);
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(500).json(err);
+    });
+});
+
 //  @route DELETE api/users/:id
 //  @desc Delete user
 //  @access Private. Endpoint protected by passport middleware and can only be accessed by the ADMIN User.          ADMIN User cannot delete itself.
@@ -213,4 +238,34 @@ router.patch(
   }
 );
 
+//  @route PATCH api/users/profilepic
+//  @desc Updates profilepic for the user. Responds updated User object.
+//  @access Public
+router.patch("/profilepic", passport.authenticate("jwt", { session: false }), (req, res) => {
+  console.log("newpic:");
+  console.log(req.body.newpic);
+  console.log("user id:", req.user.id)
+  User.findOneAndUpdate(
+    { _id: req.user.id },
+    {
+      $set: {profilepic: req.body.newpic}
+    }, 
+    {new: true})
+    .catch((error) => {
+      res.status(500).json({message: error})
+    })
+    .then((user) => {
+      console.log(user)
+      return res.json(user)
+    });
+    
+  // User.findOne({email: req.body.email})
+  //   .then(item => {
+  //     return res.json(item);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   })
+
+});
 module.exports = router;

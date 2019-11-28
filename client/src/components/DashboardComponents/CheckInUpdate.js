@@ -61,7 +61,7 @@ export default class CheckInUpdate extends Component {
                 <div className="card-header">
                     <div className="d-flex align-items-center">
                         <div className="mr-2">
-                            <img className="rounded-circle" width="55" height="55" src={this.props.picture} alt="" />
+                            <img className="rounded-circle" width="55" height="55" src={this.props.user.profilepic} alt="" />
 
                         </div>
                         <div className="ml-2">

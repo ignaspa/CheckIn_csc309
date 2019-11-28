@@ -65,6 +65,17 @@ export const userDataReducer = (state = userDataInitialState, action) => {
   }
 };
 
+export const usersListReducer = (state = userDataInitialState, action) => {
+  switch (action.type) {
+    case "SET_LIST_USERS":
+      return {
+        ...state,
+        listUsers: action.payload
+      };
+    default:
+      return state;
+  }
+}
 export const friendsDataReducer = (state = friendsDataInitialState, action) => {
   switch (action.type) {
     case "SET_FRIENDS_DATA":
@@ -78,14 +89,14 @@ export const friendsDataReducer = (state = friendsDataInitialState, action) => {
 }
 
 export const friendsCheckinsReducer = (state = friendsCheckinsInitialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case "SET_FRIENDS_CHECKINS":
       return {
-        ...state, 
+        ...state,
         friendsCheckins: action.payload
       }
     default:
-      return state  
+      return state
   }
 }
 
@@ -140,7 +151,8 @@ export const userCheckinsReducer = (state = userCheckinsInitialState, action) =>
 export const allReducers = combineReducers({
   user: loginReducer,
   errors: errorReducer,
-  userData: userDataReducer, 
+  userData: userDataReducer,
+  listUsers: usersListReducer,
   friendsCheckins: friendsCheckinsReducer,
   friendsData: friendsDataReducer, 
   newCheckin: newCheckinReducer, 

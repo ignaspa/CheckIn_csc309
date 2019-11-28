@@ -7,11 +7,12 @@ import AddFriend from "./components/AddFriend";
 import SignUp from "./components/SignUp";
 import Navbar from "./components/Layout/Navbar";
 import AdminDashboard from "./components/AdminComponents/AdminDashboard";
-import Login from "./components/Login";
-import Profile from "./components/ProfileComponents/Profile";
-import ProfileLinks from "./components/ProfileComponents/Profile-links";
-import UserDashboard from "./components/DashboardComponents/UserDashboard";
-import FriendRequestsSection from "./components/FriendRequestsComponents/FriendRequests";
+import Login from "./components/Login"
+import Profile from "./components/ProfileComponents/Profile"
+import ProfileLinks from "./components/ProfileComponents/Profile-links"
+import UserDashboard from "./components/DashboardComponents/UserDashboard"
+import FriendRequestsSection from "./components/FriendRequestsComponents/FriendRequests"
+import ChangePicture from "./components/ProfileComponents/ChangePicture"
 import setAuthToken from "./utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import { login, logoutUser } from "./redux/actions";
@@ -73,8 +74,9 @@ class App extends React.Component {
             path="/friend-requests"
             component={FriendRequestsSection}
           />
-          <UserPrivateRoute exact path="/deleteuser" component={DeleteUser} />
-          <UserPrivateRoute exact path="/addfriend" component={AddFriend} />
+          <Route exact path="/deleteuser" component={DeleteUser} />
+          <Route exact path="/addfriend" component={AddFriend} />
+          <Route exact path="/changepic" component={ChangePicture} />
         </Switch>
       </BrowserRouter>
     );
