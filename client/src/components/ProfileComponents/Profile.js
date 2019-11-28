@@ -167,7 +167,7 @@ function ProfileHeader(props) {
                 </tr>
                 <tr>
                     <th>
-                        <button type="button" class="btn btn-primary changepicbutton">
+                        <button type="button" className="btn btn-primary changepicbutton">
                             <Link to={"/changepic"} className="nav-link text-white">
                                 Change Profile Picture
                             </Link>
@@ -183,7 +183,7 @@ function ProfileHeader(props) {
 function EditProfileHeader(props) {
 
     return (
-        <table class="profile-section table mx-auto">
+        <table className="profile-section table mx-auto">
 
             <tr>
                 <th>

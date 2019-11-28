@@ -289,7 +289,7 @@ export const getCheckinsForUser = (userID) => dispatch => {
     })
 }
 
-export const updateProfilePic = (pic) => {
+export const updateProfilePic = (pic) => dispatch => {
   axios.patch("/api/users/profilepic")
     .then(response => {
       axios
