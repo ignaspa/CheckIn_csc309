@@ -22,6 +22,7 @@ class Profile extends Component {
         this.newBio = this.state.user.bio;
         this.onModeChange = this.onModeChange.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.getCheckin = this.getCheckin.bind(this)
     }
     componentDidMount() {
         this.props.getUserData()
@@ -46,7 +47,6 @@ class Profile extends Component {
 
 
     onModeChange() {
-        
         this.setState({
             edit_mode: !this.state.edit_mode, 
             user: this.props.userData, 
@@ -69,8 +69,20 @@ class Profile extends Component {
         console.log(this.state.user.friends)
     }
 
+    getCheckin(checkinId, checkins) {
+        console.log(checkinId, checkins);
+        for (let i = 0; i < checkins.length; i++) {
+            if (checkinId === checkins[i]._id) {
+                return checkins[i];
+            }
+        }
+    }
+
     render() {
-        // console.log("this.state in render: ", this.state)
+        let activeCheckin = null;
+        if (this.state.user && this.state.user.activeCheckin && this.state.userCheckins) {
+            activeCheckin = this.getCheckin(this.state.user.activeCheckin, this.state.userCheckins);
+        }
         if (this.state.edit_mode && typeof(this.state.profile_user) != "undefined") {
             return (
                 <div>
@@ -82,7 +94,7 @@ class Profile extends Component {
 
                     />
                     <CurrentLocation
-                        profile_user={this.state.profile_user}
+                        checkin={activeCheckin}
                     />
                     <PastLocations
                         profile_user={this.state.profile_user}
@@ -113,7 +125,7 @@ class Profile extends Component {
                     onClickAction={this.onClickAction}
                     />
                     <CurrentLocation
-                        profile_user={this.state.profile_user}
+                        checkin={activeCheckin}
                     />
                     <PastLocations
                         profile_user={this.state.profile_user}
@@ -210,25 +222,23 @@ function EditProfileHeader(props) {
 }
 
 function CurrentLocation(props) {
-    
     // const checkin = getCheckIn(props.profile_id);
     const profile_user = props.profile_user
 
-    if (typeof(profile_user) == "undefined" || profile_user.activeCheckin == null) {
+    if (!props.checkin) {
         return (
             <div className="profile-section card mx-auto border-0">
             <h4 className="card-title"> No Current Location </h4>
         </div>
         );
     }
-    
     // TODO: activeCheckin is the ID for the checkin not the actual checkin so you gotta create redux action to fetch that. 
     return (
         <div className="profile-section card mx-auto border-0">
             <h4 className="card-title"> Current Location </h4>
             <CheckIn
                 cardStyle="active-card"
-                checkin={profile_user.activeCheckin}
+                checkin={props.checkin}
             />
         </div>
     );
