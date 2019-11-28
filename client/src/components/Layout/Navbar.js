@@ -15,17 +15,23 @@ class Navbar extends Component {
   }
   componentDidMount() {
     this.props.getUserData();
-}
-componentWillReceiveProps(nextProps) {
-  let pp = nextProps.userData.userData.profilepic;
-  this.setState({navpic: pp})
-}
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.userData);
+    if (this.props.user.isAuthenticated) {
+      let pp = nextProps.userData.userData.profilepic;
+      this.setState({ navpic: pp })
+    }
+  }
   logOut = (event) => {
     this.props.logoutUser();
   }
   render() {
 
     const logOutButton = this.props.user.isAuthenticated ? (<ul className="navbar-nav ml-auto list-group-horizontal">
+      <li>
+        <img className="rounded-circle" width="55" height="55" src={this.state.navpic} alt="" />
+      </li>
       <li>
         <Link to={"/"} className="nav-link text-white navitem logoutbutton" onClick={this.logOut}>
           Logout
@@ -42,12 +48,8 @@ componentWillReceiveProps(nextProps) {
               </Link>
             </li>
           </ul>
-          <ul className="navbar-nav ml-auto list-group-horizontal">
-            <li>
-              <img className="rounded-circle" width="55" height="55" src={this.state.navpic} alt="" />
-            </li>
-            {logOutButton}
-          </ul>
+          {logOutButton}
+
 
         </nav>
       </div>
