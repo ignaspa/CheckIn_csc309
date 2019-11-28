@@ -42,7 +42,7 @@ router.get("/all", (req, res) => {
 
   User.find({ isAdmin: false })
     .select(
-      "friends friendRequests pastCheckins _id name username activeCheckin totalCheckins date"
+      "friends friendRequests pastCheckins _id name username activeCheckin totalCheckins date profilepic"
     )
     .then(users => {
       if (!users) {
@@ -180,7 +180,7 @@ router.get("/all", (req, res) => {
 
   User.find()
     .select(
-      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin"
+      "friends friendRequests pastCheckins _id name username activeCheckin isAdmin profilepic"
     )
     .then(users => {
       if (!users) {
