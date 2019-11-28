@@ -146,6 +146,7 @@ router.post("/register", (req, res) => {
         activeCheckin: null,
         bio: "",
         friends: [],
+        profilepic: "https://i.imgur.com/o1B71Dy.png",
         friendRequests: [],
         pastCheckins: [],
         password: req.body.password

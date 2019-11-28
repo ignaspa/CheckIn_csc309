@@ -49,6 +49,7 @@ class AddFriend extends Component {
     }
 
     handleOnChange = (event) => {
+        console.log("search is changing", event.target.value)
         this.setState({ results: [] });
         if (event.target.value === "") {
             return;
@@ -68,6 +69,7 @@ class AddFriend extends Component {
                 }
             }
         }
+        console.log("new results are", newResults)
         this.setState({ results: newResults });
 
     }
@@ -80,8 +82,10 @@ class AddFriend extends Component {
 
 function ResultsTable(props) {
     let label = "Add Friend";
+    
     const matchedUsers = props.results.map(person => (
         <tr key={person._id}>
+            <td><img className="rounded-circle" width="55" height="55" src={person.profilepic} alt="profile pic" /></td>
             <td>{person.name}</td>
             <td>{person.username}</td>
             <td>
@@ -98,6 +102,7 @@ function ResultsTable(props) {
             <table className="table container-fluid">
                 <thead>
                     <tr>
+                        <th scope="col"></th>
                         <th scope="col">Name</th>
                         <th scope="col">Username</th>
                         <th scope="col">Add</th>
