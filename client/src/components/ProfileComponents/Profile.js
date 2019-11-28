@@ -25,6 +25,7 @@ class Profile extends Component {
         this.onModeChange = this.onModeChange.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.getCheckin = this.getCheckin.bind(this)
+        this.deleteFriend = this.deleteFriend.bind(this)
     }
     componentDidMount() {
         this.props.getUserData()
@@ -42,11 +43,6 @@ class Profile extends Component {
             })
         }
     }
-
-    onClickAction(event) {
-        console.log("THEY CLICKED")
-    }
-
 
     onModeChange() {
         this.setState({
@@ -66,9 +62,10 @@ class Profile extends Component {
     }
 
     deleteFriend(friendID) {
-        console.log("DELETING FRIEND")
-        this.props.deleteFriend(friendID)
-        console.log(this.state.user.friends)
+        console.log("DELETE FRIEND BEING CALLED")
+        // console.log("DELETING FRIEND")
+        // this.props.deleteFriend(friendID)
+        // console.log(this.state.user.friends)
     }
 
     getCheckin(checkinId, checkins) {
@@ -109,11 +106,13 @@ class Profile extends Component {
         if (typeof (this.state.profile_user) != "undefined" && typeof (this.state.user) != "undefined") {
 
             let label = ""
+            let onClickAction = null
             if (this.state.user._id !== this.state.profile_user._id) {
                 label = "Remove Friend";
             }
             else if (this.state.user._id == this.state.profile_user._id) {
                 label = "Edit Profile"
+                // onClickAction = this.onModeChange()
             }
 
             return (
@@ -218,8 +217,6 @@ function EditProfileHeader(props) {
                             name="bio"
                             defaultValue={props.user.bio}
                             onChange={props.handleInputChange}
-                            deleteFriend={props.deleteFriend}
-
                         />
                         </div>
                     </div>
