@@ -17,7 +17,7 @@ class Navbar extends Component {
     this.props.getUserData();
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.userData);
+    
     if (this.props.user.isAuthenticated) {
       let pp = nextProps.userData.userData.profilepic;
       this.setState({ navpic: pp })
