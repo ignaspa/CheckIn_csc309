@@ -258,7 +258,7 @@ export const setActiveCheckin = activeCheckin => {
 export const getSpecificUser = (userID) => dispatch => {
   console.log(userID);
   axios.get("/api/users/" + userID).then(response => {
-    console.log(response.data);
+    console.log("this is what we get", response.data);
     const specificUser = response.data[0];
     dispatch(setSpecificUser(specificUser));
   }).catch(error => {
@@ -290,7 +290,8 @@ export const getCheckinsForUser = (userID) => dispatch => {
 }
 
 export const updateProfilePic = (pic) => dispatch => {
-  axios.patch("/api/users/profilepic")
+  console.log("calling update pic with", pic)
+  axios.patch("/api/users/profilepic", {newpic: pic})
     .then(response => {
       axios
         .get("/api/users/")

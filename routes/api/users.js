@@ -24,7 +24,7 @@ router.get(
       console.log(req.user.id);
     let user = await User.findById(req.user.id)
       .select(
-        "friends friendRequests pastCheckins _id name username activeCheckin bio"
+        "friends friendRequests pastCheckins _id name username activeCheckin bio profilepic"
       )
       .catch(error => {
         res.status(400).json(error);
@@ -70,7 +70,7 @@ router.get(
   async (req, res) => {
     let user = await User.find({ _id: req.params.userID })
       .select(
-        "friends friendRequests pastCheckins _id name username activeCheckin bio totalCheckins date"
+        "friends friendRequests pastCheckins _id name username activeCheckin bio totalCheckins date profilepic"
       )
       .catch(error => {
         res.status(400).json(error);
@@ -241,11 +241,12 @@ router.patch(
 //  @route PATCH api/users/profilepic
 //  @desc Updates profilepic for the user. Responds updated User object.
 //  @access Public
-router.patch("/profilepic", (req, res) => {
+router.patch("/profilepic", passport.authenticate("jwt", { session: false }), (req, res) => {
   console.log("newpic:");
   console.log(req.body.newpic);
+  console.log("user id:", req.user.id)
   User.findOneAndUpdate(
-    {email: req.body.email},
+    { _id: req.user.id },
     {
       $set: {profilepic: req.body.newpic}
     }, 
@@ -254,7 +255,8 @@ router.patch("/profilepic", (req, res) => {
       res.status(500).json({message: error})
     })
     .then((user) => {
-      res.json(user)
+      console.log(user)
+      return res.json(user)
     });
     
   // User.findOne({email: req.body.email})

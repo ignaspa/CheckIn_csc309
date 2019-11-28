@@ -59,7 +59,7 @@ class AddFriend extends Component {
 
             // check that we dont return users that are the current user, user that have requested 
             // this user to be a friend, or users this person already sent a request to.
-            if (person._id != this.state.user._id && !this.state.user.friendRequests.includes(person._id) && !person.friendRequests.includes(this.state.user._id)) {
+            if (person._id != this.state.user._id && !this.state.user.friendRequests.includes(person._id) && !person.friendRequests.includes(this.state.user._id) && !this.state.user.friends.includes(person._id)) {
                 if (person.name != null && person.name.toLowerCase().includes(event.target.value.toLowerCase())) {
                     newResults.push(this.state.potentialfriends[i]);
                 }
@@ -74,19 +74,21 @@ class AddFriend extends Component {
 
     changeUserStatus = (userID) => {
         this.props.addFriend(userID)
+        this.setState({results: []});
     }
 }
 
 function ResultsTable(props) {
+    let label = "Add Friend";
     const matchedUsers = props.results.map(person => (
         <tr key={person._id}>
             <td>{person.name}</td>
             <td>{person.username}</td>
             <td>
                 <button
-                    onClick={() => props.changeUserStatus(person._id)}
+                    onClick={() => {label = "Sent!"; props.changeUserStatus(person._id)}}
                     className="btn btn-success">
-                    Add Friend
+                    {label}
               </button>
             </td>
         </tr>

@@ -139,6 +139,7 @@ function ActionButton(props) {
 }
 
 function ProfileHeader(props) {
+    console.log(props)
     return (
         <table className="profile-section table mx-auto">
             <tbody>
