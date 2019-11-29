@@ -1,4 +1,4 @@
-import ProfilePic from "./assets/profile.png";
+// import ProfilePic from "./assets/profile.png";
 import User1 from "./DashboardComponents/DashboardAssets/User1.jpg";
 import User2 from "./DashboardComponents/DashboardAssets/User2.jpg";
 import User3 from "./DashboardComponents/DashboardAssets/User3.jpg";
@@ -21,7 +21,7 @@ const users = [
     current_location: "BA 3200",
     friends: [1, 2, 3],
     friend_request: [5],
-    profilepic: ProfilePic,
+    // profilepic: ProfilePic,
     username: "user",
     password: "user"
   },

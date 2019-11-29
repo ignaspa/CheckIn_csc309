@@ -3,11 +3,13 @@ import "../../css/App.css";
 import Dashboard from "../../components/assets/Dashboard.png"
 import NewFriend from "../../components/assets/AddFriends.png"
 import ProfilePic from "../../components/assets/ProfilePic.png"
-import Profile from "../../components/assets/Profile.png"
+import Profile from "../../components/assets/ProfileScreenshot.png"
+import Eating from "../../components/assets/eating.JPG"
+import Studying from "../../components/assets/studying.JPG"
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const images = [Dashboard, ProfilePic, NewFriend, Profile];
+const images = [Dashboard, ProfilePic, NewFriend, Profile, Eating, Studying];
 const quotes = [
   "See where your friends are!",
   "Share custom locations unlike a map app.",
