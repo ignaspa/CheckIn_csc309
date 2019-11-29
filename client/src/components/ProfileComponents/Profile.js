@@ -2,14 +2,12 @@ import React, { Component } from "react";
 import { login, getActiveCheckin, getSpecificUser, getUserData, getCheckinsForUser, updateUserInfo, deleteFriend } from '../../redux/actions.js'
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
-import { getUserFromHandle, getUserFromId, removeFriend, requestFriend, getCheckIn, getOldCheckIn, changeBio, changeName } from '../MockData.js';
 import { Link } from "react-router-dom";
 
 class Profile extends Component {
     constructor(props) {
 
         super(props);
-        //console.log("ID IN PROFILE: " + this.props.location.state.profile_user_id)
         this.props.getUserData()
         this.props.getUser(this.props.location.state.profile_user_id)
         this.props.getCheckinsForUser(this.props.location.state.profile_user_id)
@@ -23,9 +21,9 @@ class Profile extends Component {
         this.newName = this.state.user.name;
         this.newBio = this.state.user.bio;
         this.onModeChange = this.onModeChange.bind(this)
+        this.changeMode = this.changeMode.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.getCheckin = this.getCheckin.bind(this)
-        this.deleteFriend = this.deleteFriend.bind(this)
     }
     componentDidMount() {
         this.props.getUserData()
@@ -44,16 +42,27 @@ class Profile extends Component {
         }
     }
 
-    onModeChange() {
+    // this gets called to switch into input mode 
+    changeMode() {
         this.setState({
+            edit_mode: !this.state.edit_mode
+        })
+    }
+
+    // this gets called to submit form entry 
+    onModeChange() {
+        console.log("SUBMITTING")
+                this.setState({
             edit_mode: !this.state.edit_mode,
             user: this.props.userData,
             profile_user: this.props.specificUser
         })
+
         this.props.updateUserInfo(this.newBio, this.newName)
+        this.newBio = this.props.specificUser.specificUser.bio
+        this.newName = this.props.specificUser.specificUser.name
     }
     handleInputChange(event) {
-
         if (event.target.name === "bio") {
             this.newBio = event.target.value;
         } else if (event.target.name === "name") {
@@ -61,15 +70,7 @@ class Profile extends Component {
         }
     }
 
-    deleteFriend(friendID) {
-        console.log("DELETE FRIEND BEING CALLED")
-        // console.log("DELETING FRIEND")
-        // this.props.deleteFriend(friendID)
-        // console.log(this.state.user.friends)
-    }
-
     getCheckin(checkinId, checkins) {
-        console.log(checkinId, checkins);
         for (let i = 0; i < checkins.length; i++) {
             if (checkinId === checkins[i]._id) {
                 return checkins[i];
@@ -89,8 +90,6 @@ class Profile extends Component {
                         user={this.state.profile_user}
                         onModeChange={this.onModeChange}
                         handleInputChange={this.handleInputChange}
-                        deleteFriend={this.deleteFriend}
-
                     />
                     <CurrentLocation
                         checkin={activeCheckin}
@@ -106,74 +105,86 @@ class Profile extends Component {
         if (typeof (this.state.profile_user) != "undefined" && typeof (this.state.user) != "undefined") {
 
             let label = ""
-            let onClickAction = null
             if (this.state.user._id !== this.state.profile_user._id) {
                 label = "Remove Friend";
+                return (
+                    <div>
+                        <ProfileHeader
+                            user={this.state.user}
+                            otherUser={this.state.profile_user}
+                            label={label}
+                            onClickAction={this.props.deleteFriend}
+                        />
+                        <CurrentLocation
+                            checkin={activeCheckin}
+                        />
+                        <PastLocations
+                            profile_user={this.state.profile_user}
+                            userCheckins={this.state.userCheckins}
+                        />
+                    </div>
+                );
             }
             else if (this.state.user._id == this.state.profile_user._id) {
                 label = "Edit Profile"
-                // onClickAction = this.onModeChange()
+                return (
+                    <div>
+                        <ProfileHeader
+                            user={this.state.user}
+                            otherUser={this.state.profile_user}
+                            label={label}
+                            onClickAction={this.changeMode}
+                        />
+                        <CurrentLocation
+                            checkin={activeCheckin}
+                        />
+                        <PastLocations
+                            profile_user={this.state.profile_user}
+                            userCheckins={this.state.userCheckins}
+                        />
+                    </div>
+                );
             }
 
-            return (
-                <div>
-                    <ProfileHeader
-                        user={this.state.profile_user}
-                        onModeChange={this.onModeChange}
-                        // user_id={this.state.user._id}
-                        otherUser={this.state.user}
-                        label={label}
-                        onClickAction={this.onClickAction}
-                    />
-                    <CurrentLocation
-                        checkin={activeCheckin}
-                    />
-                    <PastLocations
-                        profile_user={this.state.profile_user}
-                        userCheckins={this.state.userCheckins}
-                    />
-                </div>
-            );
+            
         }
         return null
     }
 }
 
+
 function ActionButton(props) {
-    console.log("label: " + props.label)
     if (typeof (props.label) != "undefined") {
         return (
-            <button className={"btn rounded btn-primary mt-3"} onClick={props.onClickAction}>{props.label}</button>
+            <button className={"btn rounded btn-primary mt-3"} onClick={() => props.onClickAction(props.otherUser._id)}>{props.label}</button>
         );
     }
     return null
 }
 
 function ProfileHeader(props) {
-    console.log(props)
+    // console.log(props)
     return (
         <table className="profile-section table mx-auto">
             <tbody>
                 <tr>
                     <th>
-                        <img className="profile-pic rounded-circle border m-3 text-center" src={props.user.profilepic} alt="Profile" />
+                        <img className="profile-pic rounded-circle border m-3 text-center" src={props.otherUser.profilepic} alt="Profile" />
 
                     </th>
                     <th>
                         <div className="col-sm">
-                            <h3 className="card-title mt-3 mb-0"> {props.user.name} </h3>
-                            <div className="handle"> @{props.user.username} </div>
-                            {/* <div><strong>{props.user.friends.length}</strong> friends</div> */}
-                            <div>{props.user.bio}</div>
+                            <h3 className="card-title mt-3 mb-0"> {props.otherUser.name} </h3>
+                            <div className="handle"> @{props.otherUser.username} </div>
+                            {/* <div><strong>{props.otherUser.friends.length}</strong> friends</div> */}
+                            <div>{props.otherUser.bio}</div>
                         </div>
                     </th>
                     <th>
                         <ActionButton
                             onClickAction={props.onClickAction}
                             label={props.label}
-
-                        // user={props.user}
-                        // otherUser={props.otherUser}
+                            otherUser={props.otherUser}
                         />
                     </th>
                 </tr>
@@ -196,7 +207,7 @@ function EditProfileHeader(props) {
 
     return (
         <table className="profile-section table mx-auto">
-
+            <tbody>
             <tr>
                 <th>
                     <img className="profile-pic rounded-circle border m-3 text-center" src={props.user.picture} alt="Profile" />
@@ -222,10 +233,10 @@ function EditProfileHeader(props) {
                     </div>
                 </th>
                 <th>
-                    <button className="btn rounded btn-primary mt-3" onClick={props.onModeChange}>Done</button>
+                    <button className="btn rounded btn-primary mt-3" onClick={() => props.onModeChange()}>Done</button>
                 </th>
             </tr>
-
+            </tbody>
         </table>
     );
 }
