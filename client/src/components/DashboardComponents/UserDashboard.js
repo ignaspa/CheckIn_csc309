@@ -14,8 +14,11 @@ class UserDashboard extends Component {
     super(props);
     this.state = {
       allCheckins: [],
-      newCheckin: {}
+      newCheckin: {}, 
+      lastEvent: this.props.location.state.lastEvent
     };
+    console.log("EVENT")
+    console.log(this.state.lastEvent)
   }
 
   componentDidMount() {
@@ -26,9 +29,6 @@ class UserDashboard extends Component {
   componentWillReceiveProps(nextProps) {
    let friendsCheckins = nextProps.friendsCheckins.friendsCheckins
     this.setState({ allCheckins: friendsCheckins}); 
-
-    // console.log("NEW STATE")
-    // console.log(this.state)
   }
 
   submitCheckIn = state => {

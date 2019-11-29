@@ -3,6 +3,8 @@ import { login, getActiveCheckin, getSpecificUser, getUserData, getCheckinsForUs
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router";
+
 
 class Profile extends Component {
     constructor(props) {
@@ -16,7 +18,8 @@ class Profile extends Component {
             edit_mode: false,
             user: props.userData, // User who is logged in
             userCheckins: this.props.userCheckins,
-            profile_user: this.props.specificUser // User whose profile we are looking at
+            profile_user: this.props.specificUser, // User whose profile we are looking at
+            redirect: ""
         }
         this.newName = this.state.user.name;
         this.newBio = this.state.user.bio;
@@ -24,6 +27,7 @@ class Profile extends Component {
         this.changeMode = this.changeMode.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.getCheckin = this.getCheckin.bind(this)
+        this.removeFriend = this.removeFriend.bind(this)
     }
     componentDidMount() {
         this.props.getUserData()
@@ -40,6 +44,13 @@ class Profile extends Component {
                 profile_user: this.props.specificUser.specificUser
             })
         }
+    }
+
+    // remove friend 
+    removeFriend(friendID) {
+        console.log("deleting friend")
+        this.props.deleteFriend(friendID)
+        this.setState({redirect: "/user-dashboard"})
     }
 
     // this gets called to switch into input mode 
@@ -83,6 +94,18 @@ class Profile extends Component {
         if (this.state.user && this.state.user.activeCheckin && this.state.userCheckins) {
             activeCheckin = this.getCheckin(this.state.user.activeCheckin, this.state.userCheckins);
         }
+
+        if (this.state.redirect === "/user-dashboard") {
+            return(
+                <Redirect
+                        to={{
+                            pathname: '/user-dashboard/',
+                            state: { lastEvent: "Deleted " + this.state.profile_user.name}
+                 }}
+                 push={true}/>
+            );
+        }
+
         if (this.state.edit_mode && typeof(this.state.profile_user) != "undefined") {
             return (
                 <div>
@@ -113,7 +136,7 @@ class Profile extends Component {
                             user={this.state.user}
                             otherUser={this.state.profile_user}
                             label={label}
-                            onClickAction={this.props.deleteFriend}
+                            onClickAction={this.removeFriend}
                         />
                         <CurrentLocation
                             checkin={activeCheckin}

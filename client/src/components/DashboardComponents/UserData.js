@@ -43,7 +43,8 @@ class Checkins extends Component {
         if (typeof(checkins) != "undefined") {
             for (let i = 0; i < checkins.length; i++) {
             let user = this.findUser(checkins[i].userid)
-             rows.push(<CheckInUpdate 
+            if (user != null) {
+              rows.push(<CheckInUpdate 
                 user={user}
                 key={user.id}
                 id={checkins[i].id}
@@ -55,6 +56,7 @@ class Checkins extends Component {
                 message={checkins[i].message}
                 time = {checkins[i].time}
                 />);
+            } 
             }
         }
 
