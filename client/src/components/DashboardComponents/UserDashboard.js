@@ -7,6 +7,8 @@ import UserNav from "./UserNav";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getUserData, getFriendsCheckins, addNewCheckin } from "../../redux/actions";
+import Alert from 'react-s-alert';
+import 'react-s-alert/dist/s-alert-default.css';
 
 
 class UserDashboard extends Component {
@@ -15,13 +17,14 @@ class UserDashboard extends Component {
     this.state = {
       allCheckins: [],
       newCheckin: {}, 
-      lastEvent: this.props.location.state.lastEvent
+      lastEvent: ""
     };
-    console.log("EVENT")
-    console.log(this.state.lastEvent)
   }
 
   componentDidMount() {
+    if (this.props.location.state) {
+      this.setState({lastEvent: this.props.location.state.lastEvent})
+    }
     this.props.getUserData();
     this.props.getFriendsCheckins();
   }
@@ -38,8 +41,19 @@ class UserDashboard extends Component {
   };
 
   render() {
+    if (this.state.lastEvent != "") {
+      Alert.warning(this.state.lastEvent, {
+          position: 'bottom',
+          timeout: '5000', 
+      });
+      this.setState({
+        lastEvent: ""
+      })
+    }
+
     return (
       <div className="container-fluid gedf-wrapper">
+        <Alert stack={{limit: 1}} />
         <div className="row">
           <div className="col-3">
             <UserNav />
