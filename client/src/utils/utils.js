@@ -6,7 +6,13 @@ export const redirect = (user, history) => {
     if (user.user.isAdmin) {
       history.push("/admin-dashboard");
     } else {
-      history.push("/user-dashboard");
+        history.push("/user-dashboard");
+        history.push({
+            pathname: "/user-dashboard",
+            state: {
+                lastEvent: "",
+            }
+        });
     }
   }
 };
