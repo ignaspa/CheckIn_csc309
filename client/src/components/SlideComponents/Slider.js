@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import "../../css/App.css";
-import Food from "../../components/assets/eating.JPG";
-import Study from "../../components/assets/studying.JPG";
-import Walk from "../../components/assets/walking.JPG";
-import UserView from "../../components/assets/userview.JPG";
-import AddFriends from "../../components/assets/addfriends.JPG";
-import UpdateStat from "../../components/assets/updateyourstatus.JPG";
+import Dashboard from "../../components/assets/Dashboard.png"
+import NewFriend from "../../components/assets/AddFriends.png"
+import ProfilePic from "../../components/assets/ProfilePic.png"
+import Profile from "../../components/assets/Profile.png"
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const images = [UserView, Food, AddFriends, Study, UpdateStat, Walk];
+const images = [Dashboard, ProfilePic, NewFriend, Profile];
 const quotes = [
   "See where your friends are!",
   "Share custom locations unlike a map app.",
