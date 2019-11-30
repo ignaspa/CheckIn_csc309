@@ -199,7 +199,7 @@ export const getAllUsers = () => dispatch => {
     .catch(err => {
       return dispatch({
         type: "GET_ERRORS",
-        payload: err.response.data
+        payload: err
       });
     });
 };
