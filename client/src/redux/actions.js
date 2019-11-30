@@ -124,6 +124,56 @@ export const addFriend = (friend_id) => dispatch => {
     });
 };
 
+export const removeRequest = (friend_id) => dispatch => {
+  axios
+    .patch("/api/requests/delete", { friendID: friend_id })
+    .then(res => {
+      axios
+        .get("/api/users/all")
+        .then(response => {
+          const userData = response.data;
+          dispatch(setListUsers(userData));
+        })
+        .catch(err => {
+          return dispatch({
+            type: "GET_ERRORS",
+            payload: err.response.data
+          });
+        });
+    })
+    .catch(err => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: err
+      });
+    });
+};
+
+export const acceptRequest = (friend_id) => dispatch => {
+  axios
+    .patch("api/friends/add", { friendID: friend_id })
+    .then(res => {
+      axios
+        .get("/api/users/all")
+        .then(response => {
+          const userData = response.data;
+          dispatch(setListUsers(userData));
+        })
+        .catch(err => {
+          return dispatch({
+            type: "GET_ERRORS",
+            payload: err.response.data
+          });
+        });
+    })
+    .catch(err => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: err
+      });
+    });
+};
+
 export const getFriends = () => dispatch => {
   axios
     .get("/api/friends/")

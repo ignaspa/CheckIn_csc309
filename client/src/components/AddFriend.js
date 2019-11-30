@@ -20,6 +20,7 @@ class AddFriend extends Component {
         this.props.getPotentialFriends();
         this.props.getThisUser();
     }
+    
     componentWillReceiveProps(nextProps) {
         let pf = nextProps.listUsers.listUsers;
         let cu = nextProps.user.userData;
