@@ -5,6 +5,8 @@ import { Redirect } from "react-router";
 import { bindActionCreators } from "redux";
 import { getAllUsers, getUserData, acceptRequest, removeRequest } from "../../redux/actions";
 
+const log = console.log;
+
 class FriendRequests extends Component {
     constructor(props) {
         super(props);
@@ -24,23 +26,25 @@ class FriendRequests extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.listUsers != "undefined" && nextProps.user != {}) {
-            console.log("lol")
+            log("lol")
         }
-        console.log("next props", nextProps.listUsers)
+        log("next props", nextProps.listUsers)
         let pf = nextProps.listUsers.listUsers;
         let cu = nextProps.user;
         let reqs = [];
-        console.log("cu: ", cu);
-        console.log("pf: ", pf);
+        log("cu: ", cu);
+        log("pf: ", pf);
         if (cu.friendRequests && pf.length) {
             for (let i = 0; i < pf.length; i++) {
+                log("pf", pf[i])
                 if (cu.friendRequests.includes(pf[i]._id)) {
                     reqs.push(pf[i]);
                 }
             }
         }
+        log("reqs",reqs);
         this.setState({ potentialfriends: reqs, user: cu });
-        console.log(this.state);
+        log(this.state);
     }
     render() {
         if (this.state.redirect === "/user-dashboard") {
@@ -79,7 +83,7 @@ class FriendRequests extends Component {
 }
 
 function RequestsTable(props) {
-    console.log("results", props.results)
+    log("results", props.results)
 
     const matchedUsers = props.results.map(person => (
         <tr key={person._id}>
