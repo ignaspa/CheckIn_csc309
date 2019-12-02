@@ -21,7 +21,6 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-      console.log(req.user.id);
     let user = await User.findById(req.user.id)
       .select(
         "friends friendRequests pastCheckins _id name username activeCheckin bio profilepic"
@@ -128,7 +127,6 @@ router.post("/login", (req, res) => {
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
 
-  console.log(req.body);
   //Check validation
   if (!isValid) {
     return res.status(400).json(errors);
@@ -172,7 +170,6 @@ router.post("/register", (req, res) => {
     }
   });
 });
-
 
 //  @route DELETE api/users/:id
 //  @desc Delete user
@@ -218,31 +215,31 @@ router.patch(
 //  @route PATCH api/users/profilepic
 //  @desc Updates profilepic for the user. Responds updated User object.
 //  @access Public
-router.patch("/profilepic", passport.authenticate("jwt", { session: false }), (req, res) => {
-  console.log("newpic:");
-  console.log(req.body.newpic);
-  console.log("user id:", req.user.id)
-  User.findOneAndUpdate(
-    { _id: req.user.id },
-    {
-      $set: {profilepic: req.body.newpic}
-    }, 
-    {new: true})
-    .catch((error) => {
-      res.status(500).json({message: error})
-    })
-    .then((user) => {
-      console.log(user)
-      return res.json(user)
-    });
-    
-  // User.findOne({email: req.body.email})
-  //   .then(item => {
-  //     return res.json(item);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   })
+router.patch(
+  "/profilepic",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $set: { profilepic: req.body.newpic }
+      },
+      { new: true }
+    )
+      .catch(error => {
+        res.status(500).json({ message: error });
+      })
+      .then(user => {
+        return res.json(user);
+      });
 
-});
+    // User.findOne({email: req.body.email})
+    //   .then(item => {
+    //     return res.json(item);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   })
+  }
+);
 module.exports = router;
