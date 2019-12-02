@@ -10,9 +10,9 @@ const log = console.log;
 class FriendRequests extends Component {
     constructor(props) {
         super(props);
-
+        
         this.state = {
-            user: {},
+            userData: {},
             potentialfriends: [],
             newUpdate: "",
             redirect: ""
@@ -27,14 +27,15 @@ class FriendRequests extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props !== prevProps) {
+            
             let pf = this.props.listUsers.listUsers;
-            let cu = this.props.user;
+            let cu = this.props.userData.userData;
             let reqs = [];
             log("cu fr", cu)
-            if (cu.userData.friendRequests && pf.length) {
+            if ( pf && cu && cu.friendRequests && pf.length) {
                 for (let i = 0; i < pf.length; i++) {
                     log("pf", pf[i])
-                    if (cu.friendRequests.includes(pf[i]._id)) {
+                    if (cu.friendRequests && cu.friendRequests.includes(pf[i]._id)) {
                         reqs.push(pf[i]);
                     }
                 }
@@ -127,7 +128,7 @@ function RequestsTable(props) {
 }
 
 const mapStateToProps = store => ({
-    user: store.userData,
+    userData: store.userData,
     listUsers: store.listUsers
 });
 
