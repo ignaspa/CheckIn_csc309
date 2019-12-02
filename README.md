@@ -1,5 +1,7 @@
 # Checkin Web Application
 
+https://damp-chamber-49115.herokuapp.com/
+
 # To test our app
 
 * Login into the user side: Username: user and Password: user
