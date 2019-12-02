@@ -27,7 +27,6 @@ export default class CheckInForm extends Component {
         }
 
         this.setState({ checkin: state }, () => {
-            console.log(this.state);
             this.props.submitCheckIn(this.state.checkin)
           }); 
     }

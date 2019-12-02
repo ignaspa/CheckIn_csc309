@@ -19,18 +19,13 @@ class AddFriend extends Component {
     }
     componentDidMount() {
         this.props.getPotentialFriends();
-        console.log("1",this.state)
         this.props.getThisUser();
-        console.log("2",this.state)
     }
 
     componentWillReceiveProps(nextProps) {
         let pf = nextProps.listUsers.listUsers;
         let cu = nextProps.user.userData;
-        console.log("3",pf)
-        console.log("4",cu)
         this.setState({ potentialfriends: pf, user: cu });
-        console.log("5",this.state)
     }
     render() {
         if (this.state.redirect === "/user-dashboard") {
@@ -66,7 +61,6 @@ class AddFriend extends Component {
     }
 
     handleOnChange = (event) => {
-        console.log("search is changing", event.target.value)
         this.setState({ results: [] });
         if (event.target.value === "") {
             return;
@@ -86,7 +80,6 @@ class AddFriend extends Component {
                 }
             }
         }
-        console.log("new results are", newResults)
         this.setState({ results: newResults });
 
     }

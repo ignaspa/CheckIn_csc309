@@ -44,7 +44,6 @@ export default class Slider extends Component {
   };
 
   render() {
-    console.log("Rendering Slider");
     return (
       <div className="App-Slider">
         <h5 className="homequote text-primary">

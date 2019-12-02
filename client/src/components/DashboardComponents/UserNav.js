@@ -23,17 +23,14 @@ class UserNav extends Component {
   }
 
   friendRequests = event => {
-    console.log("friend requests clicked");
     this.setState({ redirect: "/friend-requests" });
   };
 
   addFriends = event => {
-    console.log("add friends clicked");
     this.setState({ redirect: "/addfriend" });
   };
 
   editProfile = event => {
-    console.log("edit profile clicked");
     this.setState({ redirect: "/profile" });
   };
 
