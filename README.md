@@ -29,7 +29,8 @@ Try logging in to a separate user with these credentials:
 
 ## On the Add Friends Page: 
 * Look up a user and send them a request
-* Try to look up "Sonia", "Abdullah, "Ignas" or "Marco" to befriend us!
+* Try to look up "user2" to send a friend request and then log into user2 to accept it!
+* user2 credentials: user: user2 and password: user2
 
 ## On the Friend Requests Page: 
 * Check out requests sent to you by other users and accept or decline them
