@@ -382,6 +382,7 @@ export const updateUserInfo = (newbio, newname) => dispatch => {
     .then(response => {
         const updatedUser = response.data;
         dispatch(setUserData(updatedUser));
+        dispatch(setSpecificUser(updatedUser));
     }).catch(error => {
       return dispatch({
         type: "GET_ERRORS",
