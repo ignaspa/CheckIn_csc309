@@ -36,7 +36,6 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
 //     friendID: <your friends id>
 // }
 router.patch("/add", passport.authenticate("jwt", { session: false }), async (req, res) => {
-  console.log("patch")
     const id = req.user.id
       // add yourself to your friend's list
       let friend = await User.findByIdAndUpdate(req.body.friendID,

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../../css/UserDashboard.css";
-import User1 from "./DashboardAssets/User1.jpg";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import { getUserData } from "../../redux/actions";
@@ -23,17 +22,14 @@ class UserNav extends Component {
   }
 
   friendRequests = event => {
-    console.log("friend requests clicked");
     this.setState({ redirect: "/friend-requests" });
   };
 
   addFriends = event => {
-    console.log("add friends clicked");
     this.setState({ redirect: "/addfriend" });
   };
 
   editProfile = event => {
-    console.log("edit profile clicked");
     this.setState({ redirect: "/profile" });
   };
 

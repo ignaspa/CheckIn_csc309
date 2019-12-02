@@ -62,7 +62,6 @@ class Profile extends Component {
 
     // this gets called to submit form entry 
     onModeChange() {
-        console.log("SUBMITTING")
                 this.setState({
             edit_mode: !this.state.edit_mode,
             user: this.props.userData,

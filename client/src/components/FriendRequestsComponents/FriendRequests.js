@@ -8,8 +8,6 @@ import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 
 
-const log = console.log;
-
 class FriendRequests extends Component {
     constructor(props) {
         super(props);
@@ -24,8 +22,8 @@ class FriendRequests extends Component {
     }
 
     componentDidMount() {
-        this.props.getThisUser();
-        this.props.getPotentialFriends();
+        this.props.getUserData();
+        this.props.getAllUsers();
     }
 
     componentDidUpdate(prevProps) {
@@ -33,23 +31,17 @@ class FriendRequests extends Component {
             let pf = this.props.listUsers.listUsers;
             let cu = this.props.userData.userData;
             let reqs = [];
-            log("cu fr", cu)
             if ( pf && cu && cu.friendRequests && pf.length) {
                 for (let i = 0; i < pf.length; i++) {
-                    log("pf", pf[i])
                     if (cu.friendRequests && cu.friendRequests.includes(pf[i]._id)) {
                         reqs.push(pf[i]);
                     }
                 }
             }
-            log("reqs",reqs);
             this.setState({ potentialfriends: reqs, user: cu });
-            log("state", this.state);
         }
-        console.log("this state", this.state);
     }
     render() {
-        console.log("this state", this.state)
          if (this.state.redirect === "/user-dashboard") {
              Alert.warning(this.state.newUpdate, {
                  position: 'bottom',
@@ -83,7 +75,6 @@ class FriendRequests extends Component {
 }
 
 function RequestsTable(props) {
-    log("results", props.results)
 
     const matchedUsers = props.results.map(person => (
         <tr key={person._id}>
@@ -132,6 +123,6 @@ const mapStateToProps = store => ({
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ getPotentialFriends: getAllUsers, getThisUser: getUserData, acceptRequest: acceptRequest, removeRequest: removeRequest }, dispatch);
+    return bindActionCreators({ getAllUsers: getAllUsers, getUserData: getUserData, acceptRequest: acceptRequest, removeRequest: removeRequest }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FriendRequests);

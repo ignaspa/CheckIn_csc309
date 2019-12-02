@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { login } from '../../redux/actions.js'
 import { connect } from 'react-redux';
-import {findGivenUser, findNumberOfCommonFriends, getUserFromId, acceptFriendRequest, removeFriendRequest} from '../MockData.js'
 
 class AllFriendRequests extends Component {
 

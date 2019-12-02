@@ -130,9 +130,6 @@ router.post("/register", (req, res) => {
 
   console.log(req.body);
   //Check validation
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
 
   User.findOne({ username: req.body.username }).then(user => {
     if (user) {
