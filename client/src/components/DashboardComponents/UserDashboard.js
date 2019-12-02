@@ -35,7 +35,6 @@ class UserDashboard extends Component {
   }
 
   submitCheckIn = state => {
-    console.log("Submitting check in");
     this.props.addNewCheckin(state.action, state.message, state.location)
     this.props.getFriendsCheckins()
   };

@@ -22,14 +22,11 @@ class ChangePicture extends Component {
     }
     componentDidMount() {
         this.props.getThisUser();
-        console.log(this.props.user);
     }
     componentWillReceiveProps(nextProps) {
         let cu = nextProps.user.userData;
-        console.log("cu", cu);
         let initial_img = "";
         if(cu.profilepic){
-            console.log("this is it", cu.profilepic);
             initial_img = cu.profilepic;
         }
         this.setState({ user: cu, currently_selected: initial_img});
@@ -78,14 +75,12 @@ class ChangePicture extends Component {
     }
 
     saveProfilePic = (event) => {
-        console.log("saved")
         this.props.updatePic(this.state.currently_selected);
         return (
             this.setState({ redirect: '/profile' })
         );
     }
     cancelProfilePic = (event) => {
-        console.log("canceled")
         return (
             this.setState({ redirect: '/profile' })
         );

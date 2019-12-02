@@ -22,7 +22,6 @@ export const authenticateUser = userData => dispatch => {
       dispatch(login(decoded));
     })
     .catch(err => {
-      console.log("here is an error in logging in");
       console.log(err);
       return dispatch({
         type: "GET_ERRORS",
@@ -150,11 +149,9 @@ export const removeRequest = friend_id => dispatch => {
 };
 
 export const acceptRequest = friend_id => dispatch => {
-  console.log("Attempting friend axios call at api/requests/delete");
   axios
     .patch("/api/requests/delete", { friendID: friend_id })
     .then(res1 => {
-      console.log("api/requests/delete sucess");
       axios
         .patch("/api/friends/add", { friendID: friend_id })
         .then(res => {
@@ -309,11 +306,9 @@ export const setActiveCheckin = activeCheckin => {
 };
 
 export const getSpecificUser = userID => dispatch => {
-  console.log(userID);
   axios
     .get("/api/users/" + userID)
     .then(response => {
-      console.log("this is what we get", response.data);
       const specificUser = response.data[0];
       dispatch(setSpecificUser(specificUser));
     })
@@ -348,7 +343,6 @@ export const getCheckinsForUser = userID => dispatch => {
 };
 
 export const updateProfilePic = pic => dispatch => {
-  console.log("calling update pic with", pic);
   axios
     .patch("/api/users/profilepic", { newpic: pic })
     .then(response => {

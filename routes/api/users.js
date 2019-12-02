@@ -232,14 +232,6 @@ router.patch(
       .then(user => {
         return res.json(user);
       });
-
-    // User.findOne({email: req.body.email})
-    //   .then(item => {
-    //     return res.json(item);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   })
   }
 );
 module.exports = router;

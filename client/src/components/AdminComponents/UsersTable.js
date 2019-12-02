@@ -10,7 +10,6 @@ export default class UsersTable extends Component {
       usersData: []
     };
   }
-  //later API will send a GET request to server to get user data
   componentDidMount() {
     axios
       .get("/api/users/all")

@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import "../../css/App.css";
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
 import { bindActionCreators } from "redux";
 import { getAllUsers, getUserData, acceptRequest, removeRequest } from "../../redux/actions";
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
-
-
-const log = console.log;
 
 class FriendRequests extends Component {
     constructor(props) {
@@ -33,23 +29,17 @@ class FriendRequests extends Component {
             let pf = this.props.listUsers.listUsers;
             let cu = this.props.userData.userData;
             let reqs = [];
-            log("cu fr", cu)
             if ( pf && cu && cu.friendRequests && pf.length) {
                 for (let i = 0; i < pf.length; i++) {
-                    log("pf", pf[i])
                     if (cu.friendRequests && cu.friendRequests.includes(pf[i]._id)) {
                         reqs.push(pf[i]);
                     }
                 }
             }
-            log("reqs",reqs);
             this.setState({ potentialfriends: reqs, user: cu });
-            log("state", this.state);
         }
-        console.log("this state", this.state);
     }
     render() {
-        console.log("this state", this.state)
          if (this.state.redirect === "/user-dashboard") {
              Alert.warning(this.state.newUpdate, {
                  position: 'bottom',
@@ -83,8 +73,6 @@ class FriendRequests extends Component {
 }
 
 function RequestsTable(props) {
-    log("results", props.results)
-
     const matchedUsers = props.results.map(person => (
         <tr key={person._id}>
             <td><img className="rounded-circle" width="55" height="55" src={person.profilepic} alt="profile pic" /></td>

@@ -15,7 +15,6 @@ class Home extends Component {
     redirect(this.props.user, this.props.history);
   }
   render() {
-    console.log("Rendering Home");
     return (
       <div>
         <BigTitle />
@@ -40,7 +39,6 @@ class Home extends Component {
 }
 
 function BigTitle(props) {
-  console.log("Making big title");
   return (
     <div className="jumbotron hometitle">
       <h1 className="display-4 text-light">Check In</h1>

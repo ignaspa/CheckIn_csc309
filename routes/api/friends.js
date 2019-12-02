@@ -63,7 +63,7 @@ router.patch(
   }
 );
 
-//  @route PATCH api/users/friends
+//  @route PATCH api/friends/delete
 //  @desc Deletes friends for a given user.
 //  @access Private
 // Expects:
