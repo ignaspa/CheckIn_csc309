@@ -152,11 +152,11 @@ export const removeRequest = (friend_id) => dispatch => {
 export const acceptRequest = (friend_id) => dispatch => {
     console.log("Attempting friend axios call at api/requests/delete");
     axios
-        .patch("api/requests/delete", {friendID: friend_id})
+        .patch("/api/requests/delete", {friendID: friend_id})
         .then(res1 => {
             console.log("api/requests/delete sucess");
             axios
-                .patch("api/friends/add", { friendID: friend_id })
+                .patch("/api/friends/add", { friendID: friend_id })
                 .then(res => {
                     let userData = res.data;
                     dispatch(setUserData(userData));
