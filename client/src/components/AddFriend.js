@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../css/App.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Redirect } from "react-router";
 import { getAllUsers, getUserData, addFriend } from "../redux/actions";
 
 class AddFriend extends Component {
@@ -32,6 +33,16 @@ class AddFriend extends Component {
         console.log("5",this.state)
     }
     render() {
+        if (this.state.redirect === "/user-dashboard") {
+            return (
+                <Redirect
+                    to={{
+                        pathname: '/user-dashboard/',
+                        state: { lastEvent: this.state.newUpdate }
+                    }}
+                    push={true} />
+            );
+        }
         return (
             <div>
                 <div className="pagetitle">
@@ -80,9 +91,10 @@ class AddFriend extends Component {
 
     }
 
-    changeUserStatus = (userID) => {
-        this.props.addFriend(userID)
-        this.setState({results: []});
+    changeUserStatus = (user) => {
+        this.props.addFriend(user._id)
+        this.setState({ redirect: "/user-dashboard", newUpdate: "Sent a friend request to " + user.username });
+        
     }
 }
 
@@ -96,7 +108,7 @@ function ResultsTable(props) {
             <td>{person.username}</td>
             <td>
                 <button
-                    onClick={() => {label = "Sent!"; props.changeUserStatus(person._id)}}
+                    onClick={() => {label = "Sent!"; props.changeUserStatus(person)}}
                     className="btn btn-success">
                     {label}
               </button>

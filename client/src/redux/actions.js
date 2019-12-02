@@ -128,8 +128,11 @@ export const removeRequest = friend_id => dispatch => {
       axios
         .get("/api/users/all")
         .then(response => {
-          const userData = response.data;
-          dispatch(setListUsers(userData));
+          const users = response.data;
+            const userData = res.data;
+          dispatch(setListUsers(users));
+            dispatch(setUserData(userData));
+
         })
         .catch(err => {
           return dispatch({
