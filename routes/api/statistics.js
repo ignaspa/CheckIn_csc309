@@ -73,7 +73,7 @@ router.get(
 
         //get count of all checkins today
         Checkin.countDocuments(
-          { date: { $gte: startOfToday } },
+          { time: { $gte: startOfToday } },
           (err, checkinCount) => {
             if (err) {
               console.log(err);
