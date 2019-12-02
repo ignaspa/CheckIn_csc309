@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const config = require("config");
 const passport = require("passport");
+const path = require("path");
 
 //bodyParser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -51,6 +52,17 @@ app.use("/api/requests", requests);
 
 // Statistics routes
 app.use("/api/statistics", statistics);
+
+//serve static assets if production
+if (process.env.NODE_ENV === "production") {
+  //setup static folder as /client/build
+  app.use(express.static("client/build"));
+
+  //serve that index.html file
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 const PORT = process.env.PORT || 5000;
 
