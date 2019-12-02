@@ -25,33 +25,28 @@ class FriendRequests extends Component {
         this.props.getPotentialFriends();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.listUsers != "undefined" && nextProps.user != {}) {
-            log("lol")
-        }
-        log("next props", nextProps.listUsers)
-        log(nextProps)
-        let pf = nextProps.listUsers.listUsers;
-        let cu = nextProps.user.userData.friendRequests;
-        let reqs = [];
-        log("cu: ", cu);
-        log("pf: ", pf);
-        log(cu.userData);
-        log(pf.length)
-        log(cu.friendRequests && pf.length)
-        if (cu.friendRequests && pf.length) {
-            for (let i = 0; i < pf.length; i++) {
-                log("pf", pf[i])
-                if (cu.friendRequests.includes(pf[i]._id)) {
-                    reqs.push(pf[i]);
+    componentDidUpdate(prevProps) {
+        if (this.props !== prevProps) {
+            let pf = this.props.listUsers.listUsers;
+            let cu = this.props.user;
+            let reqs = [];
+            log("cu fr", cu)
+            if (cu.userData.friendRequests && pf.length) {
+                for (let i = 0; i < pf.length; i++) {
+                    log("pf", pf[i])
+                    if (cu.friendRequests.includes(pf[i]._id)) {
+                        reqs.push(pf[i]);
+                    }
                 }
             }
+            log("reqs",reqs);
+            this.setState({ potentialfriends: reqs, user: cu });
+            log("state", this.state);
         }
-        log("reqs",reqs);
-        this.setState({ potentialfriends: reqs, user: cu });
-        log("state", this.state);
+        console.log("this state", this.state);
     }
     render() {
+        console.log("this state", this.state);
         if (this.state.redirect === "/user-dashboard") {
             return (
                 <Redirect

@@ -32,7 +32,6 @@ class AddFriend extends Component {
         console.log("5",this.state)
     }
     render() {
-        console.log("6",this.state)
         return (
             <div>
                 <div className="pagetitle">
