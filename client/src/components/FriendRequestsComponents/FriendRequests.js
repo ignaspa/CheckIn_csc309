@@ -73,7 +73,7 @@ class FriendRequests extends Component {
 
     changeUserStatus = (userID, add, userName) => {
         if (add) {
-            this.props.addFriend(userID);
+            this.props.acceptRequest(userID);
             this.setState({ redirect: "/user-dashboard", newUpdate: "Added " + userName + " to your friends!" });
         }
         else {
