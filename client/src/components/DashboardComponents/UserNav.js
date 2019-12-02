@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../../css/UserDashboard.css";
-import User1 from "./DashboardAssets/User1.jpg";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import { getUserData } from "../../redux/actions";
