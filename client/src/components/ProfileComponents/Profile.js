@@ -76,8 +76,10 @@ class Profile extends Component {
     handleInputChange(event) {
         if (event.target.name === "bio") {
             this.newBio = event.target.value;
+            this.newName = this.state.user.name
         } else if (event.target.name === "name") {
             this.newName = event.target.value;
+            this.newBio = this.state.user.bio
         }
     }
 
