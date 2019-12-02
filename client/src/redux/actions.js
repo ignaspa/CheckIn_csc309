@@ -31,16 +31,13 @@ export const authenticateUser = userData => dispatch => {
     });
 };
 
-export const createUser = userData => dispatch => {
+export const createUser = (userData, history) => dispatch => {
   dispatch(clearErrors());
   axios
     .post("/api/users/register", userData)
     .then(data => {
       console.log(data);
-      const newUser = {
-        username: userData.username,
-        password: userData.password,
-      }
+      history.push("/login");
     })
     .catch(err => {
       console.log(err);
@@ -49,7 +46,7 @@ export const createUser = userData => dispatch => {
         payload: err.response.data
       });
     });
-}
+};
 
 //Clear errors
 export const clearErrors = () => {
@@ -67,7 +64,7 @@ export const login = decoded => {
 
 export const newUser = () => {
   return {
-    type: "NEW_USER",
+    type: "NEW_USER"
   };
 };
 
@@ -99,7 +96,7 @@ export const getUserData = () => dispatch => {
     });
 };
 
-export const addFriend = (friend_id) => dispatch => {
+export const addFriend = friend_id => dispatch => {
   axios
     .patch("/api/requests/add", { friendID: friend_id })
     .then(res => {
@@ -124,7 +121,7 @@ export const addFriend = (friend_id) => dispatch => {
     });
 };
 
-export const removeRequest = (friend_id) => dispatch => {
+export const removeRequest = friend_id => dispatch => {
   axios
     .patch("/api/requests/delete", { friendID: friend_id })
     .then(res => {
@@ -149,31 +146,32 @@ export const removeRequest = (friend_id) => dispatch => {
     });
 };
 
-export const acceptRequest = (friend_id) => dispatch => {
-    console.log("Attempting friend axios call at api/requests/delete");
-    axios
-        .patch("/api/requests/delete", {friendID: friend_id})
-        .then(res1 => {
-            console.log("api/requests/delete sucess");
-            axios
-                .patch("/api/friends/add", { friendID: friend_id })
-                .then(res => {
-                    let userData = res.data;
-                    dispatch(setUserData(userData));
-                })
-                .catch(err => {
-                    return dispatch({
-                        type: "GET_ERRORS",
-                        payload: err
-                    });
-                });
-        }).catch(err => {
-            return dispatch({
-                type: "GET_ERRORS",
-                payload: err
-            });
+export const acceptRequest = friend_id => dispatch => {
+  console.log("Attempting friend axios call at api/requests/delete");
+  axios
+    .patch("/api/requests/delete", { friendID: friend_id })
+    .then(res1 => {
+      console.log("api/requests/delete sucess");
+      axios
+        .patch("/api/friends/add", { friendID: friend_id })
+        .then(res => {
+          let userData = res.data;
+          dispatch(setUserData(userData));
+        })
+        .catch(err => {
+          return dispatch({
+            type: "GET_ERRORS",
+            payload: err
+          });
         });
-  };
+    })
+    .catch(err => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: err
+      });
+    });
+};
 
 export const getFriends = () => dispatch => {
   axios
@@ -212,15 +210,14 @@ export const setListUsers = usersData => {
   };
 };
 
-
-export const setFriendsData = (friendsData) => {
+export const setFriendsData = friendsData => {
   return {
     type: "SET_FRIENDS_DATA",
     payload: friendsData
-  }
-}
+  };
+};
 
-export const setUserData = (userData) => {
+export const setUserData = userData => {
   return {
     type: "SET_USER_DATA",
     payload: userData
@@ -237,112 +234,120 @@ export const logoff = () => {
 
 // Get checkins to display in the dashboard
 export const getFriendsCheckins = () => dispatch => {
-  axios.get("/api/checkins/friends")
+  axios
+    .get("/api/checkins/friends")
     .then(response => {
-      const friendsCheckins = response.data
-      dispatch(setFriendsCheckins(friendsCheckins))
+      const friendsCheckins = response.data;
+      dispatch(setFriendsCheckins(friendsCheckins));
     })
     .catch(err => {
       return dispatch({
         type: "GET_ERRORS",
         payload: err
-      })
-    })
-}
+      });
+    });
+};
 
 // helper function to set friends checkins
 export const setFriendsCheckins = friendsCheckins => {
   return {
     type: "SET_FRIENDS_CHECKINS",
     payload: friendsCheckins
-  }
-}
+  };
+};
 
 export const addNewCheckin = (action, message, location) => dispatch => {
   axios
-    .post('/api/checkins/', {
+    .post("/api/checkins/", {
       action: action,
       message: message,
       location: location
     })
     .then(response => {
-      const newCheckin = response.data
-      dispatch(setNewCheckin(newCheckin))
+      const newCheckin = response.data;
+      dispatch(setNewCheckin(newCheckin));
     })
     .catch(err => {
       return dispatch({
         type: "GET_ERRORS",
         payload: err
-      })
-    })
-}
+      });
+    });
+};
 
 // helper function to set friends checkins
 export const setNewCheckin = newCheckin => {
   return {
     type: "SET_NEW_CHECKIN",
     payload: newCheckin
-  }
-}
+  };
+};
 
 export const getActiveCheckin = () => dispatch => {
-  axios.get("/api/checkins/active")
+  axios
+    .get("/api/checkins/active")
     .then(response => {
-      const activeCheckin = response.data
-      dispatch(setActiveCheckin(activeCheckin))
+      const activeCheckin = response.data;
+      dispatch(setActiveCheckin(activeCheckin));
     })
     .catch(err => {
       return dispatch({
         type: "GET_ERRORS",
         payload: err
-      })
-    })
-}
+      });
+    });
+};
 
 export const setActiveCheckin = activeCheckin => {
   return {
     type: "SET_ACTIVE_CHECKIN",
     payload: activeCheckin
-  }
-}
+  };
+};
 
-export const getSpecificUser = (userID) => dispatch => {
+export const getSpecificUser = userID => dispatch => {
   console.log(userID);
-  axios.get("/api/users/" + userID).then(response => {
-    console.log("this is what we get", response.data);
-    const specificUser = response.data[0];
-    dispatch(setSpecificUser(specificUser));
-  }).catch(error => {
-    return dispatch({
-      type: "GET_ERRORS",
-      payload: error
+  axios
+    .get("/api/users/" + userID)
+    .then(response => {
+      console.log("this is what we get", response.data);
+      const specificUser = response.data[0];
+      dispatch(setSpecificUser(specificUser));
     })
-  })
-}
+    .catch(error => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: error
+      });
+    });
+};
 
 export const setSpecificUser = specificUser => {
   return {
     type: "SET_SPECIFIC_USER",
     payload: specificUser
-  }
-}
+  };
+};
 
-export const getCheckinsForUser = (userID) => dispatch => {
-  axios.get("/api/checkins/" + userID)
+export const getCheckinsForUser = userID => dispatch => {
+  axios
+    .get("/api/checkins/" + userID)
     .then(response => {
-      const userCheckins = response.data
-      dispatch(setUserCheckins(userCheckins))
-    }).catch(error => {
+      const userCheckins = response.data;
+      dispatch(setUserCheckins(userCheckins));
+    })
+    .catch(error => {
       return dispatch({
         type: "GET_ERRORS",
         payload: error
-      })
-    })
-}
+      });
+    });
+};
 
-export const updateProfilePic = (pic) => dispatch => {
-  console.log("calling update pic with", pic)
-  axios.patch("/api/users/profilepic", {newpic: pic})
+export const updateProfilePic = pic => dispatch => {
+  console.log("calling update pic with", pic);
+  axios
+    .patch("/api/users/profilepic", { newpic: pic })
     .then(response => {
       axios
         .get("/api/users/")
@@ -356,30 +361,8 @@ export const updateProfilePic = (pic) => dispatch => {
             payload: err
           });
         });
-    }).catch(error => {
-      return dispatch({
-        type: "GET_ERRORS",
-        payload: error
-      })
     })
-}
-
-export const setUserCheckins = userCheckins => {
-  return {
-    type: "SET_USER_CHECKINS",
-    payload: userCheckins
-  }
-}
-
-export const updateUserInfo = (newbio, newname) => dispatch => {
-  axios.patch("/api/users/details", {
-    newname: newname,
-    newbio: newbio
-  })
-    .then(response => {
-        const updatedUser = response.data;
-        dispatch(setUserData(updatedUser));
-    }).catch(error => {
+    .catch(error => {
       return dispatch({
         type: "GET_ERRORS",
         payload: error
@@ -387,23 +370,44 @@ export const updateUserInfo = (newbio, newname) => dispatch => {
     });
 };
 
-export const deleteFriend = (friendID) => dispatch => {
-  axios.patch("/api/friends/delete", {
-    friendID: friendID
-  })
-  .then(response => {
-    const updatedUser = response.data 
-    dispatch(setUserData(updatedUser))
-  }).catch(error => {
-    return dispatch( {
-      type: "GET_ERRORS", 
-      payload: error
+export const setUserCheckins = userCheckins => {
+  return {
+    type: "SET_USER_CHECKINS",
+    payload: userCheckins
+  };
+};
+
+export const updateUserInfo = (newbio, newname) => dispatch => {
+  axios
+    .patch("/api/users/details", {
+      newname: newname,
+      newbio: newbio
     })
-  })
-}
+    .then(response => {
+      const updatedUser = response.data;
+      dispatch(setUserData(updatedUser));
+    })
+    .catch(error => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: error
+      });
+    });
+};
 
-
-
-
-
-
+export const deleteFriend = friendID => dispatch => {
+  axios
+    .patch("/api/friends/delete", {
+      friendID: friendID
+    })
+    .then(response => {
+      const updatedUser = response.data;
+      dispatch(setUserData(updatedUser));
+    })
+    .catch(error => {
+      return dispatch({
+        type: "GET_ERRORS",
+        payload: error
+      });
+    });
+};
