@@ -2,24 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import Moment from "react-moment";
 
-const checkinS_DATA = [
-  {
-    id: "0",
-    name: "BA2200"
-  },
-  {
-    id: "1",
-    name: "CSSU"
-  },
-  {
-    id: "2",
-    name: "VIC2200"
-  },
-  {
-    id: "3",
-    name: "Robarts Cafeteria"
-  }
-];
 
 export default class CheckinSettings extends Component {
   constructor() {
