@@ -150,30 +150,30 @@ export const removeRequest = (friend_id) => dispatch => {
 };
 
 export const acceptRequest = (friend_id) => dispatch => {
-  console.log(friend_id)
-  axios
-    .patch("api/friends/add", { friendID: friend_id })
-    .then(res => {
-      axios
-        .get("/api/users/all")
-        .then(response => {
-          const userData = response.data;
-          dispatch(setListUsers(userData));
-        })
-        .catch(err => {
-          return dispatch({
-            type: "GET_ERRORS",
-            payload: err.response.data
-          });
+    console.log("Attempting friend axios call at api/requests/delete");
+    axios
+        .patch("api/requests/delete", {friendID: friend_id})
+        .then(res1 => {
+            console.log("api/requests/delete sucess");
+            axios
+                .patch("api/friends/add", { friendID: friend_id })
+                .then(res => {
+                    let userData = res.data;
+                    dispatch(setUserData(userData));
+                })
+                .catch(err => {
+                    return dispatch({
+                        type: "GET_ERRORS",
+                        payload: err
+                    });
+                });
+        }).catch(err => {
+            return dispatch({
+                type: "GET_ERRORS",
+                payload: err
+            });
         });
-    })
-    .catch(err => {
-      return dispatch({
-        type: "GET_ERRORS",
-        payload: err
-      });
-    });
-};
+  };
 
 export const getFriends = () => dispatch => {
   axios
@@ -377,15 +377,15 @@ export const updateUserInfo = (newbio, newname) => dispatch => {
     newbio: newbio
   })
     .then(response => {
-      const updatedUser = response.data
-      dispatch(setUserData(updatedUser))
+        const updatedUser = response.data;
+        dispatch(setUserData(updatedUser));
     }).catch(error => {
       return dispatch({
         type: "GET_ERRORS",
         payload: error
-      })
-    })
-}
+      });
+    });
+};
 
 export const deleteFriend = (friendID) => dispatch => {
   axios.patch("/api/friends/delete", {
