@@ -18,15 +18,21 @@ class AddFriend extends Component {
     }
     componentDidMount() {
         this.props.getPotentialFriends();
+        console.log("1",this.state)
         this.props.getThisUser();
+        console.log("2",this.state)
     }
-    
+
     componentWillReceiveProps(nextProps) {
         let pf = nextProps.listUsers.listUsers;
         let cu = nextProps.user.userData;
+        console.log("3",pf)
+        console.log("4",cu)
         this.setState({ potentialfriends: pf, user: cu });
+        console.log("5",this.state)
     }
     render() {
+        console.log("6",this.state)
         return (
             <div>
                 <div className="pagetitle">
