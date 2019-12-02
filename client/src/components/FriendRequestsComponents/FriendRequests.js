@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { bindActionCreators } from "redux";
 import { getAllUsers, getUserData, acceptRequest, removeRequest } from "../../redux/actions";
+import Alert from 'react-s-alert';
+import 'react-s-alert/dist/s-alert-default.css';
+
 
 const log = console.log;
 
@@ -27,7 +30,6 @@ class FriendRequests extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props !== prevProps) {
-            
             let pf = this.props.listUsers.listUsers;
             let cu = this.props.userData.userData;
             let reqs = [];
@@ -47,19 +49,16 @@ class FriendRequests extends Component {
         console.log("this state", this.state);
     }
     render() {
-        console.log("this state", this.state);
-        if (this.state.redirect === "/user-dashboard") {
-            return (
-                <Redirect
-                    to={{
-                        pathname: '/user-dashboard/',
-                        state: { lastEvent: this.state.newUpdate }
-                    }}
-                    push={true} />
-            );
-        }
+        console.log("this state", this.state)
+         if (this.state.redirect === "/user-dashboard") {
+             Alert.warning(this.state.newUpdate, {
+                 position: 'bottom',
+                 timeout: '5000', 
+             });
+         }
         return (
             <div>
+                <Alert stack={{limit: 1}} />
                 <div className="pagetitle">
                     <h3>Friend Requests</h3>
                 </div>
