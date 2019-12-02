@@ -5,7 +5,7 @@
 * Login into the user side: Username: user and Password: user
 * Login into admin side: Username: admin and Password: admin
 
-Note on testing: We recommend accessing other users to test out sending requests and then accepting them. 
+Note on testing: We recommend accessing other users to test out sending friend requests and then accepting them. 
 Try logging in to a separate user with these credentials:
 * Username: user2 and Password: user2
 
@@ -38,6 +38,7 @@ Try logging in to a separate user with these credentials:
 * Check out statistics about the site 
 * Change user passwords
 * Remove users from the app
+* Remove checkins
 
 # Endpoints 
 
