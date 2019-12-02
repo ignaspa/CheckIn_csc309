@@ -48,7 +48,6 @@ class Profile extends Component {
 
     // remove friend 
     removeFriend(friendID) {
-        console.log("deleting friend")
         this.props.deleteFriend(friendID)
         this.setState({redirect: "/user-dashboard"})
     }
@@ -62,7 +61,6 @@ class Profile extends Component {
 
     // this gets called to submit form entry 
     onModeChange() {
-        console.log("SUBMITTING")
                 this.setState({
             edit_mode: !this.state.edit_mode,
             user: this.props.userData,
@@ -139,6 +137,7 @@ class Profile extends Component {
                             otherUser={this.state.profile_user}
                             label={label}
                             onClickAction={this.removeFriend}
+                            yourUser={false}
                         />
                         <CurrentLocation
                             checkin={activeCheckin}
@@ -159,6 +158,7 @@ class Profile extends Component {
                             otherUser={this.state.profile_user}
                             label={label}
                             onClickAction={this.changeMode}
+                            yourUser={true}
                         />
                         <CurrentLocation
                             checkin={activeCheckin}
@@ -188,50 +188,79 @@ function ActionButton(props) {
 }
 
 function ProfileHeader(props) {
-    // console.log(props)
-    return (
-        <table className="profile-section table mx-auto">
-            <tbody>
-                <tr>
-                    <th>
-                        <img className="profile-pic rounded-circle border m-3 text-center" src={props.otherUser.profilepic} alt="Profile" />
+    if (props.yourUser) {
+        return (
+            <table className="profile-section table mx-auto">
+                <tbody>
+                    <tr>
+                        <th>
+                            <img className="profile-pic rounded-circle border m-3 text-center" src={props.otherUser.profilepic} alt="Profile" />
+    
+                        </th>
+                        <th>
+                            <div className="col-sm">
+                                <h3 className="card-title mt-3 mb-0"> {props.otherUser.name} </h3>
+                                <div className="handle"> @{props.otherUser.username} </div>
+                                {/* <div><strong>{props.otherUser.friends.length}</strong> friends</div> */}
+                                <div>{props.otherUser.bio}</div>
+                            </div>
+                        </th>
+                        <th>
+                            <ActionButton
+                                onClickAction={props.onClickAction}
+                                label={props.label}
+                                otherUser={props.otherUser}
+                            />
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <button type="button" className="btn btn-primary changepicbutton">
+                                <Link to={"/changepic"} className="nav-link text-white">
+                                    Change Profile Picture
+                                </Link>
+                            </button>
+                        </th>
+                    </tr>
+                </tbody>
+    
+            </table>
+        );
+    } else {
+        return (
+            <table className="profile-section table mx-auto">
+                <tbody>
+                    <tr>
+                        <th>
+                            <img className="profile-pic rounded-circle border m-3 text-center" src={props.otherUser.profilepic} alt="Profile" />
+    
+                        </th>
+                        <th>
+                            <div className="col-sm">
+                                <h3 className="card-title mt-3 mb-0"> {props.otherUser.name} </h3>
+                                <div className="handle"> @{props.otherUser.username} </div>
+                                {/* <div><strong>{props.otherUser.friends.length}</strong> friends</div> */}
+                                <div>{props.otherUser.bio}</div>
+                            </div>
+                        </th>
+                        <th>
+                            <ActionButton
+                                onClickAction={props.onClickAction}
+                                label={props.label}
+                                otherUser={props.otherUser}
+                            />
+                        </th>
+                    </tr>
+                </tbody>
+    
+            </table>
+        );
+    }
 
-                    </th>
-                    <th>
-                        <div className="col-sm">
-                            <h3 className="card-title mt-3 mb-0"> {props.otherUser.name} </h3>
-                            <div className="handle"> @{props.otherUser.username} </div>
-                            {/* <div><strong>{props.otherUser.friends.length}</strong> friends</div> */}
-                            <div>{props.otherUser.bio}</div>
-                        </div>
-                    </th>
-                    <th>
-                        <ActionButton
-                            onClickAction={props.onClickAction}
-                            label={props.label}
-                            otherUser={props.otherUser}
-                        />
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        <button type="button" className="btn btn-primary changepicbutton">
-                            <Link to={"/changepic"} className="nav-link text-white">
-                                Change Profile Picture
-                            </Link>
-                        </button>
-                    </th>
-                </tr>
-            </tbody>
-
-        </table>
-    );
+    
 }
 
 function EditProfileHeader(props) {
-
-    console.log(props.user)
-
     return (
         <table className="profile-section table mx-auto">
             <tbody>
@@ -269,7 +298,6 @@ function EditProfileHeader(props) {
 }
 
 function CurrentLocation(props) {
-    // const checkin = getCheckIn(props.profile_id);
     const profile_user = props.profile_user
 
     if (!props.checkin) {
@@ -279,7 +307,6 @@ function CurrentLocation(props) {
             </div>
         );
     }
-    // TODO: activeCheckin is the ID for the checkin not the actual checkin so you gotta create redux action to fetch that. 
     return (
         <div className="profile-section card mx-auto border-0">
             <h4 className="card-title"> Current Location </h4>
