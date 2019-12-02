@@ -19,6 +19,7 @@ class FriendRequests extends Component {
         }
         this.changeUserStatus = this.changeUserStatus.bind(this);
     }
+
     componentDidMount() {
         this.props.getThisUser();
         this.props.getPotentialFriends();
@@ -29,11 +30,15 @@ class FriendRequests extends Component {
             log("lol")
         }
         log("next props", nextProps.listUsers)
+        log(nextProps)
         let pf = nextProps.listUsers.listUsers;
-        let cu = nextProps.user;
+        let cu = nextProps.user.userData.friendRequests;
         let reqs = [];
         log("cu: ", cu);
         log("pf: ", pf);
+        log(cu.userData);
+        log(pf.length)
+        log(cu.friendRequests && pf.length)
         if (cu.friendRequests && pf.length) {
             for (let i = 0; i < pf.length; i++) {
                 log("pf", pf[i])
@@ -44,7 +49,7 @@ class FriendRequests extends Component {
         }
         log("reqs",reqs);
         this.setState({ potentialfriends: reqs, user: cu });
-        log(this.state);
+        log("state", this.state);
     }
     render() {
         if (this.state.redirect === "/user-dashboard") {
