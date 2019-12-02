@@ -133,6 +133,6 @@ const mapStateToProps = store => ({
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ getPotentialFriends: getAllUsers, getThisUser: getUserData, addFriend: acceptRequest, removeRequest: removeRequest }, dispatch);
+    return bindActionCreators({ getPotentialFriends: getAllUsers, getThisUser: getUserData, acceptRequest: acceptRequest, removeRequest: removeRequest }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FriendRequests);

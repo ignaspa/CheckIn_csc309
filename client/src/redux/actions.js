@@ -150,6 +150,7 @@ export const removeRequest = (friend_id) => dispatch => {
 };
 
 export const acceptRequest = (friend_id) => dispatch => {
+  console.log(friend_id)
   axios
     .patch("api/friends/add", { friendID: friend_id })
     .then(res => {
